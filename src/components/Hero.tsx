@@ -116,7 +116,7 @@ export function Hero() {
           a light streak + pixel streak swarm ride along with the seam.
           The outgoing frame is pushed back in depth (drift + grow + dim). */}
       <style>{`
-        /* hero-anim-v: ktk-1 */
+        /* hero-anim-v: ktk-2 (deploy pipeline check) */
         @keyframes heroFrameInFwd  { from { transform: translateX(100%); }  to { transform: translateX(0); } }
         @keyframes heroFrameInBwd  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
         @keyframes heroFrameOutFwd { from { transform: translateX(0) scale(1); } to { transform: translateX(-45%) scale(1.06); } }
