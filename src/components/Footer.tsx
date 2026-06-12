@@ -30,8 +30,11 @@ export function Footer() {
           {(
             [
               ["/about", "Company"],
+              ["/services", "Services"],
               ["/products", "Products"],
               ["/manufacturing", "Manufacturing"],
+              ["/careers", "Careers"],
+              ["/activities", "Activities"],
               ["/news", "News"],
               ["/contact", "Contact"],
             ] as const
@@ -44,6 +47,14 @@ export function Footer() {
               {label}
             </Link>
           ))}
+          <a
+            href="https://www.facebook.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mono mt-3 text-[0.72rem] uppercase tracking-[0.16em] text-ash transition-colors hover:text-amber"
+          >
+            Facebook ↗
+          </a>
         </nav>
       </div>
 

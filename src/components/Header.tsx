@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 
 const NAV = [
   { href: "/about", label: "Company" },
+  { href: "/services", label: "Services" },
   { href: "/products", label: "Products" },
   { href: "/manufacturing", label: "Manufacturing" },
+  { href: "/careers", label: "Careers" },
+  { href: "/activities", label: "Activities" },
   { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
 ] as const;
@@ -40,12 +43,12 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`mono text-[0.7rem] uppercase tracking-[0.16em] transition-colors hover:text-amber ${
+              className={`mono text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:text-amber ${
                 pathname.startsWith(item.href) ? "text-bone" : "text-ash"
               }`}
             >
@@ -54,7 +57,7 @@ export function Header() {
           ))}
           <Link
             href="/contact"
-            className="press mono border border-amber px-4 py-2 text-[0.7rem] uppercase tracking-[0.16em] text-amber transition-colors hover:bg-amber hover:text-coal"
+            className="press mono border border-amber px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] text-amber transition-colors hover:bg-amber hover:text-coal"
           >
             Become a dealer
           </Link>
@@ -63,7 +66,7 @@ export function Header() {
         <button
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((o) => !o)}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
         >
           <span className={`h-px w-6 bg-bone transition-transform ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
           <span className={`h-px w-6 bg-bone transition-transform ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
@@ -71,7 +74,7 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-seam bg-coal md:hidden">
+        <nav className="border-t border-seam bg-coal lg:hidden">
           <div className="container-x flex flex-col py-4">
             {NAV.map((item) => (
               <Link

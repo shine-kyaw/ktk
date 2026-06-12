@@ -4,6 +4,11 @@ import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { STATS } from "@/data/products";
+import { SERVICES } from "@/data/services";
+import { JOBS } from "@/data/careers";
+import { NEWS, ACTIVITIES } from "@/data/news";
+
+const PARTNERS = ["STARLINGER", "NEWLONG", "YAO HAN", "HCH", "TR"];
 
 const MILESTONES = [
   { year: "2008", text: "Kaung Thu Kha founded in Yangon — bearings and industrial trading." },
@@ -115,6 +120,44 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 3b — Featured services */}
+      <section className="border-t border-seam bg-iron">
+        <div className="container-x py-24">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="eyebrow">Services</p>
+                <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
+                  One-stop, by design.
+                </h2>
+              </div>
+              <Link
+                href="/services"
+                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+              >
+                All services →
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+            {SERVICES.slice(0, 3).map((s, i) => (
+              <Reveal key={s.slug} delay={i * 0.08} className="bg-iron">
+                <Link
+                  href="/services"
+                  className="group block h-full p-7 transition-colors hover:bg-coal"
+                >
+                  <span className="mono text-[0.64rem] text-amber">0{i + 1}</span>
+                  <h3 className="display mt-4 text-xl text-bone transition-colors group-hover:text-amber">
+                    {s.name}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ash">{s.summary}</p>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 4 — Manufacturing excellence */}
       <section className="grain weave relative overflow-hidden border-t border-seam">
         <div
@@ -190,6 +233,116 @@ export default function HomePage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 6b — Latest activities & news */}
+      <section className="border-t border-seam bg-iron">
+        <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
+          <Reveal>
+            <div className="flex items-end justify-between gap-6">
+              <h2 className="display text-3xl text-bone">Latest news</h2>
+              <Link
+                href="/news"
+                className="mono text-[0.68rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+              >
+                Newsroom →
+              </Link>
+            </div>
+            <div className="mt-8 divide-y divide-seam border-y border-seam">
+              {NEWS.slice(0, 3).map((n) => (
+                <Link key={n.slug} href={`/news/${n.slug}`} className="group block py-5">
+                  <span className="mono text-[0.62rem] text-amber">{n.date}</span>
+                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-amber">
+                    {n.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="flex items-end justify-between gap-6">
+              <h2 className="display text-3xl text-bone">Activities</h2>
+              <Link
+                href="/activities"
+                className="mono text-[0.68rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+              >
+                All activities →
+              </Link>
+            </div>
+            <div className="mt-8 divide-y divide-seam border-y border-seam">
+              {ACTIVITIES.slice(0, 3).map((a) => (
+                <Link key={a.slug} href="/activities" className="group block py-5">
+                  <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-amber">
+                    {a.category}
+                  </span>
+                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-amber">
+                    {a.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 6c — Careers strip */}
+      <section className="border-t border-seam">
+        <div className="container-x py-24">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="eyebrow">Careers</p>
+                <h2 className="display mt-5 max-w-xl text-4xl text-bone sm:text-5xl">
+                  We&apos;re hiring.
+                </h2>
+              </div>
+              <Link
+                href="/careers"
+                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+              >
+                All positions →
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-10 divide-y divide-seam border-y border-seam">
+            {JOBS.slice(0, 3).map((j, i) => (
+              <Reveal key={j.slug} delay={i * 0.05}>
+                <Link
+                  href={`/careers/${j.slug}`}
+                  className="group flex flex-wrap items-baseline justify-between gap-3 py-6 transition-colors hover:bg-iron sm:px-4"
+                >
+                  <h3 className="display text-xl text-bone transition-colors group-hover:text-amber">
+                    {j.title}
+                  </h3>
+                  <span className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash">
+                    {j.department} · {j.location}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6d — Partner marks */}
+      <section className="border-t border-seam bg-iron">
+        <div className="container-x py-14">
+          <Reveal>
+            <p className="mono text-center text-[0.62rem] uppercase tracking-[0.24em] text-ash">
+              Technology & brand partners
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
+              {PARTNERS.map((p) => (
+                <span
+                  key={p}
+                  className="display text-xl tracking-wide text-bone/35 transition-colors hover:text-bone/70"
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
