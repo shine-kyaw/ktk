@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+}
+
+@layer components {
+  /* Page gutter — one shared horizontal rhythm for every section */
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-8;
+  }
+
+  /* Spec/label voice — IBM Plex Mono */
+  .mono {
+    @apply font-mono;
+  }
+
+  /* Tactile press feedback on primary actions */
+  .press {
+    @apply transition-transform duration-150 active:scale-[0.97];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

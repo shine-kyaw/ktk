@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "products": "Products",
+    "services": "Services",
+    "careers": "Careers",
+    "contact": "Contact",
+    "requestQuote": "Request a Quote",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "common": {
+    "tagline": "Key To Smart Power",
+    "company": "Asia General Holding Co., Ltd.",
+    "explore": "Explore",
+    "viewAll": "View all",
+    "comingSoon": "Coming soon"
+  },
+  "home": {
+    "heroEyebrow": "High-Voltage Power Transformers · ABB-Licensed Switchgear",
+    "heroTitle": "Engineering the backbone of Myanmar's grid.",
+    "heroSub": "Power transformers up to 230 kV / 150 MVA, manufactured to international standard at our Yangon facility.",
+    "heroCta": "Explore products",
+    "heroCta2": "Our services",
+    "heroStatVoltage": "Max voltage",
+    "heroStatCapacity": "Peak capacity",
+    "heroStatSkus": "Active SKUs",
+    "heroSlideCap1": "Yangon manufacturing facility",
+    "heroSlideCap2": "230 kV substation — commissioned",
+    "heroSlideCap3": "Transformer plant — aerial view",
+    "pillarsEyebrow": "What we deliver",
+    "pillarsTitle": "Three disciplines. One integrated supplier.",
+    "pillar1Title": "Transformers",
+    "pillar1Desc": "Power and distribution transformers from 100 kVA pad-mount units to 230 kV / 150 MVA transmission class.",
+    "pillar2Title": "Switchgear & Panels",
+    "pillar2Desc": "ABB-licensed UniSafe and System Pro E-Power medium- and low-voltage switchgear, assembled in Yangon.",
+    "pillar3Title": "After-Sales Service",
+    "pillar3Desc": "Commissioning, testing, maintenance, and rapid-response repair for everything we deliver.",
+    "productsEyebrow": "Product catalog",
+    "productsTitle": "Built to specification. Tested to standard.",
+    "productsSub": "A snapshot of the catalog — the full range is managed by our engineering team and updated continuously.",
+    "ctaTitle": "Have a project in mind?",
+    "ctaSub": "Send us your specification and our engineering team will respond with a detailed quotation.",
+    "ctaButton": "Request a quote"
+  },
+  "products": {
+    "title": "Products",
+    "sub": "Demonstration catalog — entries below are placeholders that the AG Holding team will manage from the staff portal.",
+    "categoryAll": "All",
+    "specVoltage": "Voltage",
+    "specCapacity": "Capacity",
+    "specStandard": "Standard",
+    "enquire": "Enquire"
+  },
+  "services": {
+    "title": "Services",
+    "sub": "From factory acceptance testing to energized commissioning and lifetime maintenance.",
+    "s1Title": "Testing & Commissioning",
+    "s1Desc": "Factory and site acceptance testing, protection coordination, and energization support by our field engineering team.",
+    "s2Title": "Maintenance Contracts",
+    "s2Desc": "Scheduled preventive maintenance, oil analysis, and thermographic inspection programs for installed fleets.",
+    "s3Title": "Repair & Retrofit",
+    "s3Desc": "Workshop and on-site repair, rewinds, bushing and tap-changer replacement, and control retrofits.",
+    "s4Title": "Engineering Support",
+    "s4Desc": "Application engineering, specification review, and substation design assistance for utilities and EPC contractors."
+  },
+  "careers": {
+    "title": "Careers",
+    "sub": "Join the team engineering Myanmar's power infrastructure.",
+    "openRoles": "Open positions",
+    "apply": "Apply",
+    "location": "Location",
+    "type": "Type",
+    "noRoles": "No open positions right now — check back soon."
+  },
+  "footer": {
+    "addressLabel": "Head office & factory",
+    "address": "Yangon Industrial Zone, Yangon, Myanmar",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "rights": "All rights reserved."
+  }
+}
