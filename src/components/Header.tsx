@@ -1,108 +1,94 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const NAV = [
-  { href: "/products", key: "products" },
-  { href: "/services", key: "services" },
-  { href: "/careers", key: "careers" },
-  { href: "/contact", key: "contact" },
+  { href: "/about", label: "Company" },
+  { href: "/products", label: "Products" },
+  { href: "/manufacturing", label: "Manufacturing" },
+  { href: "/news", label: "News" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
-  const t = useTranslations("nav");
-  const locale = useLocale();
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-hair bg-canvas/85 backdrop-blur-md">
-      <div className="container-x flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image src="/brand/agholding.png" alt="AG Holding" width={40} height={40} priority />
-          <span className="mono hidden text-[0.7rem] font-medium uppercase leading-tight tracking-wider text-ink sm:block">
-            Asia General
-            <br />
-            Holding
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled || open ? "border-b border-seam bg-coal/90 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
+      <div className="container-x flex h-[4.5rem] items-center justify-between">
+        <Link href="/" className="group flex items-baseline gap-2.5" onClick={() => setOpen(false)}>
+          <span className="display text-2xl text-bone">
+            KTK<span className="text-amber">.</span>
+          </span>
+          <span className="mono hidden text-[0.6rem] uppercase tracking-[0.2em] text-ash transition-colors group-hover:text-bone sm:block">
+            Kaung Thu Kha
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {NAV.map((item) => (
             <Link
-              key={item.key}
+              key={item.href}
               href={item.href}
-              className={`text-sm transition-colors hover:text-blue ${
-                pathname.startsWith(item.href) ? "font-medium text-ink" : "text-ink-soft"
+              className={`mono text-[0.7rem] uppercase tracking-[0.16em] transition-colors hover:text-amber ${
+                pathname.startsWith(item.href) ? "text-bone" : "text-ash"
               }`}
             >
-              {t(item.key)}
+              {item.label}
             </Link>
           ))}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          {/* Locale switch — full reload is fine here; it keeps the header a simple component */}
-          <div className="mono flex items-center overflow-hidden rounded-md border border-hair text-[0.7rem]">
-            {(["en", "zh"] as const).map((l) => (
-              <Link
-                key={l}
-                href={pathname}
-                locale={l}
-                className={`px-2.5 py-1.5 transition-colors ${
-                  locale === l ? "bg-ink text-white" : "text-ink-soft hover:text-ink"
-                }`}
-              >
-                {l === "en" ? "EN" : "中文"}
-              </Link>
-            ))}
-          </div>
-
           <Link
             href="/contact"
-            className="press hidden rounded-md bg-red px-4 py-2 text-sm font-medium text-white hover:bg-red-soft sm:block"
+            className="press mono border border-amber px-4 py-2 text-[0.7rem] uppercase tracking-[0.16em] text-amber transition-colors hover:bg-amber hover:text-coal"
           >
-            {t("requestQuote")}
+            Become a dealer
           </Link>
+        </nav>
 
-          <button
-            aria-label={open ? t("close") : t("menu")}
-            onClick={() => setOpen((o) => !o)}
-            className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 md:hidden"
-          >
-            <span
-              className={`h-0.5 w-5 bg-ink transition-transform ${open ? "translate-y-1 rotate-45" : ""}`}
-            />
-            <span
-              className={`h-0.5 w-5 bg-ink transition-transform ${open ? "-translate-y-1 -rotate-45" : ""}`}
-            />
-          </button>
-        </div>
+        <button
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((o) => !o)}
+          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+        >
+          <span className={`h-px w-6 bg-bone transition-transform ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 bg-bone transition-transform ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
+        </button>
       </div>
 
-      {/* Mobile drawer */}
       {open && (
-        <nav className="border-t border-hair bg-canvas md:hidden">
-          <div className="container-x flex flex-col py-3">
+        <nav className="border-t border-seam bg-coal md:hidden">
+          <div className="container-x flex flex-col py-4">
             {NAV.map((item) => (
               <Link
-                key={item.key}
+                key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="border-b border-hair py-3 text-sm text-ink-soft last:border-0"
+                className="mono border-b border-seam py-4 text-[0.75rem] uppercase tracking-[0.16em] text-bone-dim last:border-0"
               >
-                {t(item.key)}
+                {item.label}
               </Link>
             ))}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="press mt-3 rounded-md bg-red px-4 py-2.5 text-center text-sm font-medium text-white"
+              className="press mono mt-4 border border-amber px-4 py-3 text-center text-[0.75rem] uppercase tracking-[0.16em] text-amber"
             >
-              {t("requestQuote")}
+              Become a dealer
             </Link>
           </div>
         </nav>

@@ -1,35 +1,36 @@
 import type { Config } from "tailwindcss";
 
-// "Light Shift" design system — white canvas, ink text, brand red as the
-// primary interactive force, institutional blue reserved for hover/focus.
+// "Graphite & Kraft" — dark cinematic industrial system for KTK.
+// Coal page ground, iron panels, warm cement-bone type, one molten amber
+// accent. Amber is the only saturated voice on the site — spend it sparingly.
 export default {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        canvas: "#FFFFFF",
-        panel: "#F1F5F9",
-        ink: {
-          DEFAULT: "#0E1116",
-          soft: "#3F4754",
-          mute: "#8A93A1",
+        coal: "#0B0C0E",
+        iron: "#15171C",
+        seam: "#232730",
+        bone: {
+          DEFAULT: "#EDE9E0",
+          dim: "#C9C4B8",
         },
-        red: {
-          DEFAULT: "#C8102E",
-          soft: "#A60D26",
+        ash: "#9AA0AA",
+        amber: {
+          DEFAULT: "#F2A900",
+          deep: "#C98A00",
         },
-        blue: "#003B5C",
-        hair: {
-          DEFAULT: "#E2E8F0",
-          strong: "#CBD5E1",
-        },
+        kraft: "#E4DCCB",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
       },
-      boxShadow: {
-        lift: "0 12px 32px -12px rgb(14 17 22 / 0.18)",
+      letterSpacing: {
+        mega: "-0.035em",
+      },
+      maxWidth: {
+        site: "84rem",
       },
     },
   },

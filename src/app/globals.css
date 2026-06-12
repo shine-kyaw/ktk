@@ -3,29 +3,80 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply bg-canvas font-sans text-ink antialiased;
+    @apply bg-coal font-sans text-bone antialiased;
+  }
+  ::selection {
+    @apply bg-amber text-coal;
   }
 }
 
 @layer components {
-  /* Page gutter — one shared horizontal rhythm for every section */
+  /* Shared page gutter */
   .container-x {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-8;
+    @apply mx-auto w-full max-w-site px-5 sm:px-10;
   }
 
-  /* Spec/label voice — IBM Plex Mono */
+  /* Spec/label voice */
   .mono {
     @apply font-mono;
   }
 
-  /* Tactile press feedback on primary actions */
+  .eyebrow {
+    @apply mono text-[0.68rem] uppercase tracking-[0.22em] text-amber;
+  }
+
+  /* Display headline treatment — industrial mega-type */
+  .display {
+    @apply font-sans font-extrabold uppercase leading-[0.94] tracking-mega;
+  }
+
   .press {
     @apply transition-transform duration-150 active:scale-[0.97];
+  }
+
+  /* Film grain — laid over cinematic imagery so photos feel graded, not stock */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Woven-tape texture — abstract nod to PP woven fabric, replaces
+     photography until the client's cinematic photo set arrives */
+  .weave {
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgb(237 233 224 / 0.028) 0 2px,
+        transparent 2px 14px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(237 233 224 / 0.028) 0 2px,
+        transparent 2px 14px
+      );
+  }
+
+  /* Faint engineering grid for dark sections */
+  .blueprint {
+    background-image:
+      linear-gradient(rgb(237 233 224 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(237 233 224 / 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
