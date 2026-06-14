@@ -19,7 +19,7 @@ export default function ManufacturingPage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 90% at 90% 100%, rgb(232 70 58 / 0.13) 0%, transparent 55%)",
+              "radial-gradient(120% 90% at 90% 100%, rgb(34 90 130 / 0.13) 0%, transparent 55%)",
           }}
         />
         <div className="container-x relative pb-24 pt-44">

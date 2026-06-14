@@ -8,27 +8,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        // KTK brand system — a blue-slate dark ramp (nods to the logo's
-        // navy) with the brand RED as the single accent and NAVY reserved
-        // for the emblem. Lighter and more gradual than before: the three
-        // ground tiers sit close together and let hairlines do the work.
-        coal: "#1E2531", // page ground
-        iron: "#283143", // panels (one gentle step up)
-        seam: "#3C4759", // hairlines / dividers
+        // KTK brand system — a NAVY + SLATE "trust" foundation (calm,
+        // neutral, institutional) with the logo's RED as a disciplined
+        // accent and INSTITUTIONAL blue for credibility blocks. Gradual,
+        // cool, premium-without-luxury. No green, no gold.
+        coal: "#0E2236", // navy page ground
+        iron: "#173049", // panels — one gentle step up
+        seam: "#33465D", // slate hairlines / dividers
         bone: {
-          DEFAULT: "#EFF2F7",
-          dim: "#C6CCD8",
+          DEFAULT: "#EBEFF5", // cool near-white
+          dim: "#BFC8D5",
         },
-        ash: "#98A1B2",
+        ash: "#8893A4", // slate, muted text
         red: {
-          DEFAULT: "#E8463A", // brand red, warmed for screen legibility
-          deep: "#C2392C", // hovers / bold blocks
+          DEFAULT: "#E2483B", // logo red — the single warm accent
+          deep: "#C2392C",
         },
-        navy: {
-          DEFAULT: "#2F56C9", // emblem + rare secondary accent
-          deep: "#1E3A8A",
-        },
-        kraft: "#E4DCCB",
+        inst: "#003B5C", // institutional blue — credibility blocks
+        navy: "#0A2540", // deepest navy — emblem, deep fills
       },
       fontFamily: {
         sans: ["var(--font-archivo)", "system-ui", "sans-serif"],

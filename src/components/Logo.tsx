@@ -6,7 +6,7 @@
  * dropping it in /public and replacing this with an <Image>.
  */
 const RED = "#E8463A";
-const NAVY = "#1E3A8A";
+const NAVY = "#0A2540";
 
 export function Logo({ className = "" }: { className?: string }) {
   // Subtle sunburst ticks in the red caps

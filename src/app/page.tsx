@@ -169,7 +169,7 @@ export default async function HomePage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(110% 100% at 100% 0%, rgb(232 70 58 / 0.12) 0%, transparent 50%)",
+              "radial-gradient(110% 100% at 100% 0%, rgb(34 90 130 / 0.12) 0%, transparent 50%)",
           }}
         />
         <div className="container-x relative py-32">
@@ -319,7 +319,7 @@ export default async function HomePage() {
       </section>
 
       {/* 7 — Dealer CTA */}
-      <section className="border-t border-red-deep bg-red-deep">
+      <section className="border-t border-inst bg-inst">
         <div className="container-x py-24">
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-10">
@@ -337,7 +337,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href="/contact"
-                className="press mono bg-coal px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-iron"
+                className="press mono bg-red px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-bone hover:text-coal"
               >
                 Start the conversation
               </Link>
