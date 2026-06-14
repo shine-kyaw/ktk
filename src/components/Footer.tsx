@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./Logo";
 
 const LINKS: [string, string][] = [
   ["/about", "Company"],
@@ -13,11 +14,12 @@ export function Footer() {
   return (
     <footer className="border-t border-seam bg-coal">
       <div className="container-x flex flex-wrap items-center justify-between gap-6 py-9">
-        <Link href="/" className="flex items-baseline gap-2.5">
-          <span className="display text-xl text-bone">
-            KTK<span className="text-amber">.</span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <Logo className="h-6 w-6 opacity-80" />
+          <span className="display text-xl leading-none text-bone">
+            KTK<span className="text-red">.</span>
           </span>
-          <span className="mono text-[0.58rem] uppercase tracking-[0.2em] text-ash">
+          <span className="mono text-[0.58rem] uppercase leading-none tracking-[0.2em] text-ash">
             Kaung Thu Kha · Since 1991
           </span>
         </Link>
@@ -27,7 +29,7 @@ export function Footer() {
             <Link
               key={href}
               href={href}
-              className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash transition-colors hover:text-amber"
+              className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash transition-colors hover:text-red"
             >
               {label}
             </Link>

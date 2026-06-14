@@ -10,7 +10,7 @@ export default function ContactPage() {
       <Reveal>
         <p className="eyebrow">Contact</p>
         <h1 className="display mt-5 max-w-3xl text-5xl text-bone sm:text-7xl">
-          Talk to <span className="text-amber">KTK.</span>
+          Talk to <span className="text-red">KTK.</span>
         </h1>
       </Reveal>
 

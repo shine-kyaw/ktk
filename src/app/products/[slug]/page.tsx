@@ -34,7 +34,7 @@ export default async function ProductDetailPage({
       <Reveal>
         <Link
           href="/products"
-          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-amber"
+          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-red"
         >
           ← All products
         </Link>
@@ -92,7 +92,7 @@ export default async function ProductDetailPage({
             </p>
             <Link
               href="/contact"
-              className="press mono mt-6 block bg-amber px-5 py-3.5 text-center text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-coal hover:bg-bone"
+              className="press mono mt-6 block bg-red px-5 py-3.5 text-center text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-bone hover:bg-bone hover:text-coal"
             >
               Enquire now
             </Link>
@@ -107,7 +107,7 @@ export default async function ProductDetailPage({
                   <li key={r.slug}>
                     <Link
                       href={`/products/${r.slug}`}
-                      className="block py-4 text-sm text-bone-dim transition-colors hover:text-amber"
+                      className="block py-4 text-sm text-bone-dim transition-colors hover:text-red"
                     >
                       {r.name}
                     </Link>

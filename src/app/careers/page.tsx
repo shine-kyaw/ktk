@@ -13,7 +13,7 @@ export default async function CareersPage() {
       <Reveal>
         <p className="eyebrow">Careers</p>
         <h1 className="display mt-5 max-w-3xl text-5xl text-bone sm:text-7xl">
-          Build what the country <span className="text-amber">builds with.</span>
+          Build what the country <span className="text-red">builds with.</span>
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
           Join a team of more than 2,000 people manufacturing Myanmar&apos;s industrial
@@ -31,7 +31,7 @@ export default async function CareersPage() {
               href={`/careers/${j.slug}`}
               className="group grid gap-2 py-7 transition-colors hover:bg-iron sm:grid-cols-[1fr_12rem_8rem_6rem] sm:items-baseline sm:gap-6 sm:px-4"
             >
-              <h3 className="display text-xl text-bone transition-colors group-hover:text-amber sm:text-2xl">
+              <h3 className="display text-xl text-bone transition-colors group-hover:text-red sm:text-2xl">
                 {j.title}
               </h3>
               <span className="mono text-[0.66rem] uppercase tracking-[0.14em] text-ash">
@@ -40,7 +40,7 @@ export default async function CareersPage() {
               <span className="mono text-[0.66rem] uppercase tracking-[0.14em] text-ash">
                 {j.location}
               </span>
-              <span className="mono text-right text-[0.66rem] uppercase tracking-[0.14em] text-amber opacity-0 transition-opacity group-hover:opacity-100">
+              <span className="mono text-right text-[0.66rem] uppercase tracking-[0.14em] text-red opacity-0 transition-opacity group-hover:opacity-100">
                 View →
               </span>
             </Link>
@@ -53,7 +53,7 @@ export default async function CareersPage() {
         <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-4">
           {process.map((p, i) => (
             <div key={p.step} className="bg-iron p-7">
-              <span className="mono text-[0.64rem] text-amber">0{i + 1}</span>
+              <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
               <h3 className="display mt-3 text-xl text-bone">{p.step}</h3>
               <p className="mt-3 text-sm leading-relaxed text-ash">{p.detail}</p>
             </div>

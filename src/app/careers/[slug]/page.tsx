@@ -34,7 +34,7 @@ export default async function JobDetailPage({
       <Reveal>
         <Link
           href="/careers"
-          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-amber"
+          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-red"
         >
           ← All positions
         </Link>
@@ -51,7 +51,7 @@ export default async function JobDetailPage({
           <ul className="mt-6 space-y-4">
             {job.responsibilities.map((r) => (
               <li key={r} className="flex gap-4 text-sm leading-relaxed text-bone-dim">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-amber" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-red" />
                 {r}
               </li>
             ))}

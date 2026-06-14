@@ -32,8 +32,8 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
               onClick={() => setCat(c)}
               className={`mono press px-4 py-2 text-[0.66rem] uppercase tracking-[0.16em] transition-colors ${
                 cat === c
-                  ? "bg-amber text-coal"
-                  : "border border-seam text-ash hover:border-amber hover:text-amber"
+                  ? "bg-red text-bone"
+                  : "border border-seam text-ash hover:border-red hover:text-red"
               }`}
             >
               {c}
@@ -45,7 +45,7 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search news…"
           aria-label="Search news"
-          className="w-full max-w-xs border border-seam bg-iron px-4 py-2.5 text-sm text-bone placeholder:text-ash focus:border-amber focus:outline-none"
+          className="w-full max-w-xs border border-seam bg-iron px-4 py-2.5 text-sm text-bone placeholder:text-ash focus:border-red focus:outline-none"
         />
       </div>
 
@@ -56,12 +56,12 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
             href={`/news/${n.slug}`}
             className="group grid gap-2 py-8 transition-colors hover:bg-iron sm:grid-cols-[7rem_9rem_1fr] sm:items-baseline sm:gap-6 sm:px-4"
           >
-            <span className="mono text-[0.68rem] text-amber">{n.date}</span>
+            <span className="mono text-[0.68rem] text-red">{n.date}</span>
             <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-ash">
               {n.category}
             </span>
             <div>
-              <h2 className="display text-2xl text-bone transition-colors group-hover:text-amber">
+              <h2 className="display text-2xl text-bone transition-colors group-hover:text-red">
                 {n.title}
               </h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-ash">{n.excerpt}</p>

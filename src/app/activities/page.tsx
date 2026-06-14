@@ -14,7 +14,7 @@ export default async function ActivitiesPage() {
       <Reveal>
         <p className="eyebrow">Activities</p>
         <h1 className="display mt-5 max-w-3xl text-5xl text-bone sm:text-7xl">
-          Beyond the <span className="text-amber">plant floor.</span>
+          Beyond the <span className="text-red">plant floor.</span>
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
           CSR programs, company events, exhibitions, and training — the work that builds the
@@ -42,7 +42,7 @@ export default async function ActivitiesPage() {
                         Photo album — coming via CMS
                       </span>
                     </div>
-                    <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.18em] text-amber">
+                    <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.18em] text-red">
                       {a.date}
                     </p>
                     <h3 className="mt-2 text-lg font-semibold text-bone">{a.title}</h3>

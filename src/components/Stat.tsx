@@ -41,7 +41,7 @@ export function Stat({
     <div ref={ref}>
       <p className="display text-4xl text-bone sm:text-5xl">
         {isYear ? n : n.toLocaleString()}
-        {suffix && <span className="text-amber">{suffix}</span>}
+        {suffix && <span className="text-red">{suffix}</span>}
       </p>
       <p className="mono mt-2 text-[0.68rem] uppercase tracking-[0.18em] text-ash">{label}</p>
     </div>

@@ -29,10 +29,10 @@ export default async function ProductsPage() {
             <Reveal delay={0.05}>
               <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-seam pb-4">
                 <div className="flex items-baseline gap-4">
-                  <span className="mono text-[0.64rem] text-amber">0{ci + 1}</span>
+                  <span className="mono text-[0.64rem] text-red">0{ci + 1}</span>
                   <h2 className="display text-2xl text-bone sm:text-3xl">{cat.name}</h2>
                 </div>
-                <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-amber">
+                <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">
                   {cat.tagline}
                 </span>
               </div>
@@ -45,7 +45,7 @@ export default async function ProductsPage() {
                     href={`/products/${p.slug}`}
                     className="group flex h-full flex-col p-7 transition-colors hover:bg-iron"
                   >
-                    <h3 className="display text-xl text-bone transition-colors group-hover:text-amber">
+                    <h3 className="display text-xl text-bone transition-colors group-hover:text-red">
                       {p.name}
                     </h3>
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{p.summary}</p>

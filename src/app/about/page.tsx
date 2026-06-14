@@ -29,7 +29,7 @@ export default async function AboutPage() {
         <h1 className="display mt-5 max-w-4xl text-5xl text-bone sm:text-7xl">
           Two businesses.
           <br />
-          One <span className="text-amber">supply chain.</span>
+          One <span className="text-red">supply chain.</span>
         </h1>
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
           {company.legalName}, part of the {company.group}, is both a manufacturer and a
@@ -57,7 +57,7 @@ export default async function AboutPage() {
         {values.map((v, i) => (
           <Reveal key={v.title} delay={(i % 2) * 0.08} className="bg-iron">
             <div className="h-full p-8">
-              <h3 className="display text-2xl text-amber">{v.title}</h3>
+              <h3 className="display text-2xl text-red">{v.title}</h3>
               <p className="mt-4 text-sm leading-relaxed text-bone-dim">{v.body}</p>
             </div>
           </Reveal>
@@ -70,8 +70,8 @@ export default async function AboutPage() {
         <ol className="relative mt-10 border-l border-seam pl-8">
           {milestones.map((m) => (
             <li key={m.year} className="relative pb-10 last:pb-0">
-              <span className="absolute -left-[2.31rem] top-1 h-2.5 w-2.5 bg-amber" />
-              <p className="mono text-[0.7rem] uppercase tracking-[0.2em] text-amber">{m.year}</p>
+              <span className="absolute -left-[2.31rem] top-1 h-2.5 w-2.5 bg-red" />
+              <p className="mono text-[0.7rem] uppercase tracking-[0.2em] text-red">{m.year}</p>
               <h3 className="mt-2 font-semibold text-bone">{m.title}</h3>
               <p className="mt-1 max-w-md text-sm leading-relaxed text-bone-dim">{m.text}</p>
             </li>
@@ -86,7 +86,7 @@ export default async function AboutPage() {
           {partners.map((p) => (
             <div key={p.name} className="bg-iron p-6">
               <p className="display text-lg text-bone">{p.name}</p>
-              <p className="mono mt-1 text-[0.6rem] uppercase tracking-[0.14em] text-amber">
+              <p className="mono mt-1 text-[0.6rem] uppercase tracking-[0.14em] text-red">
                 {p.origin}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-ash">{p.note}</p>

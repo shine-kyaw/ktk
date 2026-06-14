@@ -37,7 +37,7 @@ export default async function NewsDetailPage({
       <Reveal>
         <Link
           href="/news"
-          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-amber"
+          className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-red"
         >
           ← Newsroom
         </Link>
@@ -68,8 +68,8 @@ export default async function NewsDetailPage({
                 href={`/news/${r.slug}`}
                 className="group bg-coal p-7 transition-colors hover:bg-iron"
               >
-                <span className="mono text-[0.64rem] text-amber">{r.date}</span>
-                <h3 className="display mt-3 text-xl text-bone transition-colors group-hover:text-amber">
+                <span className="mono text-[0.64rem] text-red">{r.date}</span>
+                <h3 className="display mt-3 text-xl text-bone transition-colors group-hover:text-red">
                   {r.title}
                 </h3>
               </Link>

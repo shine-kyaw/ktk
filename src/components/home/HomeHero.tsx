@@ -62,7 +62,7 @@ export function HomeHero({
         >
           Myanmar&apos;s packaging
           <br />
-          runs on <span className="text-amber">KTK.</span>
+          runs on <span className="text-red">KTK.</span>
         </motion.h1>
         <motion.p {...rise(2)} className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
           More than half the country&apos;s woven bags — 27 million a month — produced on
@@ -72,13 +72,13 @@ export function HomeHero({
         <motion.div {...rise(3)} className="mt-10 flex flex-wrap gap-4">
           <Link
             href="/products"
-            className="press mono bg-amber px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-coal transition-colors hover:bg-bone"
+            className="press mono bg-red px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-bone hover:text-coal"
           >
             Explore products
           </Link>
           <Link
             href="/contact"
-            className="press mono border border-seam px-7 py-4 text-[0.74rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-amber hover:text-amber"
+            className="press mono border border-seam px-7 py-4 text-[0.74rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-red hover:text-red"
           >
             Become a dealer
           </Link>
@@ -105,7 +105,7 @@ export function HomeHero({
                 className="mono flex items-center gap-12 whitespace-nowrap text-[0.66rem] uppercase tracking-[0.2em] text-ash"
               >
                 {item}
-                <span className="h-1 w-1 bg-amber" />
+                <span className="h-1 w-1 bg-red" />
               </span>
             ))}
           </div>

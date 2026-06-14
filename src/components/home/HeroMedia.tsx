@@ -40,7 +40,7 @@ export function HeroMedia({ src, alt = "KTK manufacturing" }: { src?: string | n
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(120% 90% at 85% 110%, rgb(242 169 0 / 0.16) 0%, transparent 55%)",
+            background: "radial-gradient(120% 90% at 85% 110%, rgb(232 70 58 / 0.16) 0%, transparent 55%)",
           }}
         />
       </div>
@@ -65,7 +65,7 @@ export function HeroMedia({ src, alt = "KTK manufacturing" }: { src?: string | n
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(120% 90% at 85% 110%, rgb(242 169 0 / 0.16) 0%, transparent 55%), radial-gradient(90% 70% at 0% 0%, rgb(237 233 224 / 0.05) 0%, transparent 50%)",
+            "radial-gradient(120% 90% at 85% 110%, rgb(232 70 58 / 0.16) 0%, transparent 55%), radial-gradient(90% 70% at 0% 0%, rgb(237 233 224 / 0.05) 0%, transparent 50%)",
         }}
       />
       <div className="blueprint absolute inset-0" />

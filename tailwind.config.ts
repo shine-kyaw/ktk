@@ -8,20 +8,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        // "Graphite & Kraft" — lifted a notch off near-black so the dark
-        // industrial mood stays, just lighter. Bump these three tiers
-        // together to re-tune overall lightness.
-        coal: "#181B21", // page ground
-        iron: "#23272F", // panels
-        seam: "#373D49", // hairlines / dividers
+        // KTK brand system — a blue-slate dark ramp (nods to the logo's
+        // navy) with the brand RED as the single accent and NAVY reserved
+        // for the emblem. Lighter and more gradual than before: the three
+        // ground tiers sit close together and let hairlines do the work.
+        coal: "#1E2531", // page ground
+        iron: "#283143", // panels (one gentle step up)
+        seam: "#3C4759", // hairlines / dividers
         bone: {
-          DEFAULT: "#F1EEE7",
-          dim: "#CFCABF",
+          DEFAULT: "#EFF2F7",
+          dim: "#C6CCD8",
         },
-        ash: "#A6ACB6",
-        amber: {
-          DEFAULT: "#F2A900",
-          deep: "#C98A00",
+        ash: "#98A1B2",
+        red: {
+          DEFAULT: "#E8463A", // brand red, warmed for screen legibility
+          deep: "#C2392C", // hovers / bold blocks
+        },
+        navy: {
+          DEFAULT: "#2F56C9", // emblem + rare secondary accent
+          deep: "#1E3A8A",
         },
         kraft: "#E4DCCB",
       },

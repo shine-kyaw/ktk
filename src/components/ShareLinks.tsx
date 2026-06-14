@@ -27,7 +27,7 @@ export function ShareLinks({ title }: { title: string }) {
   };
 
   const btn =
-    "mono press border border-seam px-4 py-2.5 text-[0.64rem] uppercase tracking-[0.16em] text-ash transition-colors hover:border-amber hover:text-amber";
+    "mono press border border-seam px-4 py-2.5 text-[0.64rem] uppercase tracking-[0.16em] text-ash transition-colors hover:border-red hover:text-red";
 
   return (
     <div className="flex flex-wrap items-center gap-3">

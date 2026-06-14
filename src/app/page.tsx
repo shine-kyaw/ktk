@@ -70,7 +70,7 @@ export default async function HomePage() {
             <h2 className="display mt-5 text-4xl text-bone sm:text-5xl">
               The supplier behind
               <br />
-              the <span className="text-amber">supply chain.</span>
+              the <span className="text-red">supply chain.</span>
             </h2>
             <p className="mt-7 max-w-md leading-relaxed text-ash">
               Kaung Thu Kha began in 2008 as Myanmar&apos;s authorized bearing distributor and
@@ -116,7 +116,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href="/products"
-                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone"
               >
                 Full catalog →
               </Link>
@@ -141,7 +141,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href="/services"
-                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-amber hover:text-bone"
+                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone"
               >
                 All services →
               </Link>
@@ -151,8 +151,8 @@ export default async function HomePage() {
             {services.slice(0, 3).map((s, i) => (
               <Reveal key={s.slug} delay={i * 0.08} className="bg-iron">
                 <Link href="/services" className="group block h-full p-7 transition-colors hover:bg-coal">
-                  <span className="mono text-[0.64rem] text-amber">0{i + 1}</span>
-                  <h3 className="display mt-4 text-xl text-bone transition-colors group-hover:text-amber">
+                  <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
+                  <h3 className="display mt-4 text-xl text-bone transition-colors group-hover:text-red">
                     {s.name}
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-ash">{s.summary}</p>
@@ -169,7 +169,7 @@ export default async function HomePage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(110% 100% at 100% 0%, rgb(242 169 0 / 0.12) 0%, transparent 50%)",
+              "radial-gradient(110% 100% at 100% 0%, rgb(232 70 58 / 0.12) 0%, transparent 50%)",
           }}
         />
         <div className="container-x relative py-32">
@@ -178,7 +178,7 @@ export default async function HomePage() {
             <h2 className="display mt-5 max-w-3xl text-4xl text-bone sm:text-6xl">
               15 million sacks a month.
               <br />
-              <span className="text-amber">European lines.</span>
+              <span className="text-red">European lines.</span>
             </h2>
             <p className="mt-7 max-w-lg leading-relaxed text-bone-dim">
               The San Kaung factory runs STARLINGER extrusion, weaving, lamination, and
@@ -187,7 +187,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/manufacturing"
-              className="press mono mt-10 inline-block border border-bone/30 px-7 py-4 text-[0.72rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-amber hover:text-amber"
+              className="press mono mt-10 inline-block border border-bone/30 px-7 py-4 text-[0.72rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-red hover:text-red"
             >
               Inside the plant
             </Link>
@@ -208,7 +208,7 @@ export default async function HomePage() {
             {WHY.map((w, i) => (
               <Reveal key={w.title} delay={(i % 3) * 0.08} className="bg-iron">
                 <div className="h-full p-7">
-                  <span className="mono text-[0.64rem] text-amber">0{i + 1}</span>
+                  <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
                   <h3 className="mt-4 text-base font-semibold text-bone">{w.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-ash">{w.desc}</p>
                 </div>
@@ -224,15 +224,15 @@ export default async function HomePage() {
           <Reveal>
             <div className="flex items-end justify-between gap-6">
               <h2 className="display text-3xl text-bone">Latest news</h2>
-              <Link href="/news" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-amber hover:text-bone">
+              <Link href="/news" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 Newsroom →
               </Link>
             </div>
             <div className="mt-8 divide-y divide-seam border-y border-seam">
               {news.slice(0, 3).map((n) => (
                 <Link key={n.slug} href={`/news/${n.slug}`} className="group block py-5">
-                  <span className="mono text-[0.62rem] text-amber">{n.date}</span>
-                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-amber">
+                  <span className="mono text-[0.62rem] text-red">{n.date}</span>
+                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-red">
                     {n.title}
                   </h3>
                 </Link>
@@ -242,17 +242,17 @@ export default async function HomePage() {
           <Reveal delay={0.1}>
             <div className="flex items-end justify-between gap-6">
               <h2 className="display text-3xl text-bone">Activities</h2>
-              <Link href="/activities" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-amber hover:text-bone">
+              <Link href="/activities" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 All activities →
               </Link>
             </div>
             <div className="mt-8 divide-y divide-seam border-y border-seam">
               {activities.slice(0, 3).map((a) => (
                 <Link key={a.slug} href="/activities" className="group block py-5">
-                  <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-amber">
+                  <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">
                     {a.category}
                   </span>
-                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-amber">
+                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-red">
                     {a.title}
                   </h3>
                 </Link>
@@ -271,7 +271,7 @@ export default async function HomePage() {
                 <p className="eyebrow">Careers</p>
                 <h2 className="display mt-5 max-w-xl text-4xl text-bone sm:text-5xl">We&apos;re hiring.</h2>
               </div>
-              <Link href="/careers" className="mono text-[0.7rem] uppercase tracking-[0.18em] text-amber hover:text-bone">
+              <Link href="/careers" className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 All positions →
               </Link>
             </div>
@@ -283,7 +283,7 @@ export default async function HomePage() {
                   href={`/careers/${j.slug}`}
                   className="group flex flex-wrap items-baseline justify-between gap-3 py-6 transition-colors hover:bg-coal sm:px-4"
                 >
-                  <h3 className="display text-xl text-bone transition-colors group-hover:text-amber">
+                  <h3 className="display text-xl text-bone transition-colors group-hover:text-red">
                     {j.title}
                   </h3>
                   <span className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash">
@@ -319,25 +319,25 @@ export default async function HomePage() {
       </section>
 
       {/* 7 — Dealer CTA */}
-      <section className="border-t border-seam bg-amber">
+      <section className="border-t border-red-deep bg-red-deep">
         <div className="container-x py-24">
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-10">
               <div>
-                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-coal/70">Partnerships</p>
-                <h2 className="display mt-4 max-w-2xl text-4xl text-coal sm:text-6xl">
+                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-bone/70">Partnerships</p>
+                <h2 className="display mt-4 max-w-2xl text-4xl text-bone sm:text-6xl">
                   Stock KTK.
                   <br />
                   Build with us.
                 </h2>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-coal/75">
+                <p className="mt-5 max-w-md text-sm leading-relaxed text-bone/80">
                   We are expanding our dealer and distributor network across Myanmar. Talk to our
                   team about pricing, territories, and supply programs.
                 </p>
               </div>
               <Link
                 href="/contact"
-                className="press mono bg-coal px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-amber transition-colors hover:bg-iron"
+                className="press mono bg-coal px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-iron"
               >
                 Start the conversation
               </Link>
@@ -362,7 +362,7 @@ export default async function HomePage() {
             <h3 className="eyebrow">Visit</h3>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-bone-dim">
               Zone (2), Hlaing Thar Yar Township, Yangon —{" "}
-              <Link href="/contact" className="text-amber hover:text-bone">
+              <Link href="/contact" className="text-red hover:text-bone">
                 map & inquiry form →
               </Link>
             </p>

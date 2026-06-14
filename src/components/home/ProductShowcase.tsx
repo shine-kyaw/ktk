@@ -26,8 +26,8 @@ export function ProductShowcase({
             onClick={() => setCat(c)}
             className={`mono press px-4 py-2 text-[0.66rem] uppercase tracking-[0.16em] transition-colors ${
               cat === c
-                ? "bg-amber text-coal"
-                : "border border-seam text-ash hover:border-amber hover:text-amber"
+                ? "bg-red text-bone"
+                : "border border-seam text-ash hover:border-red hover:text-red"
             }`}
           >
             {c}
@@ -54,11 +54,11 @@ export function ProductShowcase({
                 <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-ash">
                   {p.category}
                 </span>
-                <h3 className="display mt-3 text-xl text-bone transition-colors group-hover:text-amber">
+                <h3 className="display mt-3 text-xl text-bone transition-colors group-hover:text-red">
                   {p.name}
                 </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{p.summary}</p>
-                <span className="mono mt-6 text-[0.64rem] uppercase tracking-[0.18em] text-amber opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="mono mt-6 text-[0.64rem] uppercase tracking-[0.18em] text-red opacity-0 transition-opacity group-hover:opacity-100">
                   View product →
                 </span>
               </Link>

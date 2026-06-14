@@ -21,7 +21,7 @@ export function InquiryForm() {
   };
 
   const field =
-    "w-full border border-seam bg-iron px-4 py-3.5 text-sm text-bone placeholder:text-ash focus:border-amber focus:outline-none";
+    "w-full border border-seam bg-iron px-4 py-3.5 text-sm text-bone placeholder:text-ash focus:border-red focus:outline-none";
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4">
@@ -40,12 +40,12 @@ export function InquiryForm() {
       />
       <button
         type="submit"
-        className="press mono bg-amber px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-coal transition-colors hover:bg-bone"
+        className="press mono bg-red px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-bone hover:text-coal"
       >
         Send inquiry
       </button>
       {sent && (
-        <p className="mono text-[0.68rem] uppercase tracking-[0.14em] text-amber">
+        <p className="mono text-[0.68rem] uppercase tracking-[0.14em] text-red">
           Your email app should open with the message ready — or write us directly at
           kaungthukha@ktk.com.mm
         </p>

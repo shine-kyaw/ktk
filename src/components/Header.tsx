@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Logo } from "./Logo";
 
 type NavItem = {
   label: string;
@@ -80,11 +81,12 @@ export function Header() {
       }`}
     >
       <div className="container-x flex h-[4.5rem] items-center justify-between">
-        <Link href="/" className="group flex items-baseline gap-2.5" onClick={closeAll}>
-          <span className="display text-2xl text-bone">
-            KTK<span className="text-amber">.</span>
+        <Link href="/" className="group flex items-center gap-2.5" onClick={closeAll}>
+          <Logo className="h-7 w-7 opacity-90 transition-opacity group-hover:opacity-100" />
+          <span className="display text-2xl leading-none text-bone">
+            KTK<span className="text-red">.</span>
           </span>
-          <span className="mono hidden text-[0.6rem] uppercase tracking-[0.2em] text-ash transition-colors group-hover:text-bone sm:block">
+          <span className="mono hidden text-[0.6rem] uppercase leading-none tracking-[0.2em] text-ash transition-colors group-hover:text-bone sm:block">
             Kaung Thu Kha
           </span>
         </Link>
@@ -98,7 +100,7 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`mono px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:text-amber ${
+                  className={`mono px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:text-red ${
                     active ? "text-bone" : "text-ash"
                   }`}
                 >
@@ -110,7 +112,7 @@ export function Header() {
               <div key={item.href} className="group relative">
                 <Link
                   href={item.href}
-                  className={`mono flex items-center gap-1.5 px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors group-hover:text-amber ${
+                  className={`mono flex items-center gap-1.5 px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors group-hover:text-red ${
                     active ? "text-bone" : "text-ash"
                   }`}
                 >
@@ -124,7 +126,7 @@ export function Header() {
                       <Link
                         key={c.href}
                         href={c.href}
-                        className="mono block px-3 py-2.5 text-[0.66rem] uppercase tracking-[0.12em] text-ash transition-colors hover:bg-iron hover:text-amber"
+                        className="mono block px-3 py-2.5 text-[0.66rem] uppercase tracking-[0.12em] text-ash transition-colors hover:bg-iron hover:text-red"
                       >
                         {c.label}
                       </Link>
@@ -136,7 +138,7 @@ export function Header() {
           })}
           <Link
             href="/contact"
-            className="press mono ml-2 border border-amber px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] text-amber transition-colors hover:bg-amber hover:text-coal"
+            className="press mono ml-2 border border-red px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red hover:text-bone"
           >
             Become a dealer
           </Link>
@@ -176,7 +178,7 @@ export function Header() {
                           key={c.href}
                           href={c.href}
                           onClick={closeAll}
-                          className="mono block py-2.5 pl-4 text-[0.7rem] uppercase tracking-[0.12em] text-ash hover:text-amber"
+                          className="mono block py-2.5 pl-4 text-[0.7rem] uppercase tracking-[0.12em] text-ash hover:text-red"
                         >
                           {c.label}
                         </Link>
@@ -198,7 +200,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={closeAll}
-              className="press mono mt-4 border border-amber px-4 py-3 text-center text-[0.75rem] uppercase tracking-[0.16em] text-amber"
+              className="press mono mt-4 border border-red px-4 py-3 text-center text-[0.75rem] uppercase tracking-[0.16em] text-red"
             >
               Become a dealer
             </Link>

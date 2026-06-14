@@ -13,7 +13,7 @@ export default async function ServicesPage() {
       <Reveal>
         <p className="eyebrow">Services</p>
         <h1 className="display mt-5 max-w-3xl text-5xl text-bone sm:text-7xl">
-          One-stop service to fulfill <span className="text-amber">customer satisfaction.</span>
+          One-stop service to fulfill <span className="text-red">customer satisfaction.</span>
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
           A professional marketing team that serves door-to-door, a strong after-sales team that
@@ -26,8 +26,8 @@ export default async function ServicesPage() {
         {services.map((s, i) => (
           <Reveal key={s.slug} delay={i * 0.05}>
             <article className="group grid gap-6 py-10 transition-colors hover:bg-iron sm:px-4 lg:grid-cols-[5rem_minmax(0,22rem)_1fr]">
-              <span className="mono text-[0.7rem] text-amber">0{i + 1}</span>
-              <h2 className="display text-2xl text-bone transition-colors group-hover:text-amber sm:text-3xl">
+              <span className="mono text-[0.7rem] text-red">0{i + 1}</span>
+              <h2 className="display text-2xl text-bone transition-colors group-hover:text-red sm:text-3xl">
                 {s.name}
               </h2>
               <div>
@@ -53,7 +53,7 @@ export default async function ServicesPage() {
           <p className="display max-w-md text-2xl text-bone">Need a service not listed here?</p>
           <Link
             href="/contact"
-            className="press mono bg-amber px-7 py-4 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-coal hover:bg-bone"
+            className="press mono bg-red px-7 py-4 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-bone hover:bg-bone hover:text-coal"
           >
             Send an inquiry
           </Link>

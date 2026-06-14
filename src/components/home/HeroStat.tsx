@@ -43,7 +43,7 @@ export function HeroStat({
     <div ref={ref}>
       <dd className="display text-4xl text-bone sm:text-5xl">
         {display}
-        {suffix && <span className="text-amber">{suffix}</span>}
+        {suffix && <span className="text-red">{suffix}</span>}
       </dd>
       <dt className="mono mt-3 text-[0.62rem] uppercase leading-relaxed tracking-[0.16em] text-ash">
         {label}

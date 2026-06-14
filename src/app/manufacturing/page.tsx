@@ -19,14 +19,14 @@ export default function ManufacturingPage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 90% at 90% 100%, rgb(242 169 0 / 0.13) 0%, transparent 55%)",
+              "radial-gradient(120% 90% at 90% 100%, rgb(232 70 58 / 0.13) 0%, transparent 55%)",
           }}
         />
         <div className="container-x relative pb-24 pt-44">
           <Reveal>
             <p className="eyebrow">Manufacturing</p>
             <h1 className="display mt-5 max-w-4xl text-5xl text-bone sm:text-7xl">
-              From resin to <span className="text-amber">finished sack.</span>
+              From resin to <span className="text-red">finished sack.</span>
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-bone-dim">
               Our Hlaing Thar Yar plant runs the full conversion chain on European STARLINGER
@@ -45,8 +45,8 @@ export default function ManufacturingPage() {
             {PROCESS.map((p, i) => (
               <Reveal key={p.step} delay={i * 0.05}>
                 <li className="group grid gap-3 py-8 transition-colors hover:bg-iron sm:grid-cols-[6rem_16rem_1fr] sm:items-baseline sm:px-4">
-                  <span className="mono text-[0.7rem] text-amber">0{i + 1}</span>
-                  <h3 className="display text-2xl text-bone transition-colors group-hover:text-amber">
+                  <span className="mono text-[0.7rem] text-red">0{i + 1}</span>
+                  <h3 className="display text-2xl text-bone transition-colors group-hover:text-red">
                     {p.step}
                   </h3>
                   <p className="max-w-lg text-sm leading-relaxed text-ash">{p.detail}</p>
