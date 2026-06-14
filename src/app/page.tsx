@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { HomeHero } from "@/components/home/HomeHero";
-import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { Reveal } from "@/components/Reveal";
 import {
   getStats,
   getProofPoints,
-  getProducts,
   getProductCategories,
   getServices,
   getJobs,
@@ -22,7 +20,7 @@ const WHY = [
   },
   {
     title: "European technology",
-    desc: "Cement sacks and woven bags produced on STARLINGER lines by European-trained operators — the global bag-plant standard.",
+    desc: "Cement sacks and woven bags produced on STARLINGER lines by European-trained operators, the global bag-plant standard.",
   },
   {
     title: "Food-grade inputs",
@@ -30,11 +28,11 @@ const WHY = [
   },
   {
     title: "One-stop supply",
-    desc: "Bags, thread, filler, closing machinery, and 70,000+ spare parts — one accountable partner for the whole line.",
+    desc: "Bags, thread, filler, closing machinery, and 70,000+ spare parts, one accountable partner for the whole line.",
   },
   {
     title: "Exclusive agencies",
-    desc: "Sole Myanmar distributor for HCH bearings and YAO HAN machinery — sources competitors can't get locally.",
+    desc: "Sole Myanmar distributor for HCH bearings and YAO HAN machinery, sources competitors can't get locally.",
   },
   {
     title: "Responsible service",
@@ -43,11 +41,10 @@ const WHY = [
 ];
 
 export default async function HomePage() {
-  const [stats, proof, products, categories, services, jobs, news, activities, industries, partners] =
+  const [stats, proof, categories, services, jobs, news, activities, industries, partners] =
     await Promise.all([
       getStats(),
       getProofPoints(),
-      getProducts(),
       getProductCategories(),
       getServices(),
       getJobs(),
@@ -59,10 +56,10 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1 — Hero (heroImage stays null until the client's photos arrive) */}
+      {/* 1, Hero (heroImage stays null until the client's photos arrive) */}
       <HomeHero stats={stats} heroImage={null} />
 
-      {/* 2 — Company introduction */}
+      {/* 2, Company introduction */}
       <section className="border-t border-seam bg-iron">
         <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
           <Reveal>
@@ -74,7 +71,7 @@ export default async function HomePage() {
             </h2>
             <p className="mt-7 max-w-md leading-relaxed text-ash">
               Kaung Thu Kha began in 2008 as Myanmar&apos;s authorized bearing distributor and
-              grew into the country&apos;s leading industrial-packaging manufacturer — running
+              grew into the country&apos;s leading industrial-packaging manufacturer, running
               European STARLINGER lines out of the San Kaung factory and supplying the
               machinery, consumables, and service around every bag.
             </p>
@@ -103,7 +100,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3 — Product showcase */}
+      {/* 3, Product showcase */}
       <section className="border-t border-seam">
         <div className="container-x py-24">
           <Reveal>
@@ -122,13 +119,61 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
-          <Reveal delay={0.1} className="mt-12">
-            <ProductShowcase products={products} categories={categories.map((c) => c.name)} />
-          </Reveal>
+          <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((c, i) => {
+              const slug = c.name.toLowerCase().replace(/&/g, "").replace(/\s+/g, "-");
+              return (
+                <Reveal key={c.name} delay={(i % 3) * 0.08} className="bg-coal">
+                  <Link
+                    href={`/products#${slug}`}
+                    className="group flex h-full flex-col p-7 transition-colors hover:bg-iron"
+                  >
+                    {/* per-category visual, receives a photo via the CMS later */}
+                    <div className="weave grain mb-6 aspect-[16/9] border border-seam bg-iron" />
+                    <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
+                      {c.tagline}
+                    </span>
+                    <h3 className="display mt-2 text-xl text-bone transition-colors group-hover:text-red">
+                      {c.name}
+                    </h3>
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{c.blurb}</p>
+                    <span className="mono mt-6 text-[0.62rem] uppercase tracking-[0.18em] text-red opacity-0 transition-opacity group-hover:opacity-100">
+                      View category →
+                    </span>
+                  </Link>
+                </Reveal>
+              );
+            })}
+
+            {/* fills the grid to a clean two rows; also a real entry point */}
+            <Reveal delay={0.16} className="bg-coal">
+              <Link
+                href="/products"
+                className="group flex h-full flex-col justify-between p-7 transition-colors hover:bg-iron"
+              >
+                <div>
+                  <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
+                    The full range
+                  </span>
+                  <h3 className="display mt-2 text-xl text-bone transition-colors group-hover:text-red">
+                    Browse all products
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ash">
+                    Specs, applications, and partner brands across every category, from cement
+                    sacks to bearings.
+                  </p>
+                </div>
+                <span className="mono mt-10 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.18em] text-red">
+                  Open catalog
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </span>
+              </Link>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* 3b — Featured services */}
+      {/* 3b, Featured services */}
       <section className="border-t border-seam bg-iron">
         <div className="container-x py-24">
           <Reveal>
@@ -163,7 +208,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4 — Manufacturing excellence */}
+      {/* 4, Manufacturing excellence */}
       <section className="grain weave relative overflow-hidden border-t border-seam">
         <div
           className="absolute inset-0"
@@ -182,7 +227,7 @@ export default async function HomePage() {
             </h2>
             <p className="mt-7 max-w-lg leading-relaxed text-bone-dim">
               The San Kaung factory runs STARLINGER extrusion, weaving, lamination, and
-              conversion — operated by technicians trained by European specialists, with
+              conversion, operated by technicians trained by European specialists, with
               inspection at every stage from tape to finished sack.
             </p>
             <Link
@@ -195,7 +240,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5 — Why choose KTK */}
+      {/* 5, Why choose KTK */}
       <section className="border-t border-seam bg-iron">
         <div className="container-x py-24">
           <Reveal>
@@ -218,19 +263,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6 — Latest news & activities */}
+      {/* 6, Latest news & activities */}
       <section className="border-t border-seam">
         <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
           <Reveal>
             <div className="flex items-end justify-between gap-6">
               <h2 className="display text-3xl text-bone">Latest news</h2>
-              <Link href="/news" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
+              <Link href="/blog" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 Newsroom →
               </Link>
             </div>
             <div className="mt-8 divide-y divide-seam border-y border-seam">
               {news.slice(0, 3).map((n) => (
-                <Link key={n.slug} href={`/news/${n.slug}`} className="group block py-5">
+                <Link key={n.slug} href={`/blog/${n.slug}`} className="group block py-5">
                   <span className="mono text-[0.62rem] text-red">{n.date}</span>
                   <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-red">
                     {n.title}
@@ -262,7 +307,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6b — Careers strip */}
+      {/* 6b, Careers strip */}
       <section className="border-t border-seam bg-iron">
         <div className="container-x py-24">
           <Reveal>
@@ -296,7 +341,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6c — Partner marks */}
+      {/* 6c, Partner marks */}
       <section className="border-t border-seam">
         <div className="container-x py-14">
           <Reveal>
@@ -307,7 +352,7 @@ export default async function HomePage() {
               {partners.map((p) => (
                 <span
                   key={p.name}
-                  title={`${p.origin} — ${p.note}`}
+                  title={`${p.origin}, ${p.note}`}
                   className="display text-xl tracking-wide text-bone/35 transition-colors hover:text-bone/70"
                 >
                   {p.name}
@@ -318,7 +363,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7 — Dealer CTA */}
+      {/* 7, Dealer CTA */}
       <section className="border-t border-inst bg-inst">
         <div className="container-x py-24">
           <Reveal>
@@ -346,7 +391,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 8 — Contact strip */}
+      {/* 8, Contact strip */}
       <section className="border-t border-seam">
         <div className="container-x grid gap-10 py-24 md:grid-cols-3">
           <Reveal>
@@ -361,7 +406,7 @@ export default async function HomePage() {
           <Reveal delay={0.16}>
             <h3 className="eyebrow">Visit</h3>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-bone-dim">
-              Zone (2), Hlaing Thar Yar Township, Yangon —{" "}
+              Zone (2), Hlaing Thar Yar Township, Yangon , {" "}
               <Link href="/contact" className="text-red hover:text-bone">
                 map & inquiry form →
               </Link>

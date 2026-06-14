@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 /**
- * Scroll-triggered reveal — the one motion primitive used across the site.
+ * Scroll-triggered reveal, the one motion primitive used across the site.
  * Fade + 28px rise, once, with an optional stagger delay. Restrained on
  * purpose: the PRD bans constant motion and gimmicks.
  */

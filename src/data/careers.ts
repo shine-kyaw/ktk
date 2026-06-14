@@ -1,4 +1,4 @@
-// Job vacancies — placeholder entries the KTK team will manage via CMS.
+// Job vacancies, placeholder entries the KTK team will manage via CMS.
 export type Job = {
   slug: string;
   title: string;
@@ -75,7 +75,7 @@ export const JOBS: Job[] = [
     location: "Hlaing Thar Yar, Yangon",
     type: "Full-time",
     summary:
-      "Inspect production lots against specification — weight, tensile, print, and dimensions.",
+      "Inspect production lots against specification, weight, tensile, print, and dimensions.",
     responsibilities: [
       "Sample and test production lots",
       "Record and report quality data",
@@ -92,6 +92,6 @@ export const JOBS: Job[] = [
 export const RECRUITMENT_PROCESS = [
   { step: "Apply", detail: "Submit the application form or email your CV to kaungthukha@ktk.com.mm." },
   { step: "Screening", detail: "Our HR team reviews applications and shortlists within two weeks." },
-  { step: "Interview", detail: "One or two interviews — practical assessment for technical roles." },
+  { step: "Interview", detail: "One or two interviews, practical assessment for technical roles." },
   { step: "Offer", detail: "Successful candidates receive an offer and onboarding schedule." },
 ] as const;

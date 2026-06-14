@@ -53,7 +53,7 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
         {items.map((n) => (
           <Link
             key={n.slug}
-            href={`/news/${n.slug}`}
+            href={`/blog/${n.slug}`}
             className="group grid gap-2 py-8 transition-colors hover:bg-iron sm:grid-cols-[7rem_9rem_1fr] sm:items-baseline sm:gap-6 sm:px-4"
           >
             <span className="mono text-[0.68rem] text-red">{n.date}</span>

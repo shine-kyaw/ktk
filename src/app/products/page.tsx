@@ -14,7 +14,7 @@ export default async function ProductsPage() {
         <p className="eyebrow">Catalog</p>
         <h1 className="display mt-5 text-5xl text-bone sm:text-7xl">Products</h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
-          Industrial packaging and everything around it — bags, the consumables that make them,
+          Industrial packaging and everything around it, bags, the consumables that make them,
           the machinery that fills them, and the bearings KTK was built on. Managed through our
           admin backend, this catalog updates continuously.
         </p>

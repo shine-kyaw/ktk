@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────
-// COMPANY FACTS — single source of truth for everything KTK-specific.
+// COMPANY FACTS, single source of truth for everything KTK-specific.
 // Every value here is sourced from ktk.com.mm (discovery, 2026-06). When the
 // admin backend ships, this file becomes the shape the API returns from
-// `GET /company` and `GET /stats`. Keep it factual — no invented claims.
+// `GET /company` and `GET /stats`. Keep it factual, no invented claims.
 // ─────────────────────────────────────────────────────────────────────────
 
 export const COMPANY = {
@@ -16,7 +16,7 @@ export const COMPANY = {
 
   // The business in one line (discovery thesis)
   oneLiner:
-    "Myanmar's packaging runs on KTK — more than half the country's woven bags, produced at scale and supplied with everything around the bag.",
+    "Myanmar's packaging runs on KTK, more than half the country's woven bags, produced at scale and supplied with everything around the bag.",
 
   hq: {
     line1: "No. (178), Twin Thin Taik U Htun Nyo Street",
@@ -27,7 +27,7 @@ export const COMPANY = {
   facebook: "https://www.facebook.com/",
 } as const;
 
-// Headline numbers — the brand. Used in hero + about. (cement-sack page)
+// Headline numbers, the brand. Used in hero + about. (cement-sack page)
 export const STATS: { value: number; suffix?: string; label: string; isYear?: boolean }[] = [
   { value: 55, suffix: "%", label: "of Myanmar's PP woven-bag market" },
   { value: 27, suffix: "M", label: "bags produced every month" },
@@ -47,7 +47,7 @@ export const MILESTONES: { year: string; title: string; text: string }[] = [
   {
     year: "1991",
     title: "San Kaung factory",
-    text: "Manufacturing heritage begins — the production base that today runs European STARLINGER lines.",
+    text: "Manufacturing heritage begins, the production base that today runs European STARLINGER lines.",
   },
   {
     year: "2008",
@@ -83,15 +83,15 @@ export const VALUES: { title: string; body: string }[] = [
   },
   {
     title: "One-stop partnership",
-    body: "The bag, the thread that closes it, the filler that makes it, the machine that seals it, and the parts that keep it running — from one accountable supplier.",
+    body: "The bag, the thread that closes it, the filler that makes it, the machine that seals it, and the parts that keep it running, from one accountable supplier.",
   },
   {
     title: "Responsible service",
-    body: "A door-to-door marketing team and a strong after-sales team that solves problems on-site, fast — supporting partners with technical advice and market information.",
+    body: "A door-to-door marketing team and a strong after-sales team that solves problems on-site, fast, supporting partners with technical advice and market information.",
   },
   {
     title: "Value beyond price",
-    body: "We aim to give value more than the price — building long-term relationships with the industries that build Myanmar.",
+    body: "We aim to give value more than the price, building long-term relationships with the industries that build Myanmar.",
   },
 ];
 
@@ -110,7 +110,7 @@ export const INDUSTRIES: string[] = [
 // Brand / technology partners (with the credentials the site cites)
 export const PARTNERS: { name: string; origin: string; note: string }[] = [
   { name: "STARLINGER", origin: "Austria / Europe", note: "Bag manufacturing technology" },
-  { name: "SABIC", origin: "Saudi Arabia", note: "Food-grade resin — world's 4th-largest chemical producer" },
+  { name: "SABIC", origin: "Saudi Arabia", note: "Food-grade resin, world's 4th-largest chemical producer" },
   { name: "HCH Bearing", origin: "China", note: "Sole Myanmar distributor · ISO/TS 16949 (TÜV)" },
   { name: "TR Bearing", origin: "China", note: "2,000+ variants · est. 1979" },
   { name: "NEWLONG", origin: "Japan", note: "Bag-closing machinery · est. 1984" },

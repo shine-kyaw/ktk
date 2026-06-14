@@ -1,4 +1,4 @@
-// Product catalog — seed content shaped exactly like the future API response.
+// Product catalog, seed content shaped exactly like the future API response.
 // Read through the async getters in src/lib/cms.ts; pages never import this
 // directly. When the admin backend ships, the getter bodies swap to fetch()
 // and this file can be deleted.
@@ -10,7 +10,7 @@ export type Product = {
   summary: string;
   specs: { label: string; value: string }[];
   applications: string[];
-  /** Optional media path — drop a file in /public and set this; UI reveals it. */
+  /** Optional media path, drop a file in /public and set this; UI reveals it. */
   image?: string | null;
   featured?: boolean;
 };
@@ -27,31 +27,31 @@ export const CATEGORY_META: { name: ProductCategory; tagline: string; blurb: str
     name: "Cement Sacks",
     tagline: "15 million a month",
     blurb:
-      "AD-star block-bottom valve sacks produced on European STARLINGER lines — engineered for high-speed automated filling at cement plants.",
+      "AD-star block-bottom valve sacks produced on European STARLINGER lines, engineered for high-speed automated filling at cement plants.",
   },
   {
     name: "PP Woven Bags",
     tagline: "Food-grade, SABIC resin",
     blurb:
-      "Plain and printed polypropylene woven bags from virgin food-grade resin — light, heavy-duty, and brand-printed up to six colors.",
+      "Plain and printed polypropylene woven bags from virgin food-grade resin, light, heavy-duty, and brand-printed up to six colors.",
   },
   {
     name: "Fillers & Thread",
     tagline: "The consumables around the bag",
     blurb:
-      "Calcium-carbonate filler from century-old Vietnamese limestone, plus high-tenacity bag-closing thread — the inputs and consumables that complete the line.",
+      "Calcium-carbonate filler from century-old Vietnamese limestone, plus high-tenacity bag-closing thread, the inputs and consumables that complete the line.",
   },
   {
     name: "Machinery",
     tagline: "NEWLONG · YAO HAN",
     blurb:
-      "Bag-closing and converting machinery from Japan and Taiwan — distributed, installed, and serviced by KTK's own technicians.",
+      "Bag-closing and converting machinery from Japan and Taiwan, distributed, installed, and serviced by KTK's own technicians.",
   },
   {
     name: "Bearings",
     tagline: "Sole HCH distributor in Myanmar",
     blurb:
-      "HCH and TR precision bearings for industry — the distribution business KTK was built on, grown 6× since 2008.",
+      "HCH and TR precision bearings for industry, the distribution business KTK was built on, grown 6× since 2008.",
   },
 ];
 
@@ -62,7 +62,7 @@ export const PRODUCTS: Product[] = [
     name: "AD-Star Block-Bottom Cement Sack",
     category: "Cement Sacks",
     summary:
-      "High-strength block-bottom valve sack produced on STARLINGER AD-Star lines — coated for moisture resistance and engineered for automated cement filling at high line speeds.",
+      "High-strength block-bottom valve sack produced on STARLINGER AD-Star lines, coated for moisture resistance and engineered for automated cement filling at high line speeds.",
     specs: [
       { label: "Capacity", value: "50 kg" },
       { label: "Construction", value: "Block-bottom valve" },
@@ -92,7 +92,7 @@ export const PRODUCTS: Product[] = [
     name: "Printed PP Woven Bag",
     category: "PP Woven Bags",
     summary:
-      "Brand-printed polypropylene woven bag from virgin food-grade SABIC resin — flexo-printed both sides for retail-facing packaging. No recycled content, no odor.",
+      "Brand-printed polypropylene woven bag from virgin food-grade SABIC resin, flexo-printed both sides for retail-facing packaging. No recycled content, no odor.",
     specs: [
       { label: "Capacity", value: "5–50 kg" },
       { label: "Resin", value: "Virgin food-grade (SABIC)" },
@@ -107,7 +107,7 @@ export const PRODUCTS: Product[] = [
     name: "Plain PP Woven Bag",
     category: "PP Woven Bags",
     summary:
-      "General-purpose woven bag in white or colored PP — light, strong, and heavy-duty for agricultural and industrial filling.",
+      "General-purpose woven bag in white or colored PP, light, strong, and heavy-duty for agricultural and industrial filling.",
     specs: [
       { label: "Capacity", value: "5–50 kg" },
       { label: "Resin", value: "Virgin food-grade (SABIC)" },
@@ -122,7 +122,7 @@ export const PRODUCTS: Product[] = [
     name: "Calcium-Carbonate Filler",
     category: "Fillers & Thread",
     summary:
-      "Filler masterbatch from century-old high-calcium Vietnamese limestone — reduces production cost across woven sacks, film, extrusion coating, and molding. Custom grades and color masterbatch available.",
+      "Filler masterbatch from century-old high-calcium Vietnamese limestone, reduces production cost across woven sacks, film, extrusion coating, and molding. Custom grades and color masterbatch available.",
     specs: [
       { label: "Base", value: "High-calcium CaCO₃" },
       { label: "Source", value: "Vietnam limestone" },
@@ -135,7 +135,7 @@ export const PRODUCTS: Product[] = [
     name: "Bag-Closing Thread",
     category: "Fillers & Thread",
     summary:
-      "High-tenacity thread engineered for bag-closing machines — consistent runnability at speed, compatible with NEWLONG and YAO HAN closers.",
+      "High-tenacity thread engineered for bag-closing machines, consistent runnability at speed, compatible with NEWLONG and YAO HAN closers.",
     specs: [
       { label: "Material", value: "Spun polyester" },
       { label: "Put-up", value: "Cone" },
@@ -149,7 +149,7 @@ export const PRODUCTS: Product[] = [
     name: "NEWLONG Bag-Closing Machinery",
     category: "Machinery",
     summary:
-      "Japanese NEWLONG printing, converting, bag-making and sealing machinery — distributed and serviced by KTK since 2009, with a dedicated service center.",
+      "Japanese NEWLONG printing, converting, bag-making and sealing machinery, distributed and serviced by KTK since 2009, with a dedicated service center.",
     specs: [
       { label: "Origin", value: "Japan" },
       { label: "Partner since", value: "2009" },
@@ -191,7 +191,7 @@ export const PRODUCTS: Product[] = [
     name: "TR Bearings",
     category: "Bearings",
     summary:
-      "TR bearing units and spherical roller bearings — 2,000+ variants, 9M units/year capacity, Chinese Famous Brand. Stocked locally for industrial customers.",
+      "TR bearing units and spherical roller bearings, 2,000+ variants, 9M units/year capacity, Chinese Famous Brand. Stocked locally for industrial customers.",
     specs: [
       { label: "Brand", value: "TR" },
       { label: "Established", value: "1979" },

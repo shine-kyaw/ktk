@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-/** Social share row — Facebook (dominant in Myanmar), generic share, copy link. */
+/** Social share row, Facebook (dominant in Myanmar), generic share, copy link. */
 export function ShareLinks({ title }: { title: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -14,7 +14,7 @@ export function ShareLinks({ title }: { title: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Clipboard unavailable — the visible URL bar is the fallback.
+      // Clipboard unavailable, the visible URL bar is the fallback.
     }
   };
 
@@ -22,7 +22,7 @@ export function ShareLinks({ title }: { title: string }) {
     try {
       await navigator.share({ title, url: window.location.href });
     } catch {
-      // User dismissed or unsupported — no-op.
+      // User dismissed or unsupported, no-op.
     }
   };
 

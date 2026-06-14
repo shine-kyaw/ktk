@@ -43,11 +43,11 @@ export default async function ProductDetailPage({
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">{product.summary}</p>
       </Reveal>
 
-      {/* Media slot — receives product photography via the CMS later */}
+      {/* Media slot, receives product photography via the CMS later */}
       <Reveal delay={0.08} className="mt-12">
         <div className="weave grain relative flex aspect-[21/9] items-end overflow-hidden border border-seam bg-iron p-5">
           <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-ash">
-            Product image — coming via CMS
+            Product image, coming via CMS
           </span>
         </div>
       </Reveal>
@@ -79,7 +79,7 @@ export default async function ProductDetailPage({
           </ul>
 
           <p className="mono mt-12 border border-dashed border-seam p-5 text-[0.66rem] uppercase tracking-[0.16em] text-ash">
-            Datasheet download — available on request
+            Datasheet download, available on request
           </p>
         </Reveal>
 
@@ -87,7 +87,7 @@ export default async function ProductDetailPage({
           <div className="border border-seam p-7">
             <h2 className="display text-2xl text-bone">Request pricing</h2>
             <p className="mt-3 text-sm leading-relaxed text-ash">
-              Send your specification and volumes — our sales team responds with a quotation and
+              Send your specification and volumes, our sales team responds with a quotation and
               lead time.
             </p>
             <Link

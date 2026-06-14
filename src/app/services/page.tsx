@@ -17,7 +17,7 @@ export default async function ServicesPage() {
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
           A professional marketing team that serves door-to-door, a strong after-sales team that
-          solves problems on-site, and technical support that gives value beyond the price —
+          solves problems on-site, and technical support that gives value beyond the price , 
           from specification to spare parts.
         </p>
       </Reveal>

@@ -17,7 +17,7 @@ export default async function CareersPage() {
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
           Join a team of more than 2,000 people manufacturing Myanmar&apos;s industrial
-          packaging — on the plant floor, in the field, and across the country.
+          packaging, on the plant floor, in the field, and across the country.
         </p>
       </Reveal>
 

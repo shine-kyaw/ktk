@@ -34,8 +34,8 @@ export default async function AboutPage() {
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
           {company.legalName}, part of the {company.group}, is both a manufacturer and a
           distribution house. It manufactures cement sacks and PP woven bags at the San Kaung
-          factory on European STARLINGER lines — holding roughly 55% of Myanmar&apos;s woven-bag
-          market — and it is the country&apos;s sole authorized distributor for HCH bearings and
+          factory on European STARLINGER lines, holding roughly 55% of Myanmar&apos;s woven-bag
+          market, and it is the country&apos;s sole authorized distributor for HCH bearings and
           YAO HAN machinery. Together that makes KTK a one-stop partner for the industries that
           build Myanmar.
         </p>
@@ -108,7 +108,7 @@ export default async function AboutPage() {
           ))}
         </div>
         <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-          Profiles & organization chart — being prepared with the KTK team.
+          Profiles & organization chart, being prepared with the KTK team.
         </p>
       </Reveal>
 
@@ -122,7 +122,7 @@ export default async function AboutPage() {
               {company.hq.line1}, {company.hq.line2}
             </p>
             <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-              Branch & dealer network — to be published.
+              Branch & dealer network, to be published.
             </p>
           </div>
         </Reveal>
@@ -132,7 +132,7 @@ export default async function AboutPage() {
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-bone-dim">
               Production runs to specification on European STARLINGER technology using virgin
               food-grade SABIC resin, with a 100% quality-assurance pledge and lot-level
-              inspection. Distributed brands carry their own credentials — HCH bearings are
+              inspection. Distributed brands carry their own credentials, HCH bearings are
               ISO/TS 16949 certified by TÜV; YAO HAN machinery is CE / ISO9002. KTK&apos;s own
               certifications are being compiled for publication.
             </p>

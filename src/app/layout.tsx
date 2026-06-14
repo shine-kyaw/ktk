@@ -19,11 +19,11 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "KTK — Kaung Thu Kha | Industrial Packaging Manufacturer, Myanmar",
+    default: "KTK, Kaung Thu Kha | Industrial Packaging Manufacturer, Myanmar",
     template: "%s · KTK",
   },
   description:
-    "Kaung Thu Kha Trading Co., Ltd — Myanmar's industrial packaging manufacturer. Cement sacks and PP woven bags produced on European STARLINGER lines since 2012, plus fillers, thread, bag-closing machinery, and bearings.",
+    "Kaung Thu Kha Trading Co., Ltd, Myanmar's industrial packaging manufacturer. Cement sacks and PP woven bags produced on European STARLINGER lines since 2012, plus fillers, thread, bag-closing machinery, and bearings.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

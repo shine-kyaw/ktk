@@ -31,7 +31,7 @@ export default function ContactPage() {
           </div>
           <div className="mt-6 aspect-[4/3] w-full overflow-hidden border border-seam grayscale contrast-110">
             <iframe
-              title="KTK location — Hlaing Thar Yar, Yangon"
+              title="KTK location, Hlaing Thar Yar, Yangon"
               src="https://maps.google.com/maps?q=Hlaing%20Thar%20Yar%20Township%2C%20Yangon%2C%20Myanmar&z=12&output=embed"
               className="h-full w-full"
               loading="lazy"

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * Job application form — UI complete; submission opens a pre-filled email
+ * Job application form, UI complete; submission opens a pre-filled email
  * (CV attaches in the applicant's mail app). Swaps to POST /api/apply with
  * real file upload once the CMS/backend target is chosen.
  */
@@ -14,7 +14,7 @@ export function ApplicationForm({ position }: { position: string }) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const subject = encodeURIComponent(`Application — ${position} — ${data.get("name")}`);
+    const subject = encodeURIComponent(`Application, ${position}, ${data.get("name")}`);
     const body = encodeURIComponent(
       `Position: ${position}\nName: ${data.get("name")}\nPhone: ${data.get("phone")}\nEmail: ${data.get("email")}\n\n${data.get("cover")}\n\n(Please attach your CV to this email before sending.)`,
     );
@@ -57,7 +57,7 @@ export function ApplicationForm({ position }: { position: string }) {
       </button>
       {sent && (
         <p className="mono text-[0.66rem] uppercase leading-relaxed tracking-[0.14em] text-red">
-          Your email app should open — attach your CV before sending, or write directly to
+          Your email app should open, attach your CV before sending, or write directly to
           kaungthukha@ktk.com.mm
         </p>
       )}

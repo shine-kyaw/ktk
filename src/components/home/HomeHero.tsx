@@ -18,9 +18,9 @@ const TICKER = [
 ];
 
 /**
- * Landing hero. `heroImage` is null today (designed placeholder atmosphere);
- * when the client's photos arrive, set it and a cinematic reveal plays —
- * see HeroMedia. `stats` come from the CMS layer via the server page.
+ * Landing hero. `heroImage` is null today (animated woven-lattice field);
+ * set it when the client's photos arrive and a cinematic reveal plays.
+ * `stats` come from the CMS layer via the server page.
  */
 export function HomeHero({
   stats,
@@ -35,41 +35,42 @@ export function HomeHero({
     reduce
       ? {}
       : {
-          initial: { opacity: 0, y: 36 },
+          initial: { opacity: 0, y: 34 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.9, delay: 0.15 + i * 0.12, ease: [0.16, 1, 0.3, 1] as const },
+          transition: { duration: 0.9, delay: 0.12 + i * 0.11, ease: [0.16, 1, 0.3, 1] as const },
         };
 
   return (
     <section className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-coal">
       <HeroMedia src={heroImage} />
 
-      {/* Oversized watermark — scale, literally */}
-      <span
-        aria-hidden
-        className="display pointer-events-none absolute -right-6 top-24 select-none text-[26vw] leading-none text-bone/[0.045]"
-      >
-        KTK
-      </span>
-
       <div className="container-x relative pb-24 pt-44">
-        <motion.p {...rise(0)} className="eyebrow">
-          Kaung Thu Kha · Industrial Packaging · Since 1991
-        </motion.p>
-        <motion.h1
-          {...rise(1)}
-          className="display mt-6 max-w-5xl text-[clamp(2.8rem,8.5vw,7rem)] text-bone"
-        >
-          Myanmar&apos;s packaging
-          <br />
-          runs on <span className="text-red">KTK.</span>
+        <motion.div {...rise(0)} className="flex items-center gap-3">
+          <span className="h-px w-10 bg-red" />
+          <p className="mono text-[0.7rem] uppercase tracking-[0.24em] text-bone-dim">
+            Industrial Packaging · Myanmar · Since 1991
+          </p>
+        </motion.div>
+
+        {/* The company name, front and centre */}
+        <motion.h1 {...rise(1)} className="display mt-7 text-[clamp(2.9rem,9vw,7.5rem)] text-bone">
+          Kaung Thu Kha
         </motion.h1>
-        <motion.p {...rise(2)} className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
-          More than half the country&apos;s woven bags — 27 million a month — produced on
-          European STARLINGER lines, and supplied with everything around the bag: thread,
-          filler, closing machinery, and on-site service.
+
+        {/* The pull: scale stated plainly, in big type */}
+        <motion.p
+          {...rise(2)}
+          className="mt-5 max-w-3xl text-[clamp(1.35rem,3vw,2.4rem)] font-semibold leading-tight text-bone"
+        >
+          The packaging behind <span className="text-red">half of Myanmar&apos;s</span> industry.
         </motion.p>
-        <motion.div {...rise(3)} className="mt-10 flex flex-wrap gap-4">
+
+        <motion.p {...rise(3)} className="mt-6 max-w-xl text-base leading-relaxed text-ash">
+          27 million woven bags a month, produced on European STARLINGER lines, with the thread,
+          filler, machinery, and on-site service around every one of them.
+        </motion.p>
+
+        <motion.div {...rise(4)} className="mt-10 flex flex-wrap gap-4">
           <Link
             href="/products"
             className="press mono bg-red px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-bone hover:text-coal"
@@ -78,15 +79,15 @@ export function HomeHero({
           </Link>
           <Link
             href="/contact"
-            className="press mono border border-seam px-7 py-4 text-[0.74rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-red hover:text-red"
+            className="press mono border border-bone/25 px-7 py-4 text-[0.74rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-red hover:text-red"
           >
             Become a dealer
           </Link>
         </motion.div>
 
-        {/* Scale ribbon — the four numbers that are the brand */}
+        {/* Scale ribbon */}
         <motion.dl
-          {...rise(4)}
+          {...rise(5)}
           className="mt-14 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-8 border-t border-seam pt-10 sm:grid-cols-4"
         >
           {stats.map((s) => (
@@ -95,7 +96,7 @@ export function HomeHero({
         </motion.dl>
       </div>
 
-      {/* Fact ticker — one slow loop, industrial signage voice */}
+      {/* Fact ticker */}
       <div className="relative border-t border-seam bg-coal/80 backdrop-blur-sm">
         <div className="flex overflow-hidden py-4">
           <div className="ticker-track flex shrink-0 items-center gap-12 pr-12">

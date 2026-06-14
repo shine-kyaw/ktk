@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 
-/** Count-up stat — eases to the value when scrolled into view. */
+/** Count-up stat, eases to the value when scrolled into view. */
 export function Stat({
   value,
   label,

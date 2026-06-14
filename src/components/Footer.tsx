@@ -3,10 +3,11 @@ import Image from "next/image";
 
 const LINKS: [string, string][] = [
   ["/about", "Company"],
-  ["/products", "Products"],
   ["/services", "Services"],
+  ["/products", "Products"],
   ["/careers", "Careers"],
-  ["/news", "News"],
+  ["/activities", "Activities"],
+  ["/blog", "Blog"],
   ["/contact", "Contact"],
 ];
 

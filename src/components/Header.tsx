@@ -17,11 +17,13 @@ const NAV: NavItem[] = [
     href: "/about",
     children: [
       { label: "Overview", href: "/about" },
+      { label: "Manufacturing", href: "/manufacturing" },
       { label: "Company history", href: "/about#history" },
       { label: "Partners", href: "/about#partners" },
       { label: "Leadership", href: "/about#team" },
     ],
   },
+  { label: "Services", href: "/services" },
   {
     label: "Products",
     href: "/products",
@@ -34,17 +36,9 @@ const NAV: NavItem[] = [
       { label: "All products", href: "/products" },
     ],
   },
-  { label: "Services", href: "/services" },
-  { label: "Manufacturing", href: "/manufacturing" },
   { label: "Careers", href: "/careers" },
-  {
-    label: "News",
-    href: "/news",
-    children: [
-      { label: "Newsroom", href: "/news" },
-      { label: "Activities", href: "/activities" },
-    ],
-  },
+  { label: "Activities", href: "/activities" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

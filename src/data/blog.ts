@@ -1,4 +1,4 @@
-// News & activities — placeholder entries, CMS-driven later (same shape).
+// News & activities, placeholder entries, CMS-driven later (same shape).
 export type NewsPost = {
   slug: string;
   date: string;
@@ -17,7 +17,7 @@ export const NEWS: NewsPost[] = [
     excerpt: "A new digital home for our dealers, customers, and partners.",
     body: [
       "Kaung Thu Kha Trading Co., Ltd has launched a fully redesigned corporate website, built to serve the dealers, contractors, and industrial customers who rely on our products every day.",
-      "The new site brings the full product catalog, service information, careers, and company news into one place — with inquiry forms connected directly to our sales team.",
+      "The new site brings the full product catalog, service information, careers, and company news into one place, with inquiry forms connected directly to our sales team.",
     ],
   },
   {
@@ -39,7 +39,7 @@ export const NEWS: NewsPost[] = [
     excerpt: "New distribution partners onboarded in Upper and Lower Myanmar.",
     body: [
       "KTK welcomed new distribution partners this quarter, extending availability of our packaging products and machinery consumables.",
-      "We continue to onboard dealers — contact our sales team to discuss territories and supply programs.",
+      "We continue to onboard dealers, contact our sales team to discuss territories and supply programs.",
     ],
   },
   {
@@ -67,7 +67,7 @@ export const ACTIVITIES: Activity[] = [
   {
     slug: "community-donation-2025",
     category: "CSR",
-    title: "Community support — Hlaing Thar Yar",
+    title: "Community support, Hlaing Thar Yar",
     date: "2025",
     detail: "Donations and support activities for communities around our plant and offices.",
   },

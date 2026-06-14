@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * Inquiry form — UI complete; submission currently opens a pre-filled email.
+ * Inquiry form, UI complete; submission currently opens a pre-filled email.
  * Swaps to a POST /api/inquiry route once a backend/CRM target is chosen.
  */
 export function InquiryForm() {
@@ -12,7 +12,7 @@ export function InquiryForm() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const subject = encodeURIComponent(`Website inquiry — ${data.get("company") || data.get("name")}`);
+    const subject = encodeURIComponent(`Website inquiry, ${data.get("company") || data.get("name")}`);
     const body = encodeURIComponent(
       `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nPhone: ${data.get("phone")}\n\n${data.get("message")}`,
     );
@@ -34,7 +34,7 @@ export function InquiryForm() {
         name="message"
         required
         rows={6}
-        placeholder="Tell us what you need — product, quantity, timeline…"
+        placeholder="Tell us what you need, product, quantity, timeline…"
         aria-label="Message"
         className={field}
       />
@@ -46,7 +46,7 @@ export function InquiryForm() {
       </button>
       {sent && (
         <p className="mono text-[0.68rem] uppercase tracking-[0.14em] text-red">
-          Your email app should open with the message ready — or write us directly at
+          Your email app should open with the message ready, or write us directly at
           kaungthukha@ktk.com.mm
         </p>
       )}

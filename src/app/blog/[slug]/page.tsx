@@ -36,7 +36,7 @@ export default async function NewsDetailPage({
     <div className="container-x pb-28 pt-40">
       <Reveal>
         <Link
-          href="/news"
+          href="/blog"
           className="mono text-[0.66rem] uppercase tracking-[0.18em] text-ash hover:text-red"
         >
           ← Newsroom
@@ -65,7 +65,7 @@ export default async function NewsDetailPage({
             {related.map((r) => (
               <Link
                 key={r.slug}
-                href={`/news/${r.slug}`}
+                href={`/blog/${r.slug}`}
                 className="group bg-coal p-7 transition-colors hover:bg-iron"
               >
                 <span className="mono text-[0.64rem] text-red">{r.date}</span>

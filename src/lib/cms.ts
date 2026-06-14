@@ -19,7 +19,7 @@
 import { PRODUCTS, CATEGORY_META, type Product, type ProductCategory } from "@/data/products";
 import { SERVICES, type Service } from "@/data/services";
 import { JOBS, RECRUITMENT_PROCESS, type Job } from "@/data/careers";
-import { NEWS, ACTIVITIES, type NewsPost, type Activity } from "@/data/news";
+import { NEWS, ACTIVITIES, type NewsPost, type Activity } from "@/data/blog";
 import {
   COMPANY,
   STATS,

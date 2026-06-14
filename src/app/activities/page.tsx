@@ -17,7 +17,7 @@ export default async function ActivitiesPage() {
           Beyond the <span className="text-red">plant floor.</span>
         </h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
-          CSR programs, company events, exhibitions, and training — the work that builds the
+          CSR programs, company events, exhibitions, and training, the work that builds the
           company behind the products.
         </p>
       </Reveal>
@@ -36,10 +36,10 @@ export default async function ActivitiesPage() {
               {items.map((a) => (
                 <Reveal key={a.slug} className="bg-coal">
                   <article className="group h-full p-7 transition-colors hover:bg-iron">
-                    {/* Gallery tile placeholder — receives photo albums via CMS */}
+                    {/* Gallery tile placeholder, receives photo albums via CMS */}
                     <div className="weave grain relative flex aspect-[16/7] items-end overflow-hidden border border-seam bg-iron p-4">
                       <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-ash">
-                        Photo album — coming via CMS
+                        Photo album, coming via CMS
                       </span>
                     </div>
                     <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.18em] text-red">

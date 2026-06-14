@@ -31,7 +31,7 @@
     @apply mono text-[0.68rem] uppercase tracking-[0.22em] text-red;
   }
 
-  /* Display headline treatment — industrial mega-type */
+  /* Display headline treatment, industrial mega-type */
   .display {
     @apply font-sans font-extrabold uppercase leading-[0.94] tracking-mega;
   }
@@ -40,7 +40,7 @@
     @apply transition-transform duration-150 active:scale-[0.97];
   }
 
-  /* Film grain — laid over cinematic imagery so photos feel graded, not stock */
+  /* Film grain, laid over cinematic imagery so photos feel graded, not stock */
   .grain::after {
     content: "";
     position: absolute;
@@ -50,7 +50,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Woven-tape texture — abstract nod to PP woven fabric, replaces
+  /* Woven-tape texture, abstract nod to PP woven fabric, replaces
      photography until the client's cinematic photo set arrives */
   .weave {
     background-image:

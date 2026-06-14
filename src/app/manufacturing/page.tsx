@@ -8,7 +8,7 @@ const PROCESS = [
   { step: "Weaving", detail: "Circular looms weave tape into tubular fabric, width to order." },
   { step: "Lamination & printing", detail: "Optional coating for moisture protection; flexo printing up to 6 colors." },
   { step: "Conversion", detail: "Cutting, folding, block-bottom forming, and stitching into finished sacks." },
-  { step: "Quality control", detail: "Lot-level inspection — weight, tensile, print, and dimension checks before dispatch." },
+  { step: "Quality control", detail: "Lot-level inspection, weight, tensile, print, and dimension checks before dispatch." },
 ];
 
 export default function ManufacturingPage() {
@@ -30,7 +30,7 @@ export default function ManufacturingPage() {
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-bone-dim">
               Our Hlaing Thar Yar plant runs the full conversion chain on European STARLINGER
-              technology — commissioned in 2012 and expanded since.
+              technology, commissioned in 2012 and expanded since.
             </p>
           </Reveal>
         </div>
@@ -57,7 +57,7 @@ export default function ManufacturingPage() {
 
           <Reveal className="mt-16">
             <p className="mono max-w-2xl border border-dashed border-seam p-6 text-[0.68rem] uppercase leading-relaxed tracking-[0.14em] text-ash">
-              Facility photography & equipment gallery — scheduled with the KTK team. This
+              Facility photography & equipment gallery, scheduled with the KTK team. This
               section is built to receive a cinematic photo set of the plant floor.
             </p>
           </Reveal>
