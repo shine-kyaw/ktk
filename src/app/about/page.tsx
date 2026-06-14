@@ -65,7 +65,7 @@ export default async function AboutPage() {
       </div>
 
       {/* History */}
-      <Reveal className="mt-20">
+      <Reveal id="history" className="mt-20">
         <h2 className="eyebrow">Company history</h2>
         <ol className="relative mt-10 border-l border-seam pl-8">
           {milestones.map((m) => (
@@ -80,7 +80,7 @@ export default async function AboutPage() {
       </Reveal>
 
       {/* Partners */}
-      <Reveal className="mt-20">
+      <Reveal id="partners" className="mt-20">
         <h2 className="eyebrow">Technology & brand partners</h2>
         <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
           {partners.map((p) => (
@@ -96,7 +96,7 @@ export default async function AboutPage() {
       </Reveal>
 
       {/* Management team */}
-      <Reveal className="mt-20">
+      <Reveal id="team" className="mt-20">
         <h2 className="eyebrow">Management team</h2>
         <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-4">
           {TEAM.map((t) => (

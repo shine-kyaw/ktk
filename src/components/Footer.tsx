@@ -1,70 +1,47 @@
 import Link from "next/link";
 
+const LINKS: [string, string][] = [
+  ["/about", "Company"],
+  ["/products", "Products"],
+  ["/services", "Services"],
+  ["/careers", "Careers"],
+  ["/news", "News"],
+  ["/contact", "Contact"],
+];
+
 export function Footer() {
   return (
     <footer className="border-t border-seam bg-coal">
-      <div className="container-x grid gap-12 py-16 md:grid-cols-3">
-        <div>
-          <p className="display text-3xl text-bone">
+      <div className="container-x flex flex-wrap items-center justify-between gap-6 py-9">
+        <Link href="/" className="flex items-baseline gap-2.5">
+          <span className="display text-xl text-bone">
             KTK<span className="text-amber">.</span>
-          </p>
-          <p className="mono mt-3 max-w-xs text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-ash">
-            Kaung Thu Kha Trading Co., Ltd
-            <br />
-            Industrial packaging · Est. 2008
-          </p>
-        </div>
+          </span>
+          <span className="mono text-[0.58rem] uppercase tracking-[0.2em] text-ash">
+            Kaung Thu Kha · Since 1991
+          </span>
+        </Link>
 
-        <div>
-          <h3 className="eyebrow">Head office</h3>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-bone-dim">
-            No. (178), Twin Thin Taik U Htun Nyo Street, Zone (2), Hlaing Thar Yar Township,
-            Yangon, Myanmar
-          </p>
-          <p className="mono mt-4 text-sm text-bone-dim">(959) 264 817 108</p>
-          <p className="mono mt-1 text-sm text-bone-dim">kaungthukha@ktk.com.mm</p>
-        </div>
-
-        <nav className="flex flex-col gap-3">
-          <h3 className="eyebrow">Site</h3>
-          {(
-            [
-              ["/about", "Company"],
-              ["/services", "Services"],
-              ["/products", "Products"],
-              ["/manufacturing", "Manufacturing"],
-              ["/careers", "Careers"],
-              ["/activities", "Activities"],
-              ["/news", "News"],
-              ["/contact", "Contact"],
-            ] as const
-          ).map(([href, label]) => (
+        <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {LINKS.map(([href, label]) => (
             <Link
               key={href}
               href={href}
-              className="mono text-[0.72rem] uppercase tracking-[0.16em] text-ash transition-colors hover:text-amber"
+              className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash transition-colors hover:text-amber"
             >
               {label}
             </Link>
           ))}
-          <a
-            href="https://www.facebook.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mono mt-3 text-[0.72rem] uppercase tracking-[0.16em] text-ash transition-colors hover:text-amber"
-          >
-            Facebook ↗
-          </a>
         </nav>
       </div>
 
       <div className="border-t border-seam">
-        <div className="container-x flex flex-wrap items-center justify-between gap-2 py-6">
-          <p className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash">
+        <div className="container-x flex flex-wrap items-center justify-between gap-2 py-4">
+          <p className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
             © {new Date().getFullYear()} Kaung Thu Kha Trading Co., Ltd
           </p>
-          <p className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-            100% quality assurance
+          <p className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
+            sales@ktk.com.mm · (959) 264 817 108
           </p>
         </div>
       </div>

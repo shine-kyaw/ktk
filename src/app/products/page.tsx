@@ -23,8 +23,9 @@ export default async function ProductsPage() {
       {categories.map((cat, ci) => {
         const items = products.filter((p) => p.category === cat.name);
         if (items.length === 0) return null;
+        const id = cat.name.toLowerCase().replace(/&/g, "").replace(/\s+/g, "-");
         return (
-          <section key={cat.name} className="mt-20">
+          <section key={cat.name} id={id} className="mt-20">
             <Reveal delay={0.05}>
               <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-seam pb-4">
                 <div className="flex items-baseline gap-4">

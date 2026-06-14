@@ -5,6 +5,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Clear the fixed header when jumping to in-page anchors */
+    scroll-padding-top: 5.5rem;
   }
   body {
     @apply bg-coal font-sans text-bone antialiased;

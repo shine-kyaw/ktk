@@ -11,16 +11,24 @@ export function Reveal({
   children,
   delay = 0,
   className,
+  id,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  id?: string;
 }) {
   const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  if (reduce)
+    return (
+      <div id={id} className={className}>
+        {children}
+      </div>
+    );
 
   return (
     <motion.div
+      id={id}
       className={className}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
