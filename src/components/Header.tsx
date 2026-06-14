@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Logo } from "./Logo";
 
 type NavItem = {
   label: string;
@@ -81,13 +81,16 @@ export function Header() {
       }`}
     >
       <div className="container-x flex h-[4.5rem] items-center justify-between">
-        <Link href="/" className="group flex items-center gap-2.5" onClick={closeAll}>
-          <Logo className="h-7 w-7 opacity-90 transition-opacity group-hover:opacity-100" />
-          <span className="display text-2xl leading-none text-bone">
-            KTK<span className="text-red">.</span>
-          </span>
-          <span className="mono hidden text-[0.6rem] uppercase leading-none tracking-[0.2em] text-ash transition-colors group-hover:text-bone sm:block">
-            Kaung Thu Kha
+        <Link href="/" className="flex items-center" onClick={closeAll}>
+          <span className="rounded-md bg-white px-2.5 py-1.5">
+            <Image
+              src="/brand/ktk-logo.png"
+              alt="Kaung Thu Kha Trading Co., Ltd."
+              width={543}
+              height={93}
+              priority
+              className="h-7 w-auto"
+            />
           </span>
         </Link>
 
