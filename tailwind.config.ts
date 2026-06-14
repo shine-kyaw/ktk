@@ -8,14 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        coal: "#0B0C0E",
-        iron: "#15171C",
-        seam: "#232730",
+        // "Graphite & Kraft" — lifted a notch off near-black so the dark
+        // industrial mood stays, just lighter. Bump these three tiers
+        // together to re-tune overall lightness.
+        coal: "#181B21", // page ground
+        iron: "#23272F", // panels
+        seam: "#373D49", // hairlines / dividers
         bone: {
-          DEFAULT: "#EDE9E0",
-          dim: "#C9C4B8",
+          DEFAULT: "#F1EEE7",
+          dim: "#CFCABF",
         },
-        ash: "#9AA0AA",
+        ash: "#A6ACB6",
         amber: {
           DEFAULT: "#F2A900",
           deep: "#C98A00",
