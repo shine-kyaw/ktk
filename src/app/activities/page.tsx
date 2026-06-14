@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
-import { ACTIVITIES } from "@/data/news";
+import { getActivities } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Activities" };
 
 const CATS = ["CSR", "Events", "Exhibitions", "Training"] as const;
 
-export default function ActivitiesPage() {
+export default async function ActivitiesPage() {
+  const activities = await getActivities();
+
   return (
     <div className="container-x pb-28 pt-40">
       <Reveal>
@@ -21,7 +23,7 @@ export default function ActivitiesPage() {
       </Reveal>
 
       {CATS.map((cat) => {
-        const items = ACTIVITIES.filter((a) => a.category === cat);
+        const items = activities.filter((a) => a.category === cat);
         if (items.length === 0) return null;
         return (
           <section key={cat} className="mt-16">

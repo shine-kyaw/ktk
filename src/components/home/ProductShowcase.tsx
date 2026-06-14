@@ -3,18 +3,24 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { CATEGORIES, PRODUCTS } from "@/data/products";
+import type { Product, ProductCategory } from "@/lib/cms";
 
-/** Category-filtered product grid for the home page (CMS-driven later). */
-export function ProductShowcase() {
+/** Category-filtered product grid. Data arrives from the CMS layer as props. */
+export function ProductShowcase({
+  products,
+  categories,
+}: {
+  products: Product[];
+  categories: ProductCategory[];
+}) {
   const [cat, setCat] = useState<string>("All");
   const reduce = useReducedMotion();
-  const items = (cat === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.category === cat)).slice(0, 6);
+  const items = (cat === "All" ? products : products.filter((p) => p.category === cat)).slice(0, 6);
 
   return (
     <div>
       <div className="flex flex-wrap gap-2">
-        {["All", ...CATEGORIES].map((c) => (
+        {["All", ...categories].map((c) => (
           <button
             key={c}
             onClick={() => setCat(c)}

@@ -2,17 +2,33 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { HeroMedia } from "./HeroMedia";
+import { HeroStat } from "./HeroStat";
+
+type StatItem = { value: number; suffix?: string; label: string; isYear?: boolean };
 
 const TICKER = [
-  "Est. 2008 — Yangon",
-  "STARLINGER European technology",
-  "Cement sacks since 2012",
-  "Plain & printed PP woven bags",
-  "NEWLONG · YAO HAN machinery",
-  "100% quality assurance",
+  "~55% of Myanmar's woven-bag market",
+  "27 million bags every month",
+  "Manufacturing since 1991",
+  "European STARLINGER lines",
+  "Food-grade SABIC resin",
+  "Sole HCH & YAO HAN distributor",
+  "One-stop packaging partner",
 ];
 
-export function HomeHero() {
+/**
+ * Landing hero. `heroImage` is null today (designed placeholder atmosphere);
+ * when the client's photos arrive, set it and a cinematic reveal plays —
+ * see HeroMedia. `stats` come from the CMS layer via the server page.
+ */
+export function HomeHero({
+  stats,
+  heroImage = null,
+}: {
+  stats: StatItem[];
+  heroImage?: string | null;
+}) {
   const reduce = useReducedMotion();
 
   const rise = (i: number) =>
@@ -25,24 +41,8 @@ export function HomeHero() {
         };
 
   return (
-    <section className="grain relative flex min-h-screen flex-col justify-end overflow-hidden bg-coal">
-      {/* Cinematic atmosphere — woven-fabric texture (the product itself),
-          amber furnace glow, engineering grid. Slow settle on load; swaps
-          for the client's cinematic photo set when it arrives. */}
-      <motion.div
-        className="weave absolute inset-0"
-        initial={reduce ? false : { scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 7, ease: [0.16, 1, 0.3, 1] }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(120% 90% at 85% 110%, rgb(242 169 0 / 0.14) 0%, transparent 55%), radial-gradient(90% 70% at 0% 0%, rgb(237 233 224 / 0.05) 0%, transparent 50%)",
-        }}
-      />
-      <div className="blueprint absolute inset-0" />
+    <section className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-coal">
+      <HeroMedia src={heroImage} />
 
       {/* Oversized watermark — scale, literally */}
       <span
@@ -52,21 +52,22 @@ export function HomeHero() {
         KTK
       </span>
 
-      <div className="container-x relative pb-28 pt-44">
+      <div className="container-x relative pb-24 pt-44">
         <motion.p {...rise(0)} className="eyebrow">
-          Kaung Thu Kha · Industrial Packaging · Myanmar
+          Kaung Thu Kha · Industrial Packaging · Since 1991
         </motion.p>
         <motion.h1
           {...rise(1)}
-          className="display mt-6 max-w-5xl text-[clamp(3rem,9vw,7.5rem)] text-bone"
+          className="display mt-6 max-w-5xl text-[clamp(2.8rem,8.5vw,7rem)] text-bone"
         >
-          Industrial
+          Myanmar&apos;s packaging
           <br />
-          packaging <span className="text-amber">at scale.</span>
+          runs on <span className="text-amber">KTK.</span>
         </motion.h1>
-        <motion.p {...rise(2)} className="mt-8 max-w-xl text-lg leading-relaxed text-bone-dim">
-          Cement sacks and PP woven bags, produced in Yangon on European STARLINGER lines —
-          supplying Myanmar&apos;s construction and commodity industries since 2008.
+        <motion.p {...rise(2)} className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
+          More than half the country&apos;s woven bags — 27 million a month — produced on
+          European STARLINGER lines, and supplied with everything around the bag: thread,
+          filler, closing machinery, and on-site service.
         </motion.p>
         <motion.div {...rise(3)} className="mt-10 flex flex-wrap gap-4">
           <Link
@@ -82,6 +83,16 @@ export function HomeHero() {
             Become a dealer
           </Link>
         </motion.div>
+
+        {/* Scale ribbon — the four numbers that are the brand */}
+        <motion.dl
+          {...rise(4)}
+          className="mt-14 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-8 border-t border-seam pt-10 sm:grid-cols-4"
+        >
+          {stats.map((s) => (
+            <HeroStat key={s.label} {...s} />
+          ))}
+        </motion.dl>
       </div>
 
       {/* Fact ticker — one slow loop, industrial signage voice */}
@@ -100,7 +111,7 @@ export function HomeHero() {
           </div>
         </div>
         <style>{`
-          .ticker-track { animation: tickerScroll 36s linear infinite; }
+          .ticker-track { animation: tickerScroll 38s linear infinite; }
           @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
           @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
         `}</style>

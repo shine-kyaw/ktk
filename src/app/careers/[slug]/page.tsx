@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { ApplicationForm } from "@/components/ApplicationForm";
-import { JOBS } from "@/data/careers";
+import { getJob, getJobSlugs } from "@/lib/cms";
 
-export function generateStaticParams() {
-  return JOBS.map((j) => ({ slug: j.slug }));
+export async function generateStaticParams() {
+  const slugs = await getJobSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const job = JOBS.find((j) => j.slug === slug);
+  const job = await getJob(slug);
   return { title: job ? `${job.title} — Careers` : "Careers" };
 }
 
@@ -25,7 +26,7 @@ export default async function JobDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const job = JOBS.find((j) => j.slug === slug);
+  const job = await getJob(slug);
   if (!job) notFound();
 
   return (

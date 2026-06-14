@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
-import { PRODUCTS } from "@/data/products";
+import { getProduct, getProductSlugs, getRelatedProducts } from "@/lib/cms";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const slugs = await getProductSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -14,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const product = await getProduct(slug);
   return { title: product ? product.name : "Product" };
 }
 
@@ -24,12 +25,9 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
-
-  const related = PRODUCTS.filter(
-    (p) => p.category === product.category && p.slug !== product.slug,
-  ).slice(0, 3);
+  const related = await getRelatedProducts(slug);
 
   return (
     <div className="container-x pb-28 pt-40">
@@ -43,6 +41,15 @@ export default async function ProductDetailPage({
         <p className="eyebrow mt-8">{product.category}</p>
         <h1 className="display mt-5 max-w-3xl text-5xl text-bone sm:text-6xl">{product.name}</h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">{product.summary}</p>
+      </Reveal>
+
+      {/* Media slot — receives product photography via the CMS later */}
+      <Reveal delay={0.08} className="mt-12">
+        <div className="weave grain relative flex aspect-[21/9] items-end overflow-hidden border border-seam bg-iron p-5">
+          <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-ash">
+            Product image — coming via CMS
+          </span>
+        </div>
       </Reveal>
 
       <div className="mt-16 grid gap-12 lg:grid-cols-3">
@@ -71,7 +78,6 @@ export default async function ProductDetailPage({
             ))}
           </ul>
 
-          {/* Datasheet downloads land here once the CMS provides files */}
           <p className="mono mt-12 border border-dashed border-seam p-5 text-[0.66rem] uppercase tracking-[0.16em] text-ash">
             Datasheet download — available on request
           </p>
@@ -79,10 +85,10 @@ export default async function ProductDetailPage({
 
         <Reveal delay={0.1}>
           <div className="border border-seam p-7">
-            <h2 className="display text-xl text-bone">Request pricing</h2>
+            <h2 className="display text-2xl text-bone">Request pricing</h2>
             <p className="mt-3 text-sm leading-relaxed text-ash">
-              Send your specification and volumes — our sales team responds with a quotation
-              and lead time.
+              Send your specification and volumes — our sales team responds with a quotation and
+              lead time.
             </p>
             <Link
               href="/contact"
@@ -90,9 +96,7 @@ export default async function ProductDetailPage({
             >
               Enquire now
             </Link>
-            <p className="mono mt-5 text-center text-[0.64rem] text-ash">
-              kaungthukha@ktk.com.mm
-            </p>
+            <p className="mono mt-5 text-center text-[0.64rem] text-ash">sales@ktk.com.mm</p>
           </div>
 
           {related.length > 0 && (

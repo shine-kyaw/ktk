@@ -2,25 +2,25 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { NEWS } from "@/data/news";
+import type { NewsPost } from "@/lib/cms";
 
 const CATS = ["All", "Company", "Production", "Partnership", "CSR"] as const;
 
-/** Filterable, searchable news index (CMS-driven later). */
-export function NewsList() {
+/** Filterable, searchable news index. Posts arrive from the CMS layer as props. */
+export function NewsList({ posts }: { posts: NewsPost[] }) {
   const [cat, setCat] = useState<string>("All");
   const [q, setQ] = useState("");
 
   const items = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return NEWS.filter(
+    return posts.filter(
       (n) =>
         (cat === "All" || n.category === cat) &&
         (!needle ||
           n.title.toLowerCase().includes(needle) ||
           n.excerpt.toLowerCase().includes(needle)),
     );
-  }, [cat, q]);
+  }, [posts, cat, q]);
 
   return (
     <div>

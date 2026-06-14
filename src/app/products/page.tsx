@@ -1,34 +1,43 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import { CATEGORIES, PRODUCTS } from "@/data/products";
+import { getProductCategories, getProducts } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Products" };
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const [categories, products] = await Promise.all([getProductCategories(), getProducts()]);
+
   return (
     <div className="container-x pb-28 pt-40">
       <Reveal>
         <p className="eyebrow">Catalog</p>
         <h1 className="display mt-5 text-5xl text-bone sm:text-7xl">Products</h1>
         <p className="mt-6 max-w-xl leading-relaxed text-ash">
-          Industrial packaging and the machinery that fills it. Structured for our upcoming
-          product API — categories and entries below will be managed by the KTK team.
+          Industrial packaging and everything around it — bags, the consumables that make them,
+          the machinery that fills them, and the bearings KTK was built on. Managed through our
+          admin backend, this catalog updates continuously.
         </p>
       </Reveal>
 
-      {CATEGORIES.map((cat, ci) => {
-        const items = PRODUCTS.filter((p) => p.category === cat);
+      {categories.map((cat, ci) => {
+        const items = products.filter((p) => p.category === cat.name);
         if (items.length === 0) return null;
         return (
-          <section key={cat} className="mt-20">
+          <section key={cat.name} className="mt-20">
             <Reveal delay={0.05}>
-              <div className="flex items-baseline gap-4 border-b border-seam pb-4">
-                <span className="mono text-[0.64rem] text-amber">0{ci + 1}</span>
-                <h2 className="display text-2xl text-bone sm:text-3xl">{cat}</h2>
+              <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-seam pb-4">
+                <div className="flex items-baseline gap-4">
+                  <span className="mono text-[0.64rem] text-amber">0{ci + 1}</span>
+                  <h2 className="display text-2xl text-bone sm:text-3xl">{cat.name}</h2>
+                </div>
+                <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-amber">
+                  {cat.tagline}
+                </span>
               </div>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ash">{cat.blurb}</p>
             </Reveal>
-            <div className="mt-px grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-6 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
               {items.map((p) => (
                 <Reveal key={p.slug} className="bg-coal">
                   <Link

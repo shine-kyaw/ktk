@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { ShareLinks } from "@/components/ShareLinks";
-import { NEWS } from "@/data/news";
+import { getNewsPost, getNewsSlugs, getNews } from "@/lib/cms";
 
-export function generateStaticParams() {
-  return NEWS.map((n) => ({ slug: n.slug }));
+export async function generateStaticParams() {
+  const slugs = await getNewsSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = NEWS.find((n) => n.slug === slug);
+  const post = await getNewsPost(slug);
   return post ? { title: post.title, description: post.excerpt } : { title: "News" };
 }
 
@@ -25,10 +26,11 @@ export default async function NewsDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = NEWS.find((n) => n.slug === slug);
+  const post = await getNewsPost(slug);
   if (!post) notFound();
 
-  const related = NEWS.filter((n) => n.slug !== post.slug).slice(0, 2);
+  const all = await getNews();
+  const related = all.filter((n) => n.slug !== post.slug).slice(0, 2);
 
   return (
     <div className="container-x pb-28 pt-40">
