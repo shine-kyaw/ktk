@@ -68,10 +68,13 @@ export function AssembledBagHero() {
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <span className="h-px w-10 bg-red" />
-            <p className="mono text-[0.7rem] uppercase tracking-[0.24em] text-ash">
-              Industrial Packaging · Myanmar · Since 1991
+            <p className="mono text-[0.78rem] font-semibold uppercase tracking-[0.22em] text-bone">
+              Kaung Thu Kha Trading Co., Ltd
             </p>
           </div>
+          <p className="mono mt-3 text-[0.64rem] uppercase tracking-[0.2em] text-ash">
+            Industrial Packaging · Myanmar · Since 1991
+          </p>
 
           <h1 className="display mt-6 text-[clamp(2.5rem,5.6vw,4.8rem)] leading-[1.04] text-bone">
             Built Layer by Layer
@@ -115,6 +118,11 @@ export function AssembledBagHero() {
         {/* bag stage */}
         <div className="relative h-[42vh] w-full sm:h-[50vh] lg:h-[78vh]">
           {use3D ? <BagScene /> : <PosterStage />}
+          {use3D && (
+            <span className="mono pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.56rem] uppercase tracking-[0.22em] text-ash/70">
+              ↻ Drag to rotate
+            </span>
+          )}
         </div>
       </div>
 

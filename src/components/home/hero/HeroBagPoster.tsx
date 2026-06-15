@@ -69,8 +69,8 @@ export function HeroBagPoster({ className = "" }: { className?: string }) {
         <rect x="108" y="224" width="144" height="5" rx="2.5" fill="#FC1303" />
         {/* Net : 25 KG */}
         <text x="180" y="262" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="18" fill="#1A1714">Net : 25 KG</text>
-        {/* company line */}
-        <text x="180" y="324" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="11" fill="#3B41ED">Kaung Thu Kha Trading Co.,Ltd</text>
+        {/* real KTK logo lockup */}
+        <image href="/brand/ktk-logo.png" x="78" y="300" width="204" height="35" preserveAspectRatio="xMidYMid meet" />
       </g>
     </svg>
   );

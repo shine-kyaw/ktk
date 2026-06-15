@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { RoundedBox, ContactShadows, Environment, Lightformer } from "@react-three/drei";
+import { RoundedBox, ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── timeline helpers ─────────────────────────────────────────────────────────
@@ -126,9 +126,9 @@ function star(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) 
   ctx.fill();
 }
 
-function usePrintTexture(fontsReady: boolean) {
-  // `fontsReady` is a dep so the print is redrawn in Archivo once the webfont
-  // loads, instead of permanently baking the system-ui fallback.
+function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
+  // Redraws when the Archivo webfont loads and when the real KTK logo image
+  // loads, so the bag carries the genuine logo (not a hand-drawn approximation).
   return useMemo(() => {
     void fontsReady;
     const W = 512, H = 700;
@@ -139,57 +139,69 @@ function usePrintTexture(fontsReady: boolean) {
     ctx.clearRect(0, 0, W, H);
     ctx.textAlign = "center";
 
-    // emblem — red circular badge with concentric arcs + a row of 5 stars
-    const ex = W / 2, ey = 165, R = 72;
-    ctx.strokeStyle = BRAND_RED;
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.arc(ex, ey, R, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.lineWidth = 3;
-    for (let k = 1; k <= 3; k++) {
+    if (logo) {
+      // real emblem (left square of the lockup) as the top badge
+      const emblemSrc = Math.min(logo.height, logo.width);
+      const ew = 156;
+      ctx.drawImage(logo, 0, 0, emblemSrc, logo.height, W / 2 - ew / 2, 60, ew, ew * (logo.height / emblemSrc));
+    } else {
+      // fallback hand-drawn badge until the image resolves
+      const ex = W / 2, ey = 150, R = 64;
+      ctx.strokeStyle = BRAND_RED;
+      ctx.lineWidth = 5;
       ctx.beginPath();
-      ctx.arc(ex, ey + 14, R - 12 - k * 12, Math.PI * 0.08, Math.PI * 0.92);
+      ctx.arc(ex, ey, R, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.fillStyle = BRAND_RED;
+      for (let i = 0; i < 5; i++) star(ctx, ex - 40 + i * 20, ey - 26, 8);
     }
-    ctx.fillStyle = BRAND_RED;
-    for (let i = 0; i < 5; i++) star(ctx, ex - 44 + i * 22, ey - 30, 9);
 
     // KTK wordmark — blue
     ctx.fillStyle = BRAND_BLUE;
     ctx.font = "800 120px Archivo, system-ui, sans-serif";
-    ctx.fillText("KTK", W / 2, 345);
+    ctx.fillText("KTK", W / 2, 360);
 
     // red rule
     ctx.fillStyle = BRAND_RED;
-    ctx.fillRect(W / 2 - 150, 372, 300, 9);
+    ctx.fillRect(W / 2 - 150, 388, 300, 9);
 
     // Net : 25 KG
     ctx.fillStyle = "#1a1714";
     ctx.font = "600 34px Archivo, system-ui, sans-serif";
-    ctx.fillText("Net : 25 KG", W / 2, 440);
+    ctx.fillText("Net : 25 KG", W / 2, 452);
 
-    // company line — blue
-    ctx.fillStyle = BRAND_BLUE;
-    ctx.font = "600 24px Archivo, system-ui, sans-serif";
-    ctx.fillText("Kaung Thu Kha Trading Co.,Ltd", W / 2, 560);
+    // full real logo lockup as the company signature
+    if (logo) {
+      const lw = 260;
+      ctx.drawImage(logo, W / 2 - lw / 2, 540, lw, lw * (logo.height / logo.width));
+    } else {
+      ctx.fillStyle = BRAND_BLUE;
+      ctx.font = "600 24px Archivo, system-ui, sans-serif";
+      ctx.fillText("Kaung Thu Kha Trading Co.,Ltd", W / 2, 560);
+    }
 
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 8;
     return tex;
-  }, [fontsReady]);
+  }, [fontsReady, logo]);
 }
 
 // ── the bag ─────────────────────────────────────────────────────────────────
 function Bag() {
   const [fontsReady, setFontsReady] = useState(false);
+  const [logo, setLogo] = useState<HTMLImageElement | null>(null);
   useEffect(() => {
     let alive = true;
     const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     (fonts?.ready ?? Promise.resolve()).then(() => {
       if (alive) setFontsReady(true);
     });
+    const img = new Image();
+    img.onload = () => {
+      if (alive) setLogo(img);
+    };
+    img.src = "/brand/ktk-logo.png";
     return () => {
       alive = false;
     };
@@ -197,11 +209,11 @@ function Bag() {
 
   const wovenNormal = useWovenNormal();
   const roughnessMap = useRoughnessMap();
-  const print = usePrintTexture(fontsReady);
+  const print = usePrintTexture(fontsReady, logo);
 
   const bag = useRef<THREE.Group>(null!);
   const body = useRef<THREE.Group>(null!);
-  const bodyMat = useRef<THREE.MeshStandardMaterial>(null!);
+  const bodyMat = useRef<THREE.MeshPhysicalMaterial>(null!);
   const left = useRef<THREE.Group>(null!);
   const right = useRef<THREE.Group>(null!);
   const top = useRef<THREE.Group>(null!);
@@ -249,22 +261,17 @@ function Bag() {
     const e7 = easeOutCubic(seg(p, 0.93, 1));
     bag.current.scale.setScalar(lerp(1.012, 1, e7));
 
-    // idle + cursor parallax, eased in by assembly progress
+    // idle bob (rotation is owned by PresentationControls for drag-to-rotate)
     const t = state.clock.elapsedTime;
     bag.current.position.y = Math.sin(t * 0.9) * 0.022 * p;
     bag.current.position.x = Math.sin(t * 0.6 + 1.3) * 0.012 * p;
-    const baseYaw = Math.sin(t * 0.4) * 0.05;
-    const targetYaw = baseYaw + state.pointer.x * 0.22 * p;
-    const targetPitch = -state.pointer.y * 0.1 * p;
-    bag.current.rotation.y += (targetYaw - bag.current.rotation.y) * 0.05;
-    bag.current.rotation.x += (targetPitch - bag.current.rotation.x) * 0.05;
   });
 
   return (
     <group ref={bag}>
       <group ref={body}>
         <RoundedBox args={[1.5, 2.05, 0.55]} radius={0.2} smoothness={8}>
-          <meshStandardMaterial
+          <meshPhysicalMaterial
             ref={bodyMat}
             color={BODY}
             normalMap={wovenNormal}
@@ -272,7 +279,9 @@ function Bag() {
             roughnessMap={roughnessMap}
             roughness={0.7}
             metalness={0}
-            envMapIntensity={0.55}
+            clearcoat={0.45}
+            clearcoatRoughness={0.4}
+            envMapIntensity={0.7}
           />
         </RoundedBox>
       </group>
@@ -361,7 +370,17 @@ export default function BagScene() {
         {/* one soft directional for weave raking, no shadow map */}
         <directionalLight position={[3, 5, 4]} intensity={0.65} color="#fff4ea" />
 
-        <Bag />
+        {/* drag-to-rotate with a gentle spring-back; also follows the cursor */}
+        <PresentationControls
+          global={false}
+          cursor
+          snap
+          speed={1.2}
+          polar={[-0.25, 0.3]}
+          azimuth={[-0.7, 0.7]}
+        >
+          <Bag />
+        </PresentationControls>
 
         <ContactShadows position={[0, -1.22, 0]} opacity={0.34} scale={8} blur={3.2} far={3.2} resolution={512} color={SHADOW} />
       </Canvas>
