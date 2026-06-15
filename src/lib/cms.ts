@@ -20,6 +20,7 @@ import { PRODUCTS, CATEGORY_META, type Product, type ProductCategory } from "@/d
 import { SERVICES, type Service } from "@/data/services";
 import { JOBS, RECRUITMENT_PROCESS, type Job } from "@/data/careers";
 import { NEWS, ACTIVITIES, type NewsPost, type Activity } from "@/data/blog";
+import { BAG_ANATOMY, type BagAnatomy, type BagLayer } from "@/data/anatomy";
 import {
   COMPANY,
   STATS,
@@ -30,7 +31,7 @@ import {
   PARTNERS,
 } from "@/content/company";
 
-export type { Product, ProductCategory, Service, Job, NewsPost, Activity };
+export type { Product, ProductCategory, Service, Job, NewsPost, Activity, BagAnatomy, BagLayer };
 
 // Pages can opt into ISR with `export const revalidate = N`; with local data
 // it's effectively static. Exposed here so the cadence lives in one place.
@@ -112,4 +113,12 @@ export async function getNewsSlugs(): Promise<string[]> {
 }
 export async function getActivities(): Promise<Activity[]> {
   return ACTIVITIES;
+}
+
+// ── Product anatomy (material breakdown) ────────────────────────────────────
+export async function getBagAnatomy(): Promise<BagAnatomy> {
+  return {
+    ...BAG_ANATOMY,
+    layers: [...BAG_ANATOMY.layers].sort((a, b) => a.order - b.order),
+  };
 }

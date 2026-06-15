@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { HomeHero } from "@/components/home/HomeHero";
+import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
 import { Reveal } from "@/components/Reveal";
 import {
   getStats,
   getProofPoints,
   getProductCategories,
+  getBagAnatomy,
   getServices,
   getJobs,
   getNews,
@@ -41,11 +43,12 @@ const WHY = [
 ];
 
 export default async function HomePage() {
-  const [stats, proof, categories, services, jobs, news, activities, industries, partners] =
+  const [stats, proof, categories, anatomy, services, jobs, news, activities, industries, partners] =
     await Promise.all([
       getStats(),
       getProofPoints(),
       getProductCategories(),
+      getBagAnatomy(),
       getServices(),
       getJobs(),
       getNews(),
@@ -172,6 +175,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 3a, Product anatomy (interactive material breakdown) */}
+      <ProductAnatomyScroll data={anatomy} />
 
       {/* 3b, Featured services */}
       <section className="border-t border-seam bg-iron">
