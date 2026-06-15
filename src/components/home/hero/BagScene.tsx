@@ -463,21 +463,41 @@ function CameraRig() {
   return null;
 }
 
-// Very subtle idle — a suspended product display, not a floating toy.
-function SubtleIdle({ children }: { children: ReactNode }) {
+// Premium idle — a slow, smooth sway that reveals the product's dimension in
+// the light, like a suspended studio display. Refined, never busy.
+function PremiumIdle({ children }: { children: ReactNode }) {
   const ref = useRef<THREE.Group>(null!);
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-    ref.current.rotation.y = Math.sin(t * 0.24) * 0.028;
-    ref.current.rotation.x = Math.sin(t * 0.19 + 1) * 0.012;
+    ref.current.rotation.y = Math.sin(t * 0.16) * 0.085; // ~±5°, slow + smooth
+    ref.current.rotation.x = Math.sin(t * 0.12 + 1) * 0.018;
+    ref.current.position.y = Math.sin(t * 0.2) * 0.01; // barely-there float
   });
   return <group ref={ref}>{children}</group>;
+}
+
+// A slow studio light sweep so a soft highlight travels across the laminate,
+// plus a quiet rim for a premium edge — refined product-render lighting.
+function Lights() {
+  const key = useRef<THREE.DirectionalLight>(null!);
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = 0.5 + Math.sin(t * 0.13) * 0.5;
+    key.current.position.set(lerp(2.6, 6, a), 1.2 + Math.sin(t * 0.1) * 0.7, lerp(2.8, 0.9, a));
+  });
+  return (
+    <>
+      <directionalLight ref={key} intensity={1.25} color="#fff4ea" />
+      <directionalLight position={[-3.5, 3, 3]} intensity={0.3} color="#e8eeff" />
+      <directionalLight position={[-1.2, 1.8, -4]} intensity={0.7} color="#ffffff" />
+    </>
+  );
 }
 
 function Dust() {
   const ref = useRef<THREE.Points>(null!);
   const geo = useMemo(() => {
-    const N = 110;
+    const N = 70;
     const arr = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
       arr[i * 3] = (Math.random() - 0.5) * 9;
@@ -492,7 +512,7 @@ function Dust() {
     const d = Math.min(dt, 0.05);
     const pos = ref.current.geometry.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < pos.count; i++) {
-      let y = pos.getY(i) + d * 0.06;
+      let y = pos.getY(i) + d * 0.04;
       if (y > 3.2) y = -3.2;
       pos.setY(i, y);
     }
@@ -500,7 +520,7 @@ function Dust() {
   });
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.02} color="#b3ab9d" transparent opacity={0.4} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.016} color="#bcb5a8" transparent opacity={0.28} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
@@ -535,26 +555,24 @@ export default function BagScene() {
           <Lightformer form="rect" intensity={0.8} color="#cdd6ff" position={[-4, 1.5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
         </Environment>
 
-        {/* grazing key light — rakes across the weave so fibers cast shadows */}
-        <directionalLight position={[5.5, 1.2, 1.4]} intensity={1.25} color="#fff4ea" />
-        <directionalLight position={[-3, 3, 3]} intensity={0.35} color="#e8eeff" />
+        <Lights />
 
         <Dust />
 
-        <SubtleIdle>
+        <PremiumIdle>
           <PresentationControls
             global={false}
             cursor={false}
             snap
-            speed={1.4}
-            polar={[-0.25, 0.25]}
-            azimuth={[-0.6, 0.6]}
+            speed={1.6}
+            polar={[-0.22, 0.22]}
+            azimuth={[-0.5, 0.5]}
           >
             <Bag />
           </PresentationControls>
-        </SubtleIdle>
+        </PremiumIdle>
 
-        <ContactShadows position={[0, -1.25, 0]} opacity={0.26} scale={9} blur={4} far={3.4} resolution={512} color={SHADOW} />
+        <ContactShadows position={[0, -1.28, 0]} opacity={0.22} scale={9.5} blur={4.8} far={3.6} resolution={1024} color={SHADOW} />
       </Canvas>
     </div>
   );

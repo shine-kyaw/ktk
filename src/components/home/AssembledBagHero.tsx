@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { HeroBagPoster } from "./hero/HeroBagPoster";
 
 // The 3D scene is client-only and lazy-loaded; the static poster covers SSR,
@@ -45,49 +45,63 @@ export function AssembledBagHero() {
   // Live 3D only where it earns its weight: desktop, motion allowed.
   const use3D = mounted && isDesktop && !reduce;
 
+  const rise = (i: number) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 22 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.75, delay: 0.15 + i * 0.1, ease: [0.16, 1, 0.3, 1] as const },
+        };
+
   return (
     <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
-      {/* light cinematic background */}
+      {/* light cinematic background — clean, soft, premium */}
       <div className="absolute inset-0 -z-10 bg-coal" />
-      <div className="blueprint absolute inset-0 -z-10 opacity-60" />
+      <div className="blueprint absolute inset-0 -z-10 opacity-40" />
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(58% 55% at 68% 40%, rgba(255,255,255,0.95) 0%, transparent 62%)" }}
+        style={{ background: "radial-gradient(56% 56% at 70% 42%, rgba(255,255,255,0.92) 0%, transparent 64%)" }}
       />
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(120% 90% at 82% 18%, rgba(59,65,237,0.10) 0%, transparent 55%)" }}
+        style={{ background: "radial-gradient(130% 95% at 84% 16%, rgba(59,65,237,0.08) 0%, transparent 56%)" }}
       />
       <div
         className="pointer-events-none absolute inset-0 -z-10"
-        style={{ boxShadow: "inset 0 0 240px 48px rgba(11,13,18,0.10)" }}
+        style={{ boxShadow: "inset 0 0 260px 56px rgba(11,13,18,0.08)" }}
       />
 
       <div className="container-x grid flex-1 items-center gap-8 pb-20 pt-28 lg:grid-cols-2 lg:gap-10">
         {/* copy */}
         <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <span className="h-px w-10 bg-red" />
-            <p className="mono text-[0.78rem] font-semibold uppercase tracking-[0.22em] text-bone">
-              Kaung Thu Kha Trading Co., Ltd
+          <motion.div {...rise(0)}>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-red" />
+              <p className="mono text-[0.78rem] font-semibold uppercase tracking-[0.22em] text-bone">
+                Kaung Thu Kha Trading Co., Ltd
+              </p>
+            </div>
+            <p className="mono mt-3 text-[0.64rem] uppercase tracking-[0.2em] text-ash">
+              Industrial Packaging · Myanmar · Since 1991
             </p>
-          </div>
-          <p className="mono mt-3 text-[0.64rem] uppercase tracking-[0.2em] text-ash">
-            Industrial Packaging · Myanmar · Since 1991
-          </p>
+          </motion.div>
 
-          <h1 className="display mt-6 text-[clamp(2.5rem,5.6vw,4.8rem)] leading-[1.04] text-bone">
+          <motion.h1
+            {...rise(1)}
+            className="display mt-6 text-[clamp(2.5rem,5.6vw,4.8rem)] leading-[1.04] text-bone"
+          >
             Built Layer by Layer
             <br />
             for <span className="text-red">Reliable Strength.</span>
-          </h1>
+          </motion.h1>
 
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">
+          <motion.p {...rise(2)} className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">
             KTK manufactures cement packaging designed for consistent quality, dependable handling,
             and trusted supply across Myanmar&rsquo;s construction industry.
-          </p>
+          </motion.p>
 
-          <div className="mt-9 flex flex-wrap gap-4">
+          <motion.div {...rise(3)} className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/products"
               className="press mono bg-red px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
@@ -100,9 +114,9 @@ export function AssembledBagHero() {
             >
               Contact sales
             </Link>
-          </div>
+          </motion.div>
 
-          <ul className="mt-12 flex flex-wrap gap-x-8 gap-y-3">
+          <motion.ul {...rise(4)} className="mt-12 flex flex-wrap gap-x-8 gap-y-3">
             {TRUST.map((t) => (
               <li
                 key={t}
@@ -112,7 +126,7 @@ export function AssembledBagHero() {
                 {t}
               </li>
             ))}
-          </ul>
+          </motion.ul>
         </div>
 
         {/* bag stage */}
