@@ -140,23 +140,11 @@ export function AssembledBagHero() {
         </div>
       </div>
 
-      {/* scroll cue */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center">
-        <div className="flex flex-col items-center gap-2">
-          <span className="mono text-[0.56rem] uppercase tracking-[0.24em] text-ash">Scroll</span>
-          <span className="ktk-scroll relative block h-9 w-px overflow-hidden bg-seam">
-            <span className="ktk-scroll-dot absolute left-0 top-0 h-3 w-px bg-red" />
-          </span>
-        </div>
-      </div>
-
       <style>{`
         .ktk-hero-float { animation: ktkHeroFloat 6s ease-in-out infinite; }
         @keyframes ktkHeroFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        .ktk-scroll-dot { animation: ktkScrollDot 2.1s ease-in-out infinite; }
-        @keyframes ktkScrollDot { 0% { transform: translateY(-12px); } 100% { transform: translateY(36px); } }
         @media (prefers-reduced-motion: reduce) {
-          .ktk-hero-float, .ktk-scroll-dot { animation: none; }
+          .ktk-hero-float { animation: none; }
         }
       `}</style>
     </section>
