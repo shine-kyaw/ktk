@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { RoundedBox, ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── timeline helpers ─────────────────────────────────────────────────────────
@@ -16,7 +16,6 @@ const seg = (p: number, a: number, b: number) => Math.min(Math.max((p - a) / (b 
 // The real KTK product is a WHITE glossy laminated PP woven pillow bag with
 // red emblem + blue KTK print. Colors below match that, not a cement sack.
 const BODY = "#F1F0EC"; // white laminated PP
-const SEAL = "#E2E0DA"; // crimped fin seal / gusset, a touch darker
 const BRAND_RED = "#FC1303";
 const BRAND_BLUE = "#3B41ED";
 const SHADOW = "#15120D"; // warm charcoal contact shadow
@@ -187,6 +186,66 @@ function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
   }, [fontsReady, logo]);
 }
 
+// ── pillow-bag geometry (a filled bag is not a box) ─────────────────────────
+const BAG_W = 1.5;
+const BAG_H = 2.05;
+const BAG_D = 0.14; // thin sealed rim; the body bulges out from here
+const INFLATE = 6.5; // how much the filled body puffs
+
+const smoothstep = (a: number, b: number, x: number) => {
+  const t = Math.min(Math.max((x - a) / (b - a), 0), 1);
+  return t * t * (3 - 2 * t);
+};
+
+// z of the bulged, seal-pinched front surface at (x, y) — the print conforms to it
+function frontZ(x: number, y: number) {
+  const nx = x / (BAG_W / 2);
+  const ny = y / (BAG_H / 2);
+  let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
+  const seal = smoothstep(0.78, 1, Math.abs(ny));
+  f *= 1 - seal * 0.85;
+  return (BAG_D / 2) * (1 + f * INFLATE) * (1 - seal * 0.55);
+}
+
+// A box, inflated into a pillow: front/back bulge out, top/bottom pinch into
+// flat sealed fins, sides taper. One unified mesh — no stuck-on seam boxes.
+function usePillowGeometry() {
+  return useMemo(() => {
+    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 40, 48, 3);
+    const pos = geo.attributes.position;
+    const hw = BAG_W / 2;
+    const hh = BAG_H / 2;
+    for (let i = 0; i < pos.count; i++) {
+      let x = pos.getX(i);
+      const y = pos.getY(i);
+      let z = pos.getZ(i);
+      const nx = x / hw;
+      const ny = y / hh;
+      let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
+      const seal = smoothstep(0.78, 1, Math.abs(ny));
+      f *= 1 - seal * 0.85;
+      z = z * (1 + f * INFLATE) * (1 - seal * 0.55); // bulge body, flatten seals
+      x = x * (1 - seal * 0.22); // pinch the sealed ends (dog-ear corners)
+      pos.setXYZ(i, x, y, z);
+    }
+    geo.computeVertexNormals();
+    return geo;
+  }, []);
+}
+
+// A subdivided plane that conforms to the bulged front face, for the print.
+function useFrontGeometry() {
+  return useMemo(() => {
+    const geo = new THREE.PlaneGeometry(1.32, 1.5, 28, 36);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      pos.setZ(i, frontZ(pos.getX(i), pos.getY(i)) + 0.006);
+    }
+    geo.computeVertexNormals();
+    return geo;
+  }, []);
+}
+
 // ── the bag ─────────────────────────────────────────────────────────────────
 function Bag() {
   const [fontsReady, setFontsReady] = useState(false);
@@ -210,16 +269,12 @@ function Bag() {
   const wovenNormal = useWovenNormal();
   const roughnessMap = useRoughnessMap();
   const print = usePrintTexture(fontsReady, logo);
+  const pillow = usePillowGeometry();
+  const frontGeo = useFrontGeometry();
 
   const bag = useRef<THREE.Group>(null!);
   const body = useRef<THREE.Group>(null!);
   const bodyMat = useRef<THREE.MeshPhysicalMaterial>(null!);
-  const left = useRef<THREE.Group>(null!);
-  const right = useRef<THREE.Group>(null!);
-  const top = useRef<THREE.Group>(null!);
-  const bottom = useRef<THREE.Group>(null!);
-  const lam = useRef<THREE.Group>(null!);
-  const lamMat = useRef<THREE.MeshStandardMaterial>(null!);
   const front = useRef<THREE.Group>(null!);
   const frontMat = useRef<THREE.MeshStandardMaterial>(null!);
   const start = useRef<number | null>(null);
@@ -231,33 +286,22 @@ function Bag() {
     if (start.current === null) start.current = performance.now();
     const p = Math.min((performance.now() - start.current) / (DURATION * 1000), 1);
 
-    // 1 — fibers interlock (scale + weave normal ramps in)
-    const e1 = easeOutCubic(seg(p, 0, 0.22));
-    const e2 = easeOutCubic(seg(p, 0.1, 0.4));
-    const s = 0.4 + 0.6 * e1;
-    body.current.scale.set(s, s, s * lerp(0.6, 1, e2)); // 2 — inflate to full pillow depth
-    bodyMat.current.normalScale.set(0.2 + 0.7 * e1, 0.2 + 0.7 * e1);
+    // 1 — bag forms: appears as the weave tightens
+    const a = easeOutCubic(seg(p, 0, 0.32));
+    // 2 — fills out: inflates to full depth, laminate gloss arrives
+    const b = easeInOutCubic(seg(p, 0.22, 0.66));
+    const s = 0.4 + 0.6 * a;
+    body.current.scale.set(s, s, s * lerp(0.4, 1, b));
+    bodyMat.current.normalScale.set(0.2 + 0.7 * a, 0.2 + 0.7 * a);
+    bodyMat.current.roughness = lerp(0.72, 0.42, b);
+    bodyMat.current.clearcoat = 0.12 + 0.4 * b;
 
-    // 2 — side gussets fold in
-    left.current.position.x = lerp(-2.6, -0.72, e2);
-    right.current.position.x = lerp(2.6, 0.72, e2);
-
-    // 3 — lamination sweep + gloss arrives
-    const e3 = easeInOutCubic(seg(p, 0.32, 0.6));
-    lam.current.position.y = lerp(2.2, 0, e3);
-    lamMat.current.opacity = 0.16 * e3;
-    bodyMat.current.roughness = lerp(0.72, 0.44, e3);
-
-    // 4 + 5 — top then bottom fin seals crimp in
-    top.current.scale.x = 0.0001 + easeOutCubic(seg(p, 0.5, 0.7));
-    bottom.current.scale.x = 0.0001 + easeOutCubic(seg(p, 0.6, 0.8));
-
-    // 6 — brand print appears last
-    const e6 = easeOutCubic(seg(p, 0.78, 0.96));
+    // 3 — printed brand appears last
+    const e6 = easeOutCubic(seg(p, 0.64, 0.95));
     frontMat.current.opacity = e6;
-    front.current.scale.setScalar(lerp(0.96, 1, e6));
+    front.current.scale.setScalar(lerp(0.965, 1, e6));
 
-    // 7 — settle (monotonic relax, no bounce)
+    // 4 — settle (monotonic relax, no bounce)
     const e7 = easeOutCubic(seg(p, 0.93, 1));
     bag.current.scale.setScalar(lerp(1.012, 1, e7));
 
@@ -269,8 +313,9 @@ function Bag() {
 
   return (
     <group ref={bag}>
+      {/* one inflated pillow mesh — no stuck-on seams */}
       <group ref={body}>
-        <RoundedBox args={[1.5, 2.05, 0.55]} radius={0.2} smoothness={8}>
+        <mesh geometry={pillow}>
           <meshPhysicalMaterial
             ref={bodyMat}
             color={BODY}
@@ -283,45 +328,13 @@ function Bag() {
             clearcoatRoughness={0.4}
             envMapIntensity={0.7}
           />
-        </RoundedBox>
-      </group>
-
-      <group ref={left}>
-        <RoundedBox args={[0.12, 1.96, 0.5]} radius={0.05} smoothness={4}>
-          <meshStandardMaterial color={SEAL} roughness={0.85} metalness={0} />
-        </RoundedBox>
-      </group>
-      <group ref={right}>
-        <RoundedBox args={[0.12, 1.96, 0.5]} radius={0.05} smoothness={4}>
-          <meshStandardMaterial color={SEAL} roughness={0.85} metalness={0} />
-        </RoundedBox>
-      </group>
-
-      {/* top + bottom fin seals (pillow bag closure) */}
-      <group ref={top} position={[0, 0.99, 0]}>
-        <RoundedBox args={[1.52, 0.16, 0.5]} radius={0.05} smoothness={4}>
-          <meshStandardMaterial color={SEAL} roughness={0.78} metalness={0} />
-        </RoundedBox>
-      </group>
-      <group ref={bottom} position={[0, -0.99, 0]}>
-        <RoundedBox args={[1.52, 0.16, 0.5]} radius={0.05} smoothness={4}>
-          <meshStandardMaterial color={SEAL} roughness={0.78} metalness={0} />
-        </RoundedBox>
-      </group>
-
-      {/* lamination sheen, sweeps from top */}
-      <group ref={lam}>
-        <mesh position={[0, 0, 0.292]}>
-          <planeGeometry args={[1.4, 1.94]} />
-          <meshStandardMaterial ref={lamMat} color="#ffffff" transparent opacity={0} roughness={0.12} metalness={0.15} />
         </mesh>
       </group>
 
-      {/* printed brand layer, appears last */}
+      {/* printed brand layer conforming to the bulged front, appears last */}
       <group ref={front}>
-        <mesh position={[0, 0, 0.285]}>
-          <planeGeometry args={[1.4, 1.92]} />
-          <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.55} />
+        <mesh geometry={frontGeo}>
+          <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.5} />
         </mesh>
       </group>
     </group>

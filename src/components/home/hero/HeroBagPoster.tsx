@@ -1,8 +1,8 @@
 /**
  * Static, light-themed KTK pillow bag — the hero fallback while the 3D scene
- * loads, for reduced-motion users, and as a lightweight poster. Matches the
- * live 3D bag: white glossy laminated body, fin seals, red emblem, blue KTK
- * wordmark, red rule, "Net : 25 KG", soft contact shadow.
+ * loads, for reduced-motion users, and as a lightweight poster. A filled
+ * pillow silhouette (not a rectangle), white glossy laminated body, red
+ * emblem, blue KTK wordmark, red rule, "Net : 25 KG", real logo lockup.
  */
 function Star({ cx, cy, r }: { cx: number; cy: number; r: number }) {
   const pts: string[] = [];
@@ -15,62 +15,63 @@ function Star({ cx, cy, r }: { cx: number; cy: number; r: number }) {
   return <polygon points={pts.join(" ")} fill="#FC1303" />;
 }
 
+// Filled pillow silhouette: bulging sides, softly pinched sealed top & bottom.
+const BAG =
+  "M 116 56 C 92 64 80 132 80 234 C 80 336 92 404 116 412 C 150 422 210 422 244 412 C 268 404 280 336 280 234 C 280 132 268 64 244 56 C 210 46 150 46 116 56 Z";
+
 export function HeroBagPoster({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 360 460" className={className} aria-hidden="true">
       <defs>
-        <linearGradient id="hp-body" x1="0" y1="0" x2="1" y2="0.15">
+        <linearGradient id="hp-body" x1="0" y1="0" x2="1" y2="0.2">
           <stop offset="0%" stopColor="#FFFFFF" />
           <stop offset="55%" stopColor="#F1F0EC" />
-          <stop offset="100%" stopColor="#DAD7CF" />
-        </linearGradient>
-        <linearGradient id="hp-seal" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#E6E3DC" />
-          <stop offset="100%" stopColor="#D3CFC5" />
+          <stop offset="100%" stopColor="#D6D2CA" />
         </linearGradient>
         <radialGradient id="hp-shadow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#15120D" stopOpacity="0.26" />
+          <stop offset="0%" stopColor="#15120D" stopOpacity="0.24" />
           <stop offset="100%" stopColor="#15120D" stopOpacity="0" />
         </radialGradient>
         <pattern id="hp-weave" width="9" height="9" patternUnits="userSpaceOnUse">
           <path d="M0 0H9M0 4.5H9" stroke="#000" strokeOpacity="0.05" strokeWidth="1.4" />
           <path d="M0 0V9M4.5 0V9" stroke="#000" strokeOpacity="0.06" strokeWidth="1.6" />
         </pattern>
+        <clipPath id="hp-clip">
+          <path d={BAG} />
+        </clipPath>
       </defs>
 
-      <ellipse cx="180" cy="432" rx="118" ry="18" fill="url(#hp-shadow)" />
+      <ellipse cx="182" cy="430" rx="116" ry="17" fill="url(#hp-shadow)" />
 
       <g>
-        <rect x="72" y="40" width="216" height="380" rx="22" fill="url(#hp-body)" stroke="#C9C4B6" strokeWidth="1.4" />
-        <rect x="72" y="40" width="216" height="380" rx="22" fill="url(#hp-weave)" />
-        {/* volume light + shade */}
-        <rect x="86" y="56" width="40" height="348" rx="14" fill="#FFFFFF" opacity="0.5" />
-        <rect x="244" y="52" width="38" height="356" rx="14" fill="#15120D" opacity="0.05" />
-
-        {/* fin seals top & bottom */}
-        <rect x="72" y="40" width="216" height="26" rx="13" fill="url(#hp-seal)" />
-        <rect x="72" y="394" width="216" height="26" rx="13" fill="url(#hp-seal)" />
+        <path d={BAG} fill="url(#hp-body)" stroke="#C9C4B6" strokeWidth="1.4" />
+        <g clipPath="url(#hp-clip)">
+          <path d={BAG} fill="url(#hp-weave)" />
+          {/* soft volume: highlight left of centre, shade on the right */}
+          <ellipse cx="150" cy="220" rx="66" ry="180" fill="#FFFFFF" opacity="0.4" />
+          <ellipse cx="276" cy="234" rx="46" ry="190" fill="#15120D" opacity="0.06" />
+        </g>
 
         {/* red circular emblem */}
         <g>
-          <circle cx="180" cy="120" r="34" fill="none" stroke="#FC1303" strokeWidth="2.4" />
-          <path d="M156 132 A26 26 0 0 1 204 132" fill="none" stroke="#FC1303" strokeWidth="1.6" />
-          <path d="M161 128 A20 20 0 0 1 199 128" fill="none" stroke="#FC1303" strokeWidth="1.6" />
-          <Star cx={162} cy={106} r={4} />
-          <Star cx={171} cy={102} r={4} />
-          <Star cx={180} cy={101} r={4} />
-          <Star cx={189} cy={102} r={4} />
-          <Star cx={198} cy={106} r={4} />
+          <circle cx="180" cy="122" r="33" fill="none" stroke="#FC1303" strokeWidth="2.4" />
+          <path d="M157 133 A25 25 0 0 1 203 133" fill="none" stroke="#FC1303" strokeWidth="1.6" />
+          <path d="M162 129 A19 19 0 0 1 198 129" fill="none" stroke="#FC1303" strokeWidth="1.6" />
+          <Star cx={163} cy={109} r={3.6} />
+          <Star cx={171} cy={105} r={3.6} />
+          <Star cx={180} cy={104} r={3.6} />
+          <Star cx={189} cy={105} r={3.6} />
+          <Star cx={197} cy={109} r={3.6} />
         </g>
 
         {/* blue KTK wordmark */}
-        <text x="180" y="208" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="58" letterSpacing="2" fill="#3B41ED">KTK</text>
+        <text x="180" y="206" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="56" letterSpacing="2" fill="#3B41ED">KTK</text>
         {/* red rule */}
-        <rect x="108" y="224" width="144" height="5" rx="2.5" fill="#FC1303" />
+        <rect x="110" y="221" width="140" height="5" rx="2.5" fill="#FC1303" />
         {/* Net : 25 KG */}
-        <text x="180" y="262" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="18" fill="#1A1714">Net : 25 KG</text>
+        <text x="180" y="258" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="18" fill="#1A1714">Net : 25 KG</text>
         {/* real KTK logo lockup */}
-        <image href="/brand/ktk-logo.png" x="78" y="300" width="204" height="35" preserveAspectRatio="xMidYMid meet" />
+        <image href="/brand/ktk-logo.png" x="82" y="300" width="196" height="34" preserveAspectRatio="xMidYMid meet" />
       </g>
     </svg>
   );
