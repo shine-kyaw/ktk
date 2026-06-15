@@ -1,31 +1,33 @@
 import type { Config } from "tailwindcss";
 
-// "Graphite & Kraft" — dark cinematic industrial system for KTK.
-// Coal page ground, iron panels, warm cement-bone type, one molten amber
-// accent. Amber is the only saturated voice on the site — spend it sparingly.
+// "Ink & Signal" — high-contrast black/white industrial system for KTK.
+// Pure black ground, near-black panels, white type. Two saturated voices:
+// RED is the primary accent (CTAs, highlights, the logo red), BLUE is the
+// secondary structural color (feature blocks, glows, technical accents).
+// Black + white carry ~90% of the surface; red and blue are spent sparingly.
 export default {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        // KTK brand system — a NAVY + SLATE "trust" foundation (calm,
-        // neutral, institutional) with the logo's RED as a disciplined
-        // accent and INSTITUTIONAL blue for credibility blocks. Gradual,
-        // cool, premium-without-luxury. No green, no gold.
-        coal: "#0E2236", // navy page ground
-        iron: "#173049", // panels — one gentle step up
-        seam: "#33465D", // slate hairlines / dividers
+        coal: "#000000", // black page ground
+        iron: "#121214", // panels — one step up from black
+        seam: "#2A2A30", // hairlines / dividers
         bone: {
-          DEFAULT: "#EBEFF5", // cool near-white
-          dim: "#BFC8D5",
+          DEFAULT: "#FFFFFF", // white type
+          dim: "#C9CAD2", // dimmed white
         },
-        ash: "#8893A4", // slate, muted text
+        ash: "#85868F", // muted grey text
         red: {
-          DEFAULT: "#E2483B", // logo red — the single warm accent
-          deep: "#C2392C",
+          DEFAULT: "#FC1303", // primary accent
+          deep: "#C70F02",
         },
-        inst: "#003B5C", // institutional blue — credibility blocks
-        navy: "#0A2540", // deepest navy — emblem, deep fills
+        blue: {
+          DEFAULT: "#3B41ED", // secondary structural accent
+          deep: "#2D32CC",
+        },
+        inst: "#3B41ED", // institutional / feature blocks = blue
+        navy: "#1A1D4D", // deep blue — quiet fills
       },
       fontFamily: {
         sans: ["var(--font-archivo)", "system-ui", "sans-serif"],

@@ -8,17 +8,17 @@ import type { BagLayerVariant } from "@/data/anatomy";
  * When real layer artwork arrives, a layer can carry an `image` and this
  * component can render it in place of the generated detail.
  */
-const COAL = "#0E2236";
-const IRON = "#173049";
-const SEAM = "#33465D";
-const BONE = "#EBEFF5";
-const DIM = "#BFC8D5";
-const ASH = "#8893A4";
-const RED = "#E2483B";
+const COAL = "#000000";
+const IRON = "#15151A";
+const SEAM = "#33333C";
+const BONE = "#FFFFFF";
+const DIM = "#C9CAD2";
+const ASH = "#85868F";
+const RED = "#FC1303";
 
 export function BagSheet({ variant, active }: { variant: BagLayerVariant; active: boolean }) {
   const uid = `bag-${variant}`;
-  const stroke = active ? RED : "#5b6f88";
+  const stroke = active ? RED : "#3d3d47";
   const clip = `${uid}-clip`;
 
   return (
@@ -28,8 +28,8 @@ export function BagSheet({ variant, active }: { variant: BagLayerVariant; active
           <rect x="24" y="20" width="192" height="260" rx="14" />
         </clipPath>
         <linearGradient id={`${uid}-body`} x1="0" y1="0" x2="0.4" y2="1">
-          <stop offset="0%" stopColor="#22405d" />
-          <stop offset="100%" stopColor="#14304a" />
+          <stop offset="0%" stopColor="#1E1E25" />
+          <stop offset="100%" stopColor="#101015" />
         </linearGradient>
         {variant === "woven" && (
           <pattern id={`${uid}-weave`} width="14" height="14" patternUnits="userSpaceOnUse">

@@ -73,17 +73,17 @@ export function HeroMedia({ src, alt = "KTK manufacturing" }: { src?: string | n
         }
         .ktk-weave {
           background-image:
-            repeating-linear-gradient(0deg, rgba(235,239,245,0.05) 0 1px, transparent 1px 22px),
-            repeating-linear-gradient(90deg, rgba(235,239,245,0.05) 0 1px, transparent 1px 22px);
+            repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 22px),
+            repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 22px);
           animation: ktkWeave 42s linear infinite;
         }
         .ktk-tapes {
-          background-image: repeating-linear-gradient(115deg, rgba(226,72,59,0.06) 0 2px, transparent 2px 64px);
+          background-image: repeating-linear-gradient(115deg, rgba(252,19,3,0.07) 0 2px, transparent 2px 64px);
           animation: ktkTapes 34s linear infinite;
         }
         .ktk-sheen {
           width: 42%;
-          background: linear-gradient(90deg, transparent, rgba(235,239,245,0.09), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
           animation: ktkSheen 11s ease-in-out infinite;
         }
         .ktk-glow { animation: ktkGlow 14s ease-in-out infinite; }
@@ -92,12 +92,12 @@ export function HeroMedia({ src, alt = "KTK manufacturing" }: { src?: string | n
         }
       `}</style>
 
-      {/* breathing institutional-blue glow */}
+      {/* breathing brand glow — blue top-right, red bottom-left, on black */}
       <div
         className="ktk-glow absolute inset-0"
         style={{
           background:
-            "radial-gradient(70% 60% at 82% 12%, rgba(0,59,92,0.55) 0%, transparent 60%), radial-gradient(80% 70% at 12% 95%, rgba(34,90,130,0.35) 0%, transparent 60%)",
+            "radial-gradient(70% 60% at 82% 12%, rgba(59,65,237,0.42) 0%, transparent 60%), radial-gradient(80% 70% at 12% 95%, rgba(252,19,3,0.26) 0%, transparent 60%)",
         }}
       />
       {/* woven warp + weft */}
