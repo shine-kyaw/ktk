@@ -83,6 +83,18 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
       else ctx.fillRect(gx - gap, gy, pitch + gap, tape);
     }
   }
+  // soft irregularity so the weave isn't mechanically perfect
+  for (let i = 0; i < 70; i++) {
+    const x = Math.random() * w;
+    const y = Math.random() * h;
+    const r = 6 + Math.random() * 18;
+    const v = Math.random() > 0.5 ? 150 : 92;
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
+    rg.addColorStop(0, `rgba(${v},${v},${v},0.22)`);
+    rg.addColorStop(1, "rgba(128,128,128,0)");
+    ctx.fillStyle = rg;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
 }
 
 function useWovenNormal() {
@@ -197,21 +209,35 @@ const smoothstep = (a: number, b: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-// z of the bulged, seal-pinched front surface at (x, y) — the print conforms to it
+const sealAt = (ny: number) => smoothstep(0.76, 1, Math.abs(ny));
+
+// Bulge amount 0..1 at normalized (nx, ny): full in the centre, 0 at the
+// edges/seals, FULLER toward the bottom (the gravity sag of a filled bag).
+function bulgeF(nx: number, ny: number) {
+  let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
+  f *= 1 - 0.18 * ny; // gravity: heavier, fuller lower body
+  return Math.max(0, f) * (1 - sealAt(ny) * 0.85);
+}
+
+// Subtle fabric gather near the sealed shoulders (radiating wrinkles).
+function gatherZ(nx: number, ny: number) {
+  const band = smoothstep(0.5, 0.74, Math.abs(ny)) * (1 - smoothstep(0.85, 1, Math.abs(ny)));
+  return Math.sin(nx * Math.PI * 4.5) * 0.013 * band;
+}
+
+// z of the bulged front surface at (x, y) — the print conforms to it.
 function frontZ(x: number, y: number) {
   const nx = x / (BAG_W / 2);
   const ny = y / (BAG_H / 2);
-  let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
-  const seal = smoothstep(0.78, 1, Math.abs(ny));
-  f *= 1 - seal * 0.85;
-  return (BAG_D / 2) * (1 + f * INFLATE) * (1 - seal * 0.55);
+  return (BAG_D / 2) * (1 + bulgeF(nx, ny) * INFLATE) * (1 - sealAt(ny) * 0.55) + gatherZ(nx, ny);
 }
 
-// A box, inflated into a pillow: front/back bulge out, top/bottom pinch into
-// flat sealed fins, sides taper. One unified mesh — no stuck-on seam boxes.
+// A box inflated into a pillow: front/back bulge out (fuller at the bottom),
+// top/bottom pinch into flat sealed fins, sides taper, shoulders gather into
+// soft wrinkles. One unified mesh — no stuck-on seam boxes.
 function usePillowGeometry() {
   return useMemo(() => {
-    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 40, 48, 3);
+    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 48, 56, 3);
     const pos = geo.attributes.position;
     const hw = BAG_W / 2;
     const hh = BAG_H / 2;
@@ -221,10 +247,9 @@ function usePillowGeometry() {
       let z = pos.getZ(i);
       const nx = x / hw;
       const ny = y / hh;
-      let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
-      const seal = smoothstep(0.78, 1, Math.abs(ny));
-      f *= 1 - seal * 0.85;
-      z = z * (1 + f * INFLATE) * (1 - seal * 0.55); // bulge body, flatten seals
+      const seal = sealAt(ny);
+      const g = gatherZ(nx, ny) * Math.sign(z || 1);
+      z = z * (1 + bulgeF(nx, ny) * INFLATE) * (1 - seal * 0.55) + g;
       x = x * (1 - seal * 0.22); // pinch the sealed ends (dog-ear corners)
       pos.setXYZ(i, x, y, z);
     }
@@ -236,7 +261,7 @@ function usePillowGeometry() {
 // A subdivided plane that conforms to the bulged front face, for the print.
 function useFrontGeometry() {
   return useMemo(() => {
-    const geo = new THREE.PlaneGeometry(1.32, 1.5, 28, 36);
+    const geo = new THREE.PlaneGeometry(1.32, 1.5, 32, 40);
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       pos.setZ(i, frontZ(pos.getX(i), pos.getY(i)) + 0.006);
@@ -293,8 +318,8 @@ function Bag() {
     const s = 0.4 + 0.6 * a;
     body.current.scale.set(s, s, s * lerp(0.4, 1, b));
     bodyMat.current.normalScale.set(0.2 + 0.7 * a, 0.2 + 0.7 * a);
-    bodyMat.current.roughness = lerp(0.72, 0.42, b);
-    bodyMat.current.clearcoat = 0.12 + 0.4 * b;
+    bodyMat.current.roughness = lerp(0.78, 0.52, b);
+    bodyMat.current.clearcoat = 0.1 + 0.3 * b;
 
     // 3 — printed brand appears last
     const e6 = easeOutCubic(seg(p, 0.64, 0.95));
@@ -324,9 +349,12 @@ function Bag() {
             roughnessMap={roughnessMap}
             roughness={0.7}
             metalness={0}
-            clearcoat={0.45}
-            clearcoatRoughness={0.4}
-            envMapIntensity={0.7}
+            clearcoat={0.4}
+            clearcoatRoughness={0.55}
+            envMapIntensity={0.85}
+            sheen={0.3}
+            sheenRoughness={0.8}
+            sheenColor="#ffffff"
           />
         </mesh>
       </group>
@@ -347,6 +375,56 @@ function CameraAim() {
     camera.lookAt(0, 0.05, 0);
   }, [camera]);
   return null;
+}
+
+// Constant gentle turntable rock so the bag is always alive (drag overrides it).
+function AutoRock({ children }: { children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null!);
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    ref.current.rotation.y = Math.sin(t * 0.42) * 0.42;
+    ref.current.rotation.x = Math.sin(t * 0.33 + 1) * 0.045;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
+// Slow-drifting dust motes — subtle industrial atmosphere.
+function Dust() {
+  const ref = useRef<THREE.Points>(null!);
+  const geo = useMemo(() => {
+    const N = 130;
+    const arr = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      arr[i * 3] = (Math.random() - 0.5) * 9;
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 6;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 3 - 0.5;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(arr, 3));
+    return g;
+  }, []);
+  useFrame((_, dt) => {
+    const d = Math.min(dt, 0.05);
+    const pos = ref.current.geometry.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < pos.count; i++) {
+      let y = pos.getY(i) + d * 0.07;
+      if (y > 3.2) y = -3.2;
+      pos.setY(i, y);
+    }
+    pos.needsUpdate = true;
+  });
+  return (
+    <points ref={ref} geometry={geo}>
+      <pointsMaterial
+        size={0.022}
+        color="#b3ab9d"
+        transparent
+        opacity={0.45}
+        sizeAttenuation
+        depthWrite={false}
+      />
+    </points>
+  );
 }
 
 export default function BagScene() {
@@ -371,31 +449,36 @@ export default function BagScene() {
         style={{ width: "100%", height: "100%" }}
       >
         <CameraAim />
-        <ambientLight intensity={0.55} color="#fff6ec" />
+        <ambientLight intensity={0.5} color="#fff6ec" />
 
         {/* procedural softbox environment — no HDRI fetch */}
         <Environment resolution={256}>
-          <Lightformer form="rect" intensity={2.2} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
+          <Lightformer form="rect" intensity={2.9} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
+          <Lightformer form="circle" intensity={1.4} color="#ffffff" position={[0, 5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
           <Lightformer form="rect" intensity={0.9} color="#cdd6ff" position={[-4, 1.5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
-          <Lightformer form="rect" intensity={1.1} color="#ffe3c4" position={[-2, 2.5, -4]} scale={[3, 4, 1]} target={[0, 0, 0]} />
+          <Lightformer form="rect" intensity={1.2} color="#ffe3c4" position={[-2, 2.5, -4]} scale={[3, 4, 1]} target={[0, 0, 0]} />
         </Environment>
 
-        {/* one soft directional for weave raking, no shadow map */}
-        <directionalLight position={[3, 5, 4]} intensity={0.65} color="#fff4ea" />
+        {/* soft key for weave raking + form, no shadow map */}
+        <directionalLight position={[3.5, 5, 4]} intensity={0.95} color="#fff4ea" />
 
-        {/* drag-to-rotate with a gentle spring-back; also follows the cursor */}
-        <PresentationControls
-          global={false}
-          cursor
-          snap
-          speed={1.2}
-          polar={[-0.25, 0.3]}
-          azimuth={[-0.7, 0.7]}
-        >
-          <Bag />
-        </PresentationControls>
+        <Dust />
 
-        <ContactShadows position={[0, -1.22, 0]} opacity={0.34} scale={8} blur={3.2} far={3.2} resolution={512} color={SHADOW} />
+        {/* always-on gentle rock; drag to take control (springs back) */}
+        <AutoRock>
+          <PresentationControls
+            global={false}
+            cursor={false}
+            snap
+            speed={1.4}
+            polar={[-0.3, 0.3]}
+            azimuth={[-0.9, 0.9]}
+          >
+            <Bag />
+          </PresentationControls>
+        </AutoRock>
+
+        <ContactShadows position={[0, -1.3, 0]} opacity={0.26} scale={9.5} blur={4.5} far={3.6} resolution={512} color={SHADOW} />
       </Canvas>
     </div>
   );
