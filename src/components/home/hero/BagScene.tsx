@@ -155,6 +155,39 @@ function useRoughnessMap() {
   }, []);
 }
 
+// A soft, feathered specular streak for the closing shine sweep. Bright core
+// that falls off smoothly on the sides AND fades at both ends — so it reads as
+// light raking across laminate, never a hard white bar.
+function useGlintTexture() {
+  return useMemo(() => {
+    const W = 128, H = 256;
+    const c = document.createElement("canvas");
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext("2d")!;
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0.0, "rgba(255,255,255,0)");
+    g.addColorStop(0.4, "rgba(255,255,255,0.05)");
+    g.addColorStop(0.5, "rgba(255,255,255,0.96)");
+    g.addColorStop(0.6, "rgba(255,255,255,0.05)");
+    g.addColorStop(1.0, "rgba(255,255,255,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    // feather the ends so the streak has no hard top/bottom edge
+    ctx.globalCompositeOperation = "destination-in";
+    const v = ctx.createLinearGradient(0, 0, 0, H);
+    v.addColorStop(0.0, "rgba(0,0,0,0)");
+    v.addColorStop(0.2, "rgba(0,0,0,1)");
+    v.addColorStop(0.8, "rgba(0,0,0,1)");
+    v.addColorStop(1.0, "rgba(0,0,0,0)");
+    ctx.fillStyle = v;
+    ctx.fillRect(0, 0, W, H);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
+}
+
 // ── printed KTK front artwork (real logo) ───────────────────────────────────
 function star(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
   ctx.beginPath();
@@ -315,10 +348,11 @@ function Bag() {
     () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.9, transparent: true, opacity: 0, emissive: new THREE.Color("#ffd9a8"), emissiveIntensity: 0 }),
     [],
   );
-  const glintGeo = useMemo(() => new THREE.PlaneGeometry(0.45, 2.7), []);
+  const glintTex = useGlintTexture();
+  const glintGeo = useMemo(() => new THREE.PlaneGeometry(0.5, 2.9), []);
   const glintMat = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }),
-    [],
+    () => new THREE.MeshBasicMaterial({ map: glintTex, color: "#fff2e8", transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }),
+    [glintTex],
   );
 
   const bag = useRef<THREE.Group>(null!);
@@ -364,15 +398,20 @@ function Bag() {
       else g.scale.y = 0.0001 + seamGrow;
     });
     seamMat.opacity = easeOutCubic(seg(p, 0.68, 0.84));
-    seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.7;
+    seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.4;
 
     // 5 — printing applied to the fabric
     frontMat.current.opacity = easeOutCubic(seg(p, 0.82, 0.97));
 
-    // 6 — a one-time specular shine sweep as the product completes
-    const gl = seg(p, 0.88, 1);
-    glint.current.position.x = lerp(-1.15, 1.15, easeInOutCubic(gl));
-    glintMat.opacity = Math.sin(gl * Math.PI) * 0.32;
+    // 6 — one refined specular sweep: a soft highlight rakes across the
+    // laminate, which briefly catches the light (clearcoat lift) as it passes.
+    const gl = seg(p, 0.82, 1);
+    const ge = easeInOutCubic(gl);
+    glint.current.position.x = lerp(-1.3, 1.3, ge);
+    glint.current.position.y = lerp(0.26, -0.26, ge); // slight diagonal rake
+    const glow = Math.pow(Math.sin(gl * Math.PI), 1.6);
+    glintMat.opacity = glow * 0.24;
+    bodyMat.current.clearcoat = 0.1 + glow * 0.16;
 
     // 7 — settle
     bag.current.scale.setScalar(lerp(1.008, 1, easeOutCubic(seg(p, 0.96, 1))));
@@ -437,9 +476,9 @@ function Bag() {
         </mesh>
       </group>
 
-      {/* one-time specular shine sweep */}
+      {/* one-time specular shine sweep — soft, tilted, raking */}
       <group ref={glint}>
-        <mesh position={[0, 0, 0.42]} rotation={[0, 0, 0.1]} geometry={glintGeo} material={glintMat} />
+        <mesh position={[0, 0, 0.42]} rotation={[0, 0, 0.2]} geometry={glintGeo} material={glintMat} />
       </group>
     </group>
   );
@@ -564,7 +603,7 @@ export default function BagScene() {
         style={{ width: "100%", height: "100%" }}
       >
         <CameraRig />
-        <ambientLight intensity={0.45} color="#fff6ec" />
+        <ambientLight intensity={0.34} color="#fff6ec" />
 
         <Environment resolution={256}>
           <Lightformer form="rect" intensity={2.4} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
@@ -591,9 +630,10 @@ export default function BagScene() {
 
         <ContactShadows position={[0, -1.3, 0]} opacity={0.2} scale={9.5} blur={5} far={3.6} resolution={1024} color={SHADOW} />
 
-        {/* cinematic grade: a gentle bloom on the highlights */}
+        {/* cinematic grade: bloom only the true speculars, so the white bag
+            stays crisp instead of milky */}
         <EffectComposer>
-          <Bloom intensity={0.32} luminanceThreshold={0.82} luminanceSmoothing={0.3} mipmapBlur />
+          <Bloom intensity={0.22} luminanceThreshold={0.9} luminanceSmoothing={0.2} mipmapBlur />
         </EffectComposer>
       </Canvas>
     </div>
