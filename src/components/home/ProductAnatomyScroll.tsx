@@ -26,11 +26,11 @@ import type { BagAnatomy, BagLayer } from "@/data/anatomy";
  */
 export function ProductAnatomyScroll({ data }: { data: BagAnatomy }) {
   return (
-    <section className="relative border-t border-seam bg-coal">
+    <section className="relative border-t border-white/12 bg-ink">
       <AnatomyPinned data={data} />
       <AnatomyCards data={data} />
       {data.disclaimer && (
-        <p className="container-x mx-auto pb-12 text-center text-[0.62rem] leading-relaxed text-ash">
+        <p className="container-x mx-auto pb-12 text-center text-[0.62rem] leading-relaxed text-white/55">
           {data.disclaimer}
         </p>
       )}
@@ -67,12 +67,12 @@ function AnatomyPinned({ data }: { data: BagAnatomy }) {
             <div className="col-span-5">
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-red" />
-                <p className="mono text-[0.7rem] uppercase tracking-[0.24em] text-bone-dim">
+                <p className="mono text-[0.7rem] uppercase tracking-[0.24em] text-white/70">
                   {data.eyebrow}
                 </p>
               </div>
-              <h2 className="display mt-5 text-4xl text-bone">{data.title}</h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-ash">{data.intro}</p>
+              <h2 className="display mt-5 text-4xl text-white">{data.title}</h2>
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">{data.intro}</p>
 
               <div className="mt-8 min-h-[188px]">
                 <AnimatePresence mode="wait">
@@ -87,8 +87,8 @@ function AnatomyPinned({ data }: { data: BagAnatomy }) {
                       <span className="mono text-[0.66rem] uppercase tracking-[0.2em] text-red">
                         The whole bag
                       </span>
-                      <h3 className="display mt-3 text-3xl text-bone">{data.closing.title}</h3>
-                      <p className="mt-4 max-w-md leading-relaxed text-bone-dim">
+                      <h3 className="display mt-3 text-3xl text-white">{data.closing.title}</h3>
+                      <p className="mt-4 max-w-md leading-relaxed text-white/70">
                         {data.closing.body}
                       </p>
                     </motion.div>
@@ -104,15 +104,15 @@ function AnatomyPinned({ data }: { data: BagAnatomy }) {
                         <span className="mono text-[0.66rem] text-red">
                           {String(active + 1).padStart(2, "0")} / {String(layers.length).padStart(2, "0")}
                         </span>
-                        <span className="mono text-[0.66rem] uppercase tracking-[0.2em] text-ash">
+                        <span className="mono text-[0.66rem] uppercase tracking-[0.2em] text-white/55">
                           {layers[active].tag}
                         </span>
                       </div>
-                      <h3 className="display mt-3 text-3xl text-bone">{layers[active].name}</h3>
-                      <p className="mt-4 max-w-md leading-relaxed text-bone-dim">
+                      <h3 className="display mt-3 text-3xl text-white">{layers[active].name}</h3>
+                      <p className="mt-4 max-w-md leading-relaxed text-white/70">
                         {layers[active].description}
                       </p>
-                      <p className="mt-5 max-w-md border-l border-seam pl-4 text-[0.78rem] leading-relaxed text-ash">
+                      <p className="mt-5 max-w-md border-l border-white/12 pl-4 text-[0.78rem] leading-relaxed text-white/55">
                         {layers[active].note}
                       </p>
                     </motion.div>
@@ -134,7 +134,7 @@ function AnatomyPinned({ data }: { data: BagAnatomy }) {
                       />
                       <span
                         className={`mono text-[0.66rem] uppercase tracking-[0.14em] transition-colors ${
-                          on ? "text-bone" : "text-ash"
+                          on ? "text-white" : "text-white/55"
                         }`}
                       >
                         {l.name}
@@ -180,7 +180,7 @@ function AnatomyPinned({ data }: { data: BagAnatomy }) {
                     exit={{ opacity: 0, y: 14 }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <span className="mono rounded-full border border-red/40 bg-coal/80 px-5 py-2 text-[0.64rem] uppercase tracking-[0.2em] text-bone backdrop-blur-sm">
+                    <span className="mono rounded-full border border-red/40 bg-black/55 px-5 py-2 text-[0.64rem] uppercase tracking-[0.2em] text-white backdrop-blur-sm">
                       Five layers · one reliable bag
                     </span>
                   </motion.div>
@@ -254,7 +254,7 @@ function Sheet({
             >
               <span className="h-1.5 w-1.5 rounded-full bg-red" />
               <span className="h-px w-10 bg-red" />
-              <span className="mono whitespace-nowrap rounded-sm border border-red/40 bg-coal/80 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.16em] text-bone backdrop-blur-sm">
+              <span className="mono whitespace-nowrap rounded-sm border border-red/40 bg-black/55 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.16em] text-white backdrop-blur-sm">
                 {layer.tag}
               </span>
             </motion.div>
@@ -273,12 +273,12 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
       <div className="container-x py-20">
         <div className="flex items-center gap-3">
           <span className="h-px w-10 bg-red" />
-          <p className="mono text-[0.68rem] uppercase tracking-[0.24em] text-bone-dim">
+          <p className="mono text-[0.68rem] uppercase tracking-[0.24em] text-white/70">
             {data.eyebrow}
           </p>
         </div>
-        <h2 className="display mt-6 text-4xl text-bone">{data.title}</h2>
-        <p className="mt-4 max-w-md leading-relaxed text-ash">{data.intro}</p>
+        <h2 className="display mt-6 text-4xl text-white">{data.title}</h2>
+        <p className="mt-4 max-w-md leading-relaxed text-white/55">{data.intro}</p>
 
         <div className="mt-12 space-y-4">
           {data.layers.map((layer, i) => (
@@ -288,7 +288,7 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              className="flex gap-5 border border-seam bg-iron p-5"
+              className="flex gap-5 border border-white/12 bg-white/[0.05] p-5"
             >
               <div className="h-28 w-20 shrink-0">
                 <BagSheet variant={layer.variant} active />
@@ -298,13 +298,13 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
                   <span className="mono text-[0.62rem] text-red">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-ash">
+                  <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-white/55">
                     {layer.tag}
                   </span>
                 </div>
-                <h3 className="display mt-1.5 text-lg text-bone">{layer.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ash">{layer.description}</p>
-                <p className="mt-3 border-l border-seam pl-3 text-[0.74rem] leading-relaxed text-ash/80">
+                <h3 className="display mt-1.5 text-lg text-white">{layer.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/55">{layer.description}</p>
+                <p className="mt-3 border-l border-white/12 pl-3 text-[0.74rem] leading-relaxed text-white/45">
                   {layer.note}
                 </p>
               </div>
@@ -319,11 +319,11 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="border border-red/40 bg-inst p-6"
           >
-            <span className="mono text-[0.62rem] uppercase tracking-[0.2em] text-bone/70">
+            <span className="mono text-[0.62rem] uppercase tracking-[0.2em] text-white/70">
               The whole bag
             </span>
-            <h3 className="display mt-3 text-2xl text-bone">{data.closing.title}</h3>
-            <p className="mt-3 leading-relaxed text-bone/80">{data.closing.body}</p>
+            <h3 className="display mt-3 text-2xl text-white">{data.closing.title}</h3>
+            <p className="mt-3 leading-relaxed text-white/80">{data.closing.body}</p>
           </motion.div>
         </div>
       </div>

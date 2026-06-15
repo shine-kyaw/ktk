@@ -1,32 +1,37 @@
 import type { Config } from "tailwindcss";
 
-// "Ink & Signal" — high-contrast black/white industrial system for KTK.
-// Pure black ground, near-black panels, white type. Two saturated voices:
-// RED is the primary accent (CTAs, highlights, the logo red), BLUE is the
-// secondary structural color (feature blocks, glows, technical accents).
-// Black + white carry ~90% of the surface; red and blue are spent sparingly.
+// "Cement & Signal" — light, premium industrial system for KTK.
+// A soft cement-white ground with white panels and the odd light-blue tint
+// gives the site a clean, trustworthy B2B feel with section-to-section
+// rhythm. Near-black type. Two saturated voices, spent sparingly: RED is the
+// primary accent (CTAs, highlights, the logo red), BLUE is the secondary /
+// feature color. A small number of INK (near-black) sections add cinematic
+// drama against the light base. Token names are appearance-based, so most
+// components flow light automatically.
 export default {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        coal: "#000000", // black page ground
-        iron: "#121214", // panels — one step up from black
-        seam: "#2A2A30", // hairlines / dividers
+        coal: "#F4F5F7", // page ground — soft cement white
+        iron: "#FFFFFF", // white panels — one step up
+        mist: "#EEF1FB", // light blue-tinted panel
+        seam: "#DCE0E7", // hairlines / dividers
         bone: {
-          DEFAULT: "#FFFFFF", // white type
-          dim: "#C9CAD2", // dimmed white
+          DEFAULT: "#0E1116", // near-black type
+          dim: "#454C58", // secondary type
         },
-        ash: "#85868F", // muted grey text
+        ash: "#6B7280", // muted grey type
         red: {
           DEFAULT: "#FC1303", // primary accent
           deep: "#C70F02",
         },
         blue: {
-          DEFAULT: "#3B41ED", // secondary structural accent
+          DEFAULT: "#3B41ED", // secondary / feature accent
           deep: "#2D32CC",
         },
         inst: "#3B41ED", // institutional / feature blocks = blue
+        ink: "#0B0D12", // dark cinematic sections
         navy: "#1A1D4D", // deep blue — quiet fills
       },
       fontFamily: {

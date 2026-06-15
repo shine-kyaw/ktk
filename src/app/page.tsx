@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { HomeHero } from "@/components/home/HomeHero";
+import { AssembledBagHero } from "@/components/home/AssembledBagHero";
 import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
 import { Reveal } from "@/components/Reveal";
 import {
-  getStats,
   getProofPoints,
   getProductCategories,
   getBagAnatomy,
@@ -43,9 +42,8 @@ const WHY = [
 ];
 
 export default async function HomePage() {
-  const [stats, proof, categories, anatomy, services, jobs, news, activities, industries, partners] =
+  const [proof, categories, anatomy, services, jobs, news, activities, industries, partners] =
     await Promise.all([
-      getStats(),
       getProofPoints(),
       getProductCategories(),
       getBagAnatomy(),
@@ -59,8 +57,8 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1, Hero (heroImage stays null until the client's photos arrive) */}
-      <HomeHero stats={stats} heroImage={null} />
+      {/* 1, Hero, the assembled cement bag */}
+      <AssembledBagHero />
 
       {/* 2, Company introduction */}
       <section className="border-t border-seam bg-iron">
@@ -215,7 +213,7 @@ export default async function HomePage() {
       </section>
 
       {/* 4, Manufacturing excellence */}
-      <section className="grain weave relative overflow-hidden border-t border-seam">
+      <section className="weave relative overflow-hidden border-y border-seam bg-mist">
         <div
           className="absolute inset-0"
           style={{
@@ -370,25 +368,25 @@ export default async function HomePage() {
       </section>
 
       {/* 7, Dealer CTA */}
-      <section className="border-t border-inst bg-inst">
+      <section className="border-y border-inst bg-inst">
         <div className="container-x py-24">
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-10">
               <div>
-                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-bone/70">Partnerships</p>
-                <h2 className="display mt-4 max-w-2xl text-4xl text-bone sm:text-6xl">
+                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-white/70">Partnerships</p>
+                <h2 className="display mt-4 max-w-2xl text-4xl text-white sm:text-6xl">
                   Stock KTK.
                   <br />
                   Build with us.
                 </h2>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-bone/80">
+                <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
                   We are expanding our dealer and distributor network across Myanmar. Talk to our
                   team about pricing, territories, and supply programs.
                 </p>
               </div>
               <Link
                 href="/contact"
-                className="press mono bg-bone px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-coal transition-colors hover:bg-red hover:text-bone"
+                className="press mono bg-white px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-red hover:text-white"
               >
                 Start the conversation
               </Link>
