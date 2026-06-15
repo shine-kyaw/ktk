@@ -15,9 +15,9 @@ function Star({ cx, cy, r }: { cx: number; cy: number; r: number }) {
   return <polygon points={pts.join(" ")} fill="#FC1303" />;
 }
 
-// Filled pillow silhouette: bulging sides, softly pinched sealed top & bottom.
+// Flat, structured, rectangular woven bag with softly rounded corners.
 const BAG =
-  "M 116 56 C 92 64 80 132 80 234 C 80 336 92 404 116 412 C 150 422 210 422 244 412 C 268 404 280 336 280 234 C 280 132 268 64 244 56 C 210 46 150 46 116 56 Z";
+  "M 92 50 H 268 Q 280 50 280 62 V 410 Q 280 422 268 422 H 92 Q 80 422 80 410 V 62 Q 80 50 92 50 Z";
 
 export function HeroBagPoster({ className = "" }: { className?: string }) {
   return (
@@ -47,9 +47,15 @@ export function HeroBagPoster({ className = "" }: { className?: string }) {
         <path d={BAG} fill="url(#hp-body)" stroke="#C9C4B6" strokeWidth="1.4" />
         <g clipPath="url(#hp-clip)">
           <path d={BAG} fill="url(#hp-weave)" />
-          {/* soft volume: highlight left of centre, shade on the right */}
-          <ellipse cx="150" cy="220" rx="66" ry="180" fill="#FFFFFF" opacity="0.4" />
-          <ellipse cx="276" cy="234" rx="46" ry="190" fill="#15120D" opacity="0.06" />
+          {/* subtle flat sheen + faint vertical fold lines */}
+          <rect x="92" y="56" width="46" height="360" fill="#FFFFFF" opacity="0.28" />
+          <line x1="148" y1="52" x2="148" y2="420" stroke="#15120D" strokeOpacity="0.05" strokeWidth="2" />
+          <line x1="212" y1="52" x2="212" y2="420" stroke="#15120D" strokeOpacity="0.05" strokeWidth="2" />
+          {/* sealed/stitched seam edges */}
+          <line x1="86" y1="66" x2="274" y2="66" stroke="#A99F8B" strokeWidth="2.4" strokeDasharray="3 4" />
+          <line x1="86" y1="406" x2="274" y2="406" stroke="#A99F8B" strokeWidth="2.4" strokeDasharray="3 4" />
+          <line x1="89" y1="60" x2="89" y2="412" stroke="#A99F8B" strokeWidth="2" strokeDasharray="3 4" />
+          <line x1="271" y1="60" x2="271" y2="412" stroke="#A99F8B" strokeWidth="2" strokeDasharray="3 4" />
         </g>
 
         {/* red circular emblem */}

@@ -1,29 +1,35 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── timeline helpers ─────────────────────────────────────────────────────────
-const DURATION = 3.6; // seconds for the full assembly
+const DURATION = 4.4; // seconds for the full "woven into strength" sequence
 const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
 const easeInOutCubic = (x: number) =>
   x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const seg = (p: number, a: number, b: number) => Math.min(Math.max((p - a) / (b - a), 0), 1);
 
-// The real KTK product is a WHITE glossy laminated PP woven pillow bag with
-// red emblem + blue KTK print. Colors below match that, not a cement sack.
-const BODY = "#F1F0EC"; // white laminated PP
+// The KTK product: a WHITE woven PP cement bag — flat, structured, rectangular,
+// with realistic woven texture, folds and sealed seams. NOT an inflated pillow.
+const BODY = "#F1F0EC";
+const STRAND = "#ECEAE3";
+const SEAM = "#CCC6B7";
 const BRAND_RED = "#FC1303";
 const BRAND_BLUE = "#3B41ED";
-const SHADOW = "#15120D"; // warm charcoal contact shadow
+const SHADOW = "#15120D";
+
+const BAG_W = 1.5;
+const BAG_H = 1.98;
+const BAG_D = 0.12; // subtle thickness only — a flat bag, not a balloon
 
 // ── height-field → tangent-space normal map (Sobel) ─────────────────────────
 function heightToNormal(
   draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void,
-  size = 256,
+  size = 128,
   strength = 2.2,
   repeat: [number, number] = [1, 1],
 ): THREE.CanvasTexture {
@@ -83,11 +89,8 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
       else ctx.fillRect(gx - gap, gy, pitch + gap, tape);
     }
   }
-  // soft irregularity so the weave isn't mechanically perfect
   for (let i = 0; i < 70; i++) {
-    const x = Math.random() * w;
-    const y = Math.random() * h;
-    const r = 6 + Math.random() * 18;
+    const x = Math.random() * w, y = Math.random() * h, r = 6 + Math.random() * 18;
     const v = Math.random() > 0.5 ? 150 : 92;
     const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
     rg.addColorStop(0, `rgba(${v},${v},${v},0.22)`);
@@ -98,8 +101,7 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
 }
 
 function useWovenNormal() {
-  // 128² (tiled 6×8) keeps the same lit-weave read at a quarter of the Sobel cost.
-  return useMemo(() => heightToNormal(drawWeaveHeight, 128, 2.2, [6, 8]), []);
+  return useMemo(() => heightToNormal(drawWeaveHeight, 128, 2.2, [7, 9]), []);
 }
 
 function useRoughnessMap() {
@@ -108,7 +110,7 @@ function useRoughnessMap() {
     const c = document.createElement("canvas");
     c.width = c.height = N;
     const ctx = c.getContext("2d")!;
-    ctx.fillStyle = "#6f6f6f"; // laminate = fairly glossy
+    ctx.fillStyle = "#8a8a8a"; // matte woven base
     ctx.fillRect(0, 0, N, N);
     for (let i = 0; i < N * N * 0.08; i++) {
       const x = Math.random() * N, y = Math.random() * N;
@@ -118,13 +120,13 @@ function useRoughnessMap() {
     }
     const tex = new THREE.CanvasTexture(c);
     tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(6, 8);
+    tex.repeat.set(7, 9);
     tex.colorSpace = THREE.NoColorSpace;
     return tex;
   }, []);
 }
 
-// ── printed KTK front artwork (transparent, prints over the white body) ─────
+// ── printed KTK front artwork (real logo) ───────────────────────────────────
 function star(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
   ctx.beginPath();
   for (let i = 0; i < 5; i++) {
@@ -138,8 +140,6 @@ function star(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) 
 }
 
 function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
-  // Redraws when the Archivo webfont loads and when the real KTK logo image
-  // loads, so the bag carries the genuine logo (not a hand-drawn approximation).
   return useMemo(() => {
     void fontsReady;
     const W = 512, H = 700;
@@ -151,13 +151,11 @@ function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
     ctx.textAlign = "center";
 
     if (logo) {
-      // real emblem (left square of the lockup) as the top badge
       const emblemSrc = Math.min(logo.height, logo.width);
-      const ew = 156;
-      ctx.drawImage(logo, 0, 0, emblemSrc, logo.height, W / 2 - ew / 2, 60, ew, ew * (logo.height / emblemSrc));
+      const ew = 150;
+      ctx.drawImage(logo, 0, 0, emblemSrc, logo.height, W / 2 - ew / 2, 70, ew, ew * (logo.height / emblemSrc));
     } else {
-      // fallback hand-drawn badge until the image resolves
-      const ex = W / 2, ey = 150, R = 64;
+      const ex = W / 2, ey = 150, R = 60;
       ctx.strokeStyle = BRAND_RED;
       ctx.lineWidth = 5;
       ctx.beginPath();
@@ -167,23 +165,16 @@ function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
       for (let i = 0; i < 5; i++) star(ctx, ex - 40 + i * 20, ey - 26, 8);
     }
 
-    // KTK wordmark — blue
     ctx.fillStyle = BRAND_BLUE;
-    ctx.font = "800 120px Archivo, system-ui, sans-serif";
+    ctx.font = "800 118px Archivo, system-ui, sans-serif";
     ctx.fillText("KTK", W / 2, 360);
-
-    // red rule
     ctx.fillStyle = BRAND_RED;
-    ctx.fillRect(W / 2 - 150, 388, 300, 9);
-
-    // Net : 25 KG
+    ctx.fillRect(W / 2 - 148, 388, 296, 9);
     ctx.fillStyle = "#1a1714";
-    ctx.font = "600 34px Archivo, system-ui, sans-serif";
-    ctx.fillText("Net : 25 KG", W / 2, 452);
-
-    // full real logo lockup as the company signature
+    ctx.font = "600 33px Archivo, system-ui, sans-serif";
+    ctx.fillText("Net : 25 KG", W / 2, 450);
     if (logo) {
-      const lw = 260;
+      const lw = 256;
       ctx.drawImage(logo, W / 2 - lw / 2, 540, lw, lw * (logo.height / logo.width));
     } else {
       ctx.fillStyle = BRAND_BLUE;
@@ -198,171 +189,218 @@ function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
   }, [fontsReady, logo]);
 }
 
-// ── pillow-bag geometry (a filled bag is not a box) ─────────────────────────
-const BAG_W = 1.5;
-const BAG_H = 2.05;
-const BAG_D = 0.14; // thin sealed rim; the body bulges out from here
-const INFLATE = 6.5; // how much the filled body puffs
-
+// ── flat woven-bag geometry (rectangular, subtle thickness, folds + seals) ───
 const smoothstep = (a: number, b: number, x: number) => {
   const t = Math.min(Math.max((x - a) / (b - a), 0), 1);
   return t * t * (3 - 2 * t);
 };
+const bump = (x: number, c: number, w: number) => Math.exp(-((x - c) / w) * ((x - c) / w));
 
-const sealAt = (ny: number) => smoothstep(0.76, 1, Math.abs(ny));
-
-// Bulge amount 0..1 at normalized (nx, ny): full in the centre, 0 at the
-// edges/seals, FULLER toward the bottom (the gravity sag of a filled bag).
-function bulgeF(nx: number, ny: number) {
-  let f = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2));
-  f *= 1 - 0.18 * ny; // gravity: heavier, fuller lower body
-  return Math.max(0, f) * (1 - sealAt(ny) * 0.85);
+// thickness multiplier at normalized (nx, ny): mostly flat, gentle fullness,
+// soft trifold creases, flattened sealed top/bottom. Stays close to 1 (flat).
+function surfaceMul(nx: number, ny: number) {
+  const full = Math.max(0, Math.cos((nx * Math.PI) / 2) * Math.cos((ny * Math.PI) / 2)) * 0.6;
+  const crease = -0.42 * (bump(nx, -0.34, 0.05) + bump(nx, 0.34, 0.05)); // fold lines
+  const seal = smoothstep(0.86, 1, Math.abs(ny));
+  return Math.max(0.25, (1 + full + crease)) * (1 - seal * 0.5);
 }
 
-// Subtle fabric gather near the sealed shoulders (radiating wrinkles).
-function gatherZ(nx: number, ny: number) {
-  const band = smoothstep(0.5, 0.74, Math.abs(ny)) * (1 - smoothstep(0.85, 1, Math.abs(ny)));
-  return Math.sin(nx * Math.PI * 4.5) * 0.013 * band;
-}
-
-// z of the bulged front surface at (x, y) — the print conforms to it.
 function frontZ(x: number, y: number) {
-  const nx = x / (BAG_W / 2);
-  const ny = y / (BAG_H / 2);
-  return (BAG_D / 2) * (1 + bulgeF(nx, ny) * INFLATE) * (1 - sealAt(ny) * 0.55) + gatherZ(nx, ny);
+  return (BAG_D / 2) * surfaceMul(x / (BAG_W / 2), y / (BAG_H / 2));
 }
 
-// A box inflated into a pillow: front/back bulge out (fuller at the bottom),
-// top/bottom pinch into flat sealed fins, sides taper, shoulders gather into
-// soft wrinkles. One unified mesh — no stuck-on seam boxes.
-function usePillowGeometry() {
+function useFlatBagGeometry() {
   return useMemo(() => {
-    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 48, 56, 3);
+    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 40, 50, 2);
     const pos = geo.attributes.position;
-    const hw = BAG_W / 2;
-    const hh = BAG_H / 2;
+    const hw = BAG_W / 2, hh = BAG_H / 2;
     for (let i = 0; i < pos.count; i++) {
-      let x = pos.getX(i);
-      const y = pos.getY(i);
+      const x = pos.getX(i), y = pos.getY(i);
       let z = pos.getZ(i);
-      const nx = x / hw;
-      const ny = y / hh;
-      const seal = sealAt(ny);
-      const g = gatherZ(nx, ny) * Math.sign(z || 1);
-      z = z * (1 + bulgeF(nx, ny) * INFLATE) * (1 - seal * 0.55) + g;
-      x = x * (1 - seal * 0.22); // pinch the sealed ends (dog-ear corners)
-      pos.setXYZ(i, x, y, z);
+      z = z * surfaceMul(x / hw, y / hh); // flat slab, gentle folds, sealed ends
+      pos.setZ(i, z);
     }
     geo.computeVertexNormals();
     return geo;
   }, []);
 }
 
-// A subdivided plane that conforms to the bulged front face, for the print.
 function useFrontGeometry() {
   return useMemo(() => {
-    const geo = new THREE.PlaneGeometry(1.32, 1.5, 32, 40);
+    const geo = new THREE.PlaneGeometry(1.34, 1.62, 28, 36);
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
-      pos.setZ(i, frontZ(pos.getX(i), pos.getY(i)) + 0.006);
+      pos.setZ(i, frontZ(pos.getX(i), pos.getY(i)) + 0.004);
     }
     geo.computeVertexNormals();
     return geo;
   }, []);
 }
 
-// ── the bag ─────────────────────────────────────────────────────────────────
+// ── the bag — "woven into strength" ─────────────────────────────────────────
+type Strand = { axis: "h" | "v"; a: number; side: 1 | -1; over: boolean; delay: number };
+
 function Bag() {
   const [fontsReady, setFontsReady] = useState(false);
   const [logo, setLogo] = useState<HTMLImageElement | null>(null);
   useEffect(() => {
     let alive = true;
     const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
-    (fonts?.ready ?? Promise.resolve()).then(() => {
-      if (alive) setFontsReady(true);
-    });
+    (fonts?.ready ?? Promise.resolve()).then(() => alive && setFontsReady(true));
     const img = new Image();
-    img.onload = () => {
-      if (alive) setLogo(img);
-    };
+    img.onload = () => alive && setLogo(img);
     img.src = "/brand/ktk-logo.png";
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, []);
 
   const wovenNormal = useWovenNormal();
   const roughnessMap = useRoughnessMap();
   const print = usePrintTexture(fontsReady, logo);
-  const pillow = usePillowGeometry();
+  const bagGeo = useFlatBagGeometry();
   const frontGeo = useFrontGeometry();
+
+  // weaving strands (warp + weft)
+  const strands = useMemo<Strand[]>(() => {
+    const hw = BAG_W / 2, hh = BAG_H / 2;
+    const arr: Strand[] = [];
+    const NH = 13;
+    for (let i = 0; i < NH; i++) {
+      arr.push({ axis: "h", a: lerp(-hh * 0.9, hh * 0.9, i / (NH - 1)), side: i % 2 ? 1 : -1, over: i % 2 === 0, delay: (i / NH) * 0.3 });
+    }
+    const NV = 9;
+    for (let j = 0; j < NV; j++) {
+      arr.push({ axis: "v", a: lerp(-hw * 0.9, hw * 0.9, j / (NV - 1)), side: j % 2 ? 1 : -1, over: j % 2 === 1, delay: 0.06 + (j / NV) * 0.3 });
+    }
+    return arr;
+  }, []);
+  const hStrandGeo = useMemo(() => new THREE.PlaneGeometry(BAG_W, 0.05), []);
+  const vStrandGeo = useMemo(() => new THREE.PlaneGeometry(0.05, BAG_H), []);
+  const strandMat = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: STRAND, roughness: 0.92, metalness: 0, transparent: true, opacity: 1, depthWrite: false }),
+    [],
+  );
+  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.99, 0.05, BAG_D + 0.02), []);
+  const seamVGeo = useMemo(() => new THREE.BoxGeometry(0.04, BAG_H * 0.97, BAG_D + 0.02), []);
+  const seamMat = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: SEAM,
+        roughness: 0.9,
+        transparent: true,
+        opacity: 0,
+        emissive: new THREE.Color("#ffd9a8"),
+        emissiveIntensity: 0,
+      }),
+    [],
+  );
 
   const bag = useRef<THREE.Group>(null!);
   const body = useRef<THREE.Group>(null!);
   const bodyMat = useRef<THREE.MeshPhysicalMaterial>(null!);
   const front = useRef<THREE.Group>(null!);
   const frontMat = useRef<THREE.MeshStandardMaterial>(null!);
+  const seamRefs = useRef<(THREE.Group | null)[]>([]);
+  const strandRefs = useRef<(THREE.Group | null)[]>([]);
   const start = useRef<number | null>(null);
+  const O = 0.03; // over-under offset while weaving
 
   useFrame((state) => {
-    // Wall clock, NOT state.clock: toggling Canvas frameloop (the offscreen
-    // gate) resets the R3F clock to 0, which would otherwise replay the whole
-    // assembly every time the hero scrolls back into view.
     if (start.current === null) start.current = performance.now();
     const p = Math.min((performance.now() - start.current) / (DURATION * 1000), 1);
 
-    // 1 — bag forms: appears as the weave tightens
-    const a = easeOutCubic(seg(p, 0, 0.32));
-    // 2 — fills out: inflates to full depth, laminate gloss arrives
-    const b = easeInOutCubic(seg(p, 0.22, 0.66));
-    const s = 0.4 + 0.6 * a;
-    body.current.scale.set(s, s, s * lerp(0.4, 1, b));
-    bodyMat.current.normalScale.set(0.2 + 0.7 * a, 0.2 + 0.7 * a);
-    bodyMat.current.roughness = lerp(0.78, 0.52, b);
-    bodyMat.current.clearcoat = 0.1 + 0.3 * b;
+    const tighten = easeInOutCubic(seg(p, 0.46, 0.62));
+    const strandFade = easeOutCubic(seg(p, 0.5, 0.66));
 
-    // 3 — printed brand appears last
-    const e6 = easeOutCubic(seg(p, 0.64, 0.95));
-    frontMat.current.opacity = e6;
-    front.current.scale.setScalar(lerp(0.965, 1, e6));
+    // 1+2 — threads weave in (over-under), then tighten into alignment
+    strands.forEach((s, k) => {
+      const g = strandRefs.current[k];
+      if (!g) return;
+      const grow = easeOutCubic(seg(p, s.delay, s.delay + 0.16));
+      if (s.axis === "h") g.scale.x = 0.0001 + grow;
+      else g.scale.y = 0.0001 + grow;
+      g.position.z = (1 - tighten) * (s.over ? O : -O);
+    });
+    strandMat.opacity = 1 - strandFade;
 
-    // 4 — settle (monotonic relax, no bounce)
-    const e7 = easeOutCubic(seg(p, 0.93, 1));
-    bag.current.scale.setScalar(lerp(1.012, 1, e7));
+    // 3 — woven sheet becomes the bag surface (fades in as strands fade out)
+    bodyMat.current.opacity = easeOutCubic(seg(p, 0.5, 0.68));
+    bodyMat.current.depthWrite = bodyMat.current.opacity > 0.6;
+    const ns = 0.2 + 0.75 * tighten;
+    bodyMat.current.normalScale.set(ns, ns);
 
-    // idle bob (rotation is owned by PresentationControls for drag-to-rotate)
-    const t = state.clock.elapsedTime;
-    bag.current.position.y = Math.sin(t * 0.9) * 0.022 * p;
-    bag.current.position.x = Math.sin(t * 0.6 + 1.3) * 0.012 * p;
+    // 4 — fold / seal: seam edges form, then briefly highlight (reinforcement)
+    const seamGrow = easeOutCubic(seg(p, 0.54, 0.74));
+    seamRefs.current.forEach((g, k) => {
+      if (!g) return;
+      if (k < 2) g.scale.x = 0.0001 + seamGrow; // top/bottom
+      else g.scale.y = 0.0001 + seamGrow; // sides
+    });
+    seamMat.opacity = easeOutCubic(seg(p, 0.54, 0.72));
+    seamMat.emissiveIntensity = Math.sin(seg(p, 0.82, 0.96) * Math.PI) * 0.7;
+
+    // 5 — printing applied to the fabric
+    frontMat.current.opacity = easeOutCubic(seg(p, 0.72, 0.92));
+
+    // 6 — settle (monotonic, no bounce)
+    bag.current.scale.setScalar(lerp(1.01, 1, easeOutCubic(seg(p, 0.93, 1))));
   });
 
   return (
     <group ref={bag}>
-      {/* one inflated pillow mesh — no stuck-on seams */}
+      {/* weaving strands */}
+      {strands.map((s, k) => {
+        const isH = s.axis === "h";
+        const len = isH ? BAG_W : BAG_H;
+        const gp: [number, number, number] = isH ? [s.side * (BAG_W / 2), s.a, 0] : [s.a, s.side * (BAG_H / 2), 0];
+        const mp: [number, number, number] = isH ? [(-s.side * len) / 2, 0, 0] : [0, (-s.side * len) / 2, 0];
+        return (
+          <group key={k} ref={(el) => { strandRefs.current[k] = el; }} position={gp}>
+            <mesh position={mp} geometry={isH ? hStrandGeo : vStrandGeo} material={strandMat} />
+          </group>
+        );
+      })}
+
+      {/* the flat woven bag surface */}
       <group ref={body}>
-        <mesh geometry={pillow}>
+        <mesh geometry={bagGeo}>
           <meshPhysicalMaterial
             ref={bodyMat}
             color={BODY}
             normalMap={wovenNormal}
-            normalScale={new THREE.Vector2(0.85, 0.85)}
+            normalScale={new THREE.Vector2(0.9, 0.9)}
             roughnessMap={roughnessMap}
-            roughness={0.7}
+            roughness={0.9}
             metalness={0}
-            clearcoat={0.4}
-            clearcoatRoughness={0.55}
-            envMapIntensity={0.85}
-            sheen={0.3}
-            sheenRoughness={0.8}
+            clearcoat={0.12}
+            clearcoatRoughness={0.6}
+            sheen={0.4}
+            sheenRoughness={0.85}
             sheenColor="#ffffff"
+            envMapIntensity={0.7}
+            transparent
+            opacity={0}
           />
         </mesh>
       </group>
 
-      {/* printed brand layer conforming to the bulged front, appears last */}
+      {/* sealed/stitched seam edges (top, bottom, left, right) */}
+      <group ref={(el) => { seamRefs.current[0] = el; }} position={[0, BAG_H / 2 - 0.04, 0]}>
+        <mesh geometry={seamHGeo} material={seamMat} />
+      </group>
+      <group ref={(el) => { seamRefs.current[1] = el; }} position={[0, -BAG_H / 2 + 0.04, 0]}>
+        <mesh geometry={seamHGeo} material={seamMat} />
+      </group>
+      <group ref={(el) => { seamRefs.current[2] = el; }} position={[BAG_W / 2 - 0.03, 0, 0]}>
+        <mesh geometry={seamVGeo} material={seamMat} />
+      </group>
+      <group ref={(el) => { seamRefs.current[3] = el; }} position={[-BAG_W / 2 + 0.03, 0, 0]}>
+        <mesh geometry={seamVGeo} material={seamMat} />
+      </group>
+
+      {/* printed brand on the fabric, conforming to the surface */}
       <group ref={front}>
         <mesh geometry={frontGeo}>
-          <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.5} />
+          <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.6} depthWrite={false} />
         </mesh>
       </group>
     </group>
@@ -372,27 +410,26 @@ function Bag() {
 function CameraAim() {
   const { camera } = useThree();
   useEffect(() => {
-    camera.lookAt(0, 0.05, 0);
+    camera.lookAt(0, 0, 0);
   }, [camera]);
   return null;
 }
 
-// Constant gentle turntable rock so the bag is always alive (drag overrides it).
-function AutoRock({ children }: { children: React.ReactNode }) {
+// Very subtle idle — a suspended product display, not a floating toy.
+function SubtleIdle({ children }: { children: ReactNode }) {
   const ref = useRef<THREE.Group>(null!);
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-    ref.current.rotation.y = Math.sin(t * 0.42) * 0.42;
-    ref.current.rotation.x = Math.sin(t * 0.33 + 1) * 0.045;
+    ref.current.rotation.y = Math.sin(t * 0.24) * 0.028; // ~1.6°
+    ref.current.rotation.x = Math.sin(t * 0.19 + 1) * 0.012; // ~0.7° perspective shift
   });
   return <group ref={ref}>{children}</group>;
 }
 
-// Slow-drifting dust motes — subtle industrial atmosphere.
 function Dust() {
   const ref = useRef<THREE.Points>(null!);
   const geo = useMemo(() => {
-    const N = 130;
+    const N = 110;
     const arr = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
       arr[i * 3] = (Math.random() - 0.5) * 9;
@@ -407,7 +444,7 @@ function Dust() {
     const d = Math.min(dt, 0.05);
     const pos = ref.current.geometry.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < pos.count; i++) {
-      let y = pos.getY(i) + d * 0.07;
+      let y = pos.getY(i) + d * 0.06;
       if (y > 3.2) y = -3.2;
       pos.setY(i, y);
     }
@@ -415,14 +452,7 @@ function Dust() {
   });
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial
-        size={0.022}
-        color="#b3ab9d"
-        transparent
-        opacity={0.45}
-        sizeAttenuation
-        depthWrite={false}
-      />
+      <pointsMaterial size={0.02} color="#b3ab9d" transparent opacity={0.4} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
@@ -443,7 +473,7 @@ export default function BagScene() {
     <div ref={wrapRef} className="h-full w-full" aria-hidden>
       <Canvas
         frameloop={active ? "always" : "never"}
-        camera={{ position: [1.15, 0.55, 5.6], fov: 28, near: 0.1, far: 50 }}
+        camera={{ position: [0.5, 0.25, 5.4], fov: 28, near: 0.1, far: 50 }}
         gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
         dpr={[1, 1.6]}
         style={{ width: "100%", height: "100%" }}
@@ -451,34 +481,31 @@ export default function BagScene() {
         <CameraAim />
         <ambientLight intensity={0.5} color="#fff6ec" />
 
-        {/* procedural softbox environment — no HDRI fetch */}
         <Environment resolution={256}>
-          <Lightformer form="rect" intensity={2.9} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
+          <Lightformer form="rect" intensity={2.8} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
           <Lightformer form="circle" intensity={1.4} color="#ffffff" position={[0, 5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
           <Lightformer form="rect" intensity={0.9} color="#cdd6ff" position={[-4, 1.5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
-          <Lightformer form="rect" intensity={1.2} color="#ffe3c4" position={[-2, 2.5, -4]} scale={[3, 4, 1]} target={[0, 0, 0]} />
+          <Lightformer form="rect" intensity={1.1} color="#ffe3c4" position={[-2, 2.5, -4]} scale={[3, 4, 1]} target={[0, 0, 0]} />
         </Environment>
 
-        {/* soft key for weave raking + form, no shadow map */}
-        <directionalLight position={[3.5, 5, 4]} intensity={0.95} color="#fff4ea" />
+        <directionalLight position={[3.5, 5, 4]} intensity={0.85} color="#fff4ea" />
 
         <Dust />
 
-        {/* always-on gentle rock; drag to take control (springs back) */}
-        <AutoRock>
+        <SubtleIdle>
           <PresentationControls
             global={false}
             cursor={false}
             snap
             speed={1.4}
-            polar={[-0.3, 0.3]}
-            azimuth={[-0.9, 0.9]}
+            polar={[-0.25, 0.25]}
+            azimuth={[-0.6, 0.6]}
           >
             <Bag />
           </PresentationControls>
-        </AutoRock>
+        </SubtleIdle>
 
-        <ContactShadows position={[0, -1.3, 0]} opacity={0.26} scale={9.5} blur={4.5} far={3.6} resolution={512} color={SHADOW} />
+        <ContactShadows position={[0, -1.25, 0]} opacity={0.24} scale={9} blur={4.2} far={3.4} resolution={512} color={SHADOW} />
       </Canvas>
     </div>
   );
