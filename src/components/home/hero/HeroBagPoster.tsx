@@ -1,62 +1,76 @@
 /**
- * Static, light-themed cement bag, used as the hero fallback while the 3D
- * scene loads, for reduced-motion users, and as a lightweight poster. Drawn
- * to match the look of the live 3D bag: cement body, sewn seams, red KTK
- * print band, blue accent, valve, soft contact shadow.
+ * Static, light-themed KTK pillow bag — the hero fallback while the 3D scene
+ * loads, for reduced-motion users, and as a lightweight poster. Matches the
+ * live 3D bag: white glossy laminated body, fin seals, red emblem, blue KTK
+ * wordmark, red rule, "Net : 25 KG", soft contact shadow.
  */
+function Star({ cx, cy, r }: { cx: number; cy: number; r: number }) {
+  const pts: string[] = [];
+  for (let i = 0; i < 5; i++) {
+    const a = (-90 + i * 72) * (Math.PI / 180);
+    const a2 = a + (36 * Math.PI) / 180;
+    pts.push(`${cx + Math.cos(a) * r},${cy + Math.sin(a) * r}`);
+    pts.push(`${cx + Math.cos(a2) * r * 0.45},${cy + Math.sin(a2) * r * 0.45}`);
+  }
+  return <polygon points={pts.join(" ")} fill="#FC1303" />;
+}
+
 export function HeroBagPoster({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 360 460" className={className} aria-hidden="true">
       <defs>
         <linearGradient id="hp-body" x1="0" y1="0" x2="1" y2="0.15">
-          <stop offset="0%" stopColor="#F1EEE7" />
-          <stop offset="55%" stopColor="#E4E0D6" />
-          <stop offset="100%" stopColor="#CFC9BB" />
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="55%" stopColor="#F1F0EC" />
+          <stop offset="100%" stopColor="#DAD7CF" />
         </linearGradient>
-        <linearGradient id="hp-band" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#D2CCBE" />
-          <stop offset="100%" stopColor="#C2BBAB" />
+        <linearGradient id="hp-seal" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#E6E3DC" />
+          <stop offset="100%" stopColor="#D3CFC5" />
         </linearGradient>
         <radialGradient id="hp-shadow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#0B0D12" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#0B0D12" stopOpacity="0" />
+          <stop offset="0%" stopColor="#15120D" stopOpacity="0.26" />
+          <stop offset="100%" stopColor="#15120D" stopOpacity="0" />
         </radialGradient>
         <pattern id="hp-weave" width="9" height="9" patternUnits="userSpaceOnUse">
           <path d="M0 0H9M0 4.5H9" stroke="#000" strokeOpacity="0.05" strokeWidth="1.4" />
-          <path d="M0 0V9M4.5 0V9" stroke="#000" strokeOpacity="0.07" strokeWidth="1.6" />
+          <path d="M0 0V9M4.5 0V9" stroke="#000" strokeOpacity="0.06" strokeWidth="1.6" />
         </pattern>
       </defs>
 
-      {/* contact shadow */}
-      <ellipse cx="180" cy="430" rx="120" ry="20" fill="url(#hp-shadow)" />
+      <ellipse cx="180" cy="432" rx="118" ry="18" fill="url(#hp-shadow)" />
 
-      {/* body */}
       <g>
-        <rect x="70" y="40" width="220" height="380" rx="20" fill="url(#hp-body)" stroke="#C4BEAF" strokeWidth="1.5" />
-        <rect x="70" y="40" width="220" height="380" rx="20" fill="url(#hp-weave)" />
-        {/* left volume highlight */}
-        <rect x="84" y="56" width="40" height="348" rx="14" fill="#FFFFFF" opacity="0.18" />
-        {/* right volume shade */}
-        <rect x="244" y="52" width="40" height="356" rx="14" fill="#0B0D12" opacity="0.06" />
+        <rect x="72" y="40" width="216" height="380" rx="22" fill="url(#hp-body)" stroke="#C9C4B6" strokeWidth="1.4" />
+        <rect x="72" y="40" width="216" height="380" rx="22" fill="url(#hp-weave)" />
+        {/* volume light + shade */}
+        <rect x="86" y="56" width="40" height="348" rx="14" fill="#FFFFFF" opacity="0.5" />
+        <rect x="244" y="52" width="38" height="356" rx="14" fill="#15120D" opacity="0.05" />
 
-        {/* sewn seams */}
-        <rect x="70" y="40" width="220" height="34" rx="16" fill="url(#hp-band)" />
-        <rect x="70" y="386" width="220" height="34" rx="16" fill="url(#hp-band)" />
-        <line x1="86" y1="57" x2="274" y2="57" stroke="#000" strokeOpacity="0.18" strokeWidth="2" strokeDasharray="2 7" />
-        <line x1="86" y1="403" x2="274" y2="403" stroke="#000" strokeOpacity="0.18" strokeWidth="2" strokeDasharray="2 7" />
+        {/* fin seals top & bottom */}
+        <rect x="72" y="40" width="216" height="26" rx="13" fill="url(#hp-seal)" />
+        <rect x="72" y="394" width="216" height="26" rx="13" fill="url(#hp-seal)" />
 
-        {/* valve, top-right */}
-        <path d="M214 40 H286 V70 H236 Z" fill="#D8D2C5" stroke="#C0BAAB" strokeWidth="1.2" />
+        {/* red circular emblem */}
+        <g>
+          <circle cx="180" cy="120" r="34" fill="none" stroke="#FC1303" strokeWidth="2.4" />
+          <path d="M156 132 A26 26 0 0 1 204 132" fill="none" stroke="#FC1303" strokeWidth="1.6" />
+          <path d="M161 128 A20 20 0 0 1 199 128" fill="none" stroke="#FC1303" strokeWidth="1.6" />
+          <Star cx={162} cy={106} r={4} />
+          <Star cx={171} cy={102} r={4} />
+          <Star cx={180} cy={101} r={4} />
+          <Star cx={189} cy={102} r={4} />
+          <Star cx={198} cy={106} r={4} />
+        </g>
 
-        {/* printed brand band */}
-        <rect x="96" y="176" width="168" height="92" rx="8" fill="#FC1303" />
-        <text x="180" y="226" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="40" letterSpacing="2" fill="#FFFFFF">KTK</text>
-        <rect x="120" y="240" width="120" height="4" rx="2" fill="#3B41ED" />
-
-        {/* spec lines */}
-        <rect x="96" y="290" width="150" height="6" rx="3" fill="#0B0D12" opacity="0.18" />
-        <rect x="96" y="306" width="120" height="6" rx="3" fill="#0B0D12" opacity="0.13" />
-        <rect x="96" y="322" width="138" height="6" rx="3" fill="#0B0D12" opacity="0.1" />
+        {/* blue KTK wordmark */}
+        <text x="180" y="208" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="58" letterSpacing="2" fill="#3B41ED">KTK</text>
+        {/* red rule */}
+        <rect x="108" y="224" width="144" height="5" rx="2.5" fill="#FC1303" />
+        {/* Net : 25 KG */}
+        <text x="180" y="262" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="18" fill="#1A1714">Net : 25 KG</text>
+        {/* company line */}
+        <text x="180" y="324" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="11" fill="#3B41ED">Kaung Thu Kha Trading Co.,Ltd</text>
       </g>
     </svg>
   );

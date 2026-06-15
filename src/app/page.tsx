@@ -1,58 +1,39 @@
 import Link from "next/link";
 import { AssembledBagHero } from "@/components/home/AssembledBagHero";
+import { ProductQuality } from "@/components/home/ProductQuality";
 import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
+import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { Reveal } from "@/components/Reveal";
 import {
   getProofPoints,
-  getProductCategories,
+  getFeaturedProducts,
   getBagAnatomy,
-  getServices,
+  getQualityPillars,
+  getProcessSteps,
+  getWhyPoints,
   getJobs,
   getNews,
   getActivities,
   getIndustries,
   getPartners,
+  getCompany,
 } from "@/lib/cms";
 
-const WHY = [
-  {
-    title: "The scale leader",
-    desc: "~55% of Myanmar's PP woven-bag market and 27 million bags a month. No domestic supplier matches the volume.",
-  },
-  {
-    title: "European technology",
-    desc: "Cement sacks and woven bags produced on STARLINGER lines by European-trained operators, the global bag-plant standard.",
-  },
-  {
-    title: "Food-grade inputs",
-    desc: "Virgin resin from SABIC, the world's fourth-largest chemical producer. No recycled content, no odor, reliable strength.",
-  },
-  {
-    title: "One-stop supply",
-    desc: "Bags, thread, filler, closing machinery, and 70,000+ spare parts, one accountable partner for the whole line.",
-  },
-  {
-    title: "Exclusive agencies",
-    desc: "Sole Myanmar distributor for HCH bearings and YAO HAN machinery, sources competitors can't get locally.",
-  },
-  {
-    title: "Responsible service",
-    desc: "Door-to-door teams and on-site problem-solving, backed by a 100% quality-assurance pledge on every lot.",
-  },
-];
-
 export default async function HomePage() {
-  const [proof, categories, anatomy, services, jobs, news, activities, industries, partners] =
+  const [proof, featured, anatomy, quality, process, why, jobs, news, activities, industries, partners, company] =
     await Promise.all([
       getProofPoints(),
-      getProductCategories(),
+      getFeaturedProducts(6),
       getBagAnatomy(),
-      getServices(),
+      getQualityPillars(),
+      getProcessSteps(),
+      getWhyPoints(),
       getJobs(),
       getNews(),
       getActivities(),
       getIndustries(),
       getPartners(),
+      getCompany(),
     ]);
 
   return (
@@ -60,8 +41,8 @@ export default async function HomePage() {
       {/* 1, Hero, the assembled cement bag */}
       <AssembledBagHero />
 
-      {/* 2, Company introduction */}
-      <section className="border-t border-seam bg-iron">
+      {/* 2, Company trust introduction */}
+      <section className="border-t border-seam bg-coal">
         <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
           <Reveal>
             <p className="eyebrow">The company</p>
@@ -70,11 +51,11 @@ export default async function HomePage() {
               <br />
               the <span className="text-red">supply chain.</span>
             </h2>
-            <p className="mt-7 max-w-md leading-relaxed text-ash">
-              Kaung Thu Kha began in 2008 as Myanmar&apos;s authorized bearing distributor and
-              grew into the country&apos;s leading industrial-packaging manufacturer, running
-              European STARLINGER lines out of the San Kaung factory and supplying the
-              machinery, consumables, and service around every bag.
+            <p className="mt-7 max-w-md leading-relaxed text-bone-dim">
+              Founded in 2008 and manufacturing since 1991, Kaung Thu Kha grew from Myanmar&apos;s
+              authorized bearing distributor into its leading industrial-packaging maker. We run
+              European STARLINGER lines at the San Kaung factory and supply the machinery,
+              consumables, and service around every bag.
             </p>
             <div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
               {proof.map((p) => (
@@ -101,15 +82,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3, Product showcase */}
-      <section className="border-t border-seam">
+      {/* 3a, Product quality pillars */}
+      <ProductQuality pillars={quality} />
+
+      {/* 3b, Product anatomy — the dark teardown, evidence for the pillars */}
+      <ProductAnatomyScroll data={anatomy} />
+
+      {/* 3c, Quality close-line */}
+      <section className="border-t border-seam bg-coal">
+        <div className="container-x py-14">
+          <Reveal>
+            <p className="eyebrow text-center">Engineered to be trusted</p>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-lg leading-relaxed text-bone-dim">
+              Five layers, one job: protect what is inside, from our factory floor to your site.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 4, Featured products */}
+      <section className="border-t border-seam bg-coal">
         <div className="container-x py-24">
           <Reveal>
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div>
                 <p className="eyebrow">Products</p>
                 <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
-                  Everything around the bag.
+                  Built for the bag, and everything around it.
                 </h2>
               </div>
               <Link
@@ -121,36 +120,37 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c, i) => {
-              const slug = c.name.toLowerCase().replace(/&/g, "").replace(/\s+/g, "-");
-              return (
-                <Reveal key={c.name} delay={(i % 3) * 0.08} className="bg-coal">
-                  <Link
-                    href={`/products#${slug}`}
-                    className="group flex h-full flex-col p-7 transition-colors hover:bg-iron"
-                  >
-                    {/* per-category visual, receives a photo via the CMS later */}
-                    <div className="weave grain mb-6 aspect-[16/9] border border-seam bg-iron" />
-                    <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
-                      {c.tagline}
-                    </span>
-                    <h3 className="display mt-2 text-xl text-bone transition-colors group-hover:text-red">
-                      {c.name}
-                    </h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{c.blurb}</p>
-                    <span className="mono mt-6 text-[0.62rem] uppercase tracking-[0.18em] text-red opacity-0 transition-opacity group-hover:opacity-100">
-                      View category →
-                    </span>
-                  </Link>
-                </Reveal>
-              );
-            })}
+            {featured.map((p, i) => (
+              <Reveal key={p.slug} delay={(i % 3) * 0.08} className="bg-iron">
+                <Link
+                  href={`/products/${p.slug}`}
+                  className="group flex h-full flex-col p-7 transition-colors hover:bg-coal"
+                >
+                  <div className="weave relative mb-6 aspect-[4/3] overflow-hidden border border-seam bg-coal realshadow" />
+                  <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
+                    {p.category}
+                  </span>
+                  <h3 className="display mt-2 text-xl leading-tight text-bone transition-colors group-hover:text-red">
+                    {p.name}
+                  </h3>
+                  <p className="mono mt-2 text-[0.62rem] uppercase tracking-[0.16em] text-ash">
+                    {p.applications[0]}
+                  </p>
+                  <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ash">
+                    {p.summary}
+                  </p>
+                  <span className="mono mt-6 inline-flex items-center gap-2 text-[0.62rem] uppercase tracking-[0.18em] text-red opacity-0 transition-opacity group-hover:opacity-100">
+                    View product <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
 
-            {/* fills the grid to a clean two rows; also a real entry point */}
-            <Reveal delay={0.16} className="bg-coal">
+            {/* browse-all card spans to fill the row cleanly */}
+            <Reveal delay={0.16} className="bg-iron sm:col-span-2 lg:col-span-2">
               <Link
                 href="/products"
-                className="group flex h-full flex-col justify-between p-7 transition-colors hover:bg-iron"
+                className="group flex h-full flex-col justify-between p-7 transition-colors hover:bg-coal"
               >
                 <div>
                   <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
@@ -159,9 +159,9 @@ export default async function HomePage() {
                   <h3 className="display mt-2 text-xl text-bone transition-colors group-hover:text-red">
                     Browse all products
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ash">
-                    Specs, applications, and partner brands across every category, from cement
-                    sacks to bearings.
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-ash">
+                    Cement sacks, PP woven bags, fillers and thread, machinery, and bearings, with
+                    specs and applications on every product.
                   </p>
                 </div>
                 <span className="mono mt-10 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.18em] text-red">
@@ -174,78 +174,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3a, Product anatomy (interactive material breakdown) */}
-      <ProductAnatomyScroll data={anatomy} />
-
-      {/* 3b, Featured services */}
-      <section className="border-t border-seam bg-iron">
-        <div className="container-x py-24">
+      {/* 4b, Technology & brand partners (credibility footnote to products) */}
+      <section className="border-t border-seam bg-coal">
+        <div className="container-x py-14">
           <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <p className="eyebrow">Services</p>
-                <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
-                  One-stop, by design.
-                </h2>
-              </div>
-              <Link
-                href="/services"
-                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone"
-              >
-                All services →
-              </Link>
+            <p className="mono text-center text-[0.62rem] uppercase tracking-[0.24em] text-ash">
+              Technology & brand partners
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
+              {partners.map((p) => (
+                <span
+                  key={p.name}
+                  title={`${p.origin}, ${p.note}`}
+                  className="display text-xl tracking-wide text-bone/35 transition-colors hover:text-bone/70"
+                >
+                  {p.name}
+                </span>
+              ))}
             </div>
           </Reveal>
-          <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
-            {services.slice(0, 3).map((s, i) => (
-              <Reveal key={s.slug} delay={i * 0.08} className="bg-iron">
-                <Link href="/services" className="group block h-full p-7 transition-colors hover:bg-coal">
-                  <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
-                  <h3 className="display mt-4 text-xl text-bone transition-colors group-hover:text-red">
-                    {s.name}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ash">{s.summary}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* 4, Manufacturing excellence */}
-      <section className="weave relative overflow-hidden border-y border-seam bg-mist">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(110% 100% at 100% 0%, rgb(59 65 237 / 0.16) 0%, transparent 50%)",
-          }}
-        />
-        <div className="container-x relative py-32">
-          <Reveal>
-            <p className="eyebrow">Manufacturing</p>
-            <h2 className="display mt-5 max-w-3xl text-4xl text-bone sm:text-6xl">
-              15 million sacks a month.
-              <br />
-              <span className="text-red">European lines.</span>
-            </h2>
-            <p className="mt-7 max-w-lg leading-relaxed text-bone-dim">
-              The San Kaung factory runs STARLINGER extrusion, weaving, lamination, and
-              conversion, operated by technicians trained by European specialists, with
-              inspection at every stage from tape to finished sack.
-            </p>
-            <Link
-              href="/manufacturing"
-              className="press mono mt-10 inline-block border border-bone/30 px-7 py-4 text-[0.72rem] uppercase tracking-[0.16em] text-bone transition-colors hover:border-red hover:text-red"
-            >
-              Inside the plant
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      {/* 5, Manufacturing process timeline (dark cinematic) */}
+      <ProcessTimeline steps={process} />
 
-      {/* 5, Why choose KTK */}
-      <section className="border-t border-seam bg-iron">
+      {/* 6, Why choose KTK */}
+      <section className="border-t border-seam bg-mist">
         <div className="container-x py-24">
           <Reveal>
             <p className="eyebrow">Why KTK</p>
@@ -254,7 +209,7 @@ export default async function HomePage() {
             </h2>
           </Reveal>
           <div className="mt-14 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
-            {WHY.map((w, i) => (
+            {why.map((w, i) => (
               <Reveal key={w.title} delay={(i % 3) * 0.08} className="bg-iron">
                 <div className="h-full p-7">
                   <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
@@ -267,8 +222,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6, Latest news & activities */}
-      <section className="border-t border-seam">
+      {/* 7, Latest news & activities */}
+      <section className="border-t border-seam bg-coal">
         <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
           <Reveal>
             <div className="flex items-end justify-between gap-6">
@@ -311,7 +266,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6b, Careers strip */}
+      {/* 8, Careers preview */}
       <section className="border-t border-seam bg-iron">
         <div className="container-x py-24">
           <Reveal>
@@ -345,72 +300,81 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6c, Partner marks */}
+      {/* 9, Two-lane inquiry CTA (product + dealer) */}
       <section className="border-t border-seam">
-        <div className="container-x py-14">
-          <Reveal>
-            <p className="mono text-center text-[0.62rem] uppercase tracking-[0.24em] text-ash">
-              Technology & brand partners
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
-              {partners.map((p) => (
-                <span
-                  key={p.name}
-                  title={`${p.origin}, ${p.note}`}
-                  className="display text-xl tracking-wide text-bone/35 transition-colors hover:text-bone/70"
-                >
-                  {p.name}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 7, Dealer CTA */}
-      <section className="border-y border-inst bg-inst">
-        <div className="container-x py-24">
-          <Reveal>
-            <div className="flex flex-wrap items-center justify-between gap-10">
+        <div className="container-x grid gap-px bg-seam md:grid-cols-2">
+          {/* Lane A — Product inquiry (light) */}
+          <Reveal className="bg-coal">
+            <div className="weave flex h-full flex-col justify-between p-10 lg:p-14">
               <div>
-                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-white/70">Partnerships</p>
-                <h2 className="display mt-4 max-w-2xl text-4xl text-white sm:text-6xl">
-                  Stock KTK.
-                  <br />
-                  Build with us.
+                <p className="eyebrow">Product inquiry</p>
+                <h2 className="display mt-4 max-w-sm text-3xl text-bone sm:text-4xl">
+                  Need bags, specs, or a quote?
                 </h2>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
-                  We are expanding our dealer and distributor network across Myanmar. Talk to our
-                  team about pricing, territories, and supply programs.
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-ash">
+                  Tell us your product, capacity, and volume. Our team will match the right bag and
+                  filling-line spec.
                 </p>
               </div>
               <Link
-                href="/contact"
-                className="press mono bg-white px-9 py-5 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-red hover:text-white"
+                href="/contact?type=product"
+                className="press mono mt-10 inline-block bg-red px-8 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
               >
-                Start the conversation
+                Request a product quote
+              </Link>
+            </div>
+          </Reveal>
+
+          {/* Lane B — Dealer / distributor inquiry (blue, cinematic) */}
+          <Reveal delay={0.1} className="bg-inst">
+            <div className="relative flex h-full flex-col justify-between overflow-hidden p-10 lg:p-14">
+              <div className="blueprint-light absolute inset-0 opacity-40" />
+              <div className="relative">
+                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-white/70">
+                  Dealer & distributor inquiry
+                </p>
+                <h2 className="display mt-4 max-w-sm text-3xl text-white sm:text-4xl">
+                  Stock KTK. Build with us.
+                </h2>
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/80">
+                  We are expanding our dealer network across Myanmar. Talk to us about pricing,
+                  territories, and supply programs.
+                </p>
+              </div>
+              <Link
+                href="/contact?type=dealer"
+                className="press mono relative mt-10 inline-block bg-white px-8 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-red hover:text-white"
+              >
+                Become a partner
               </Link>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* 8, Contact strip */}
-      <section className="border-t border-seam">
+      {/* 9b, Contact strip (wired to CMS company) */}
+      <section className="border-t border-seam bg-coal">
         <div className="container-x grid gap-10 py-24 md:grid-cols-3">
           <Reveal>
             <h3 className="eyebrow">Call</h3>
-            <p className="mono mt-4 text-lg text-bone">(959) 264 817 108</p>
-            <p className="mono mt-1 text-lg text-bone">(959) 264 817 109</p>
+            {company.phones.map((phone) => (
+              <p key={phone} className="mono mt-3 text-lg text-bone">
+                {phone}
+              </p>
+            ))}
           </Reveal>
           <Reveal delay={0.08}>
             <h3 className="eyebrow">Write</h3>
-            <p className="mono mt-4 text-lg text-bone">sales@ktk.com.mm</p>
+            {company.emails.map((email) => (
+              <p key={email} className="mono mt-3 text-lg text-bone">
+                {email}
+              </p>
+            ))}
           </Reveal>
           <Reveal delay={0.16}>
             <h3 className="eyebrow">Visit</h3>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-bone-dim">
-              Zone (2), Hlaing Thar Yar Township, Yangon , {" "}
+              {company.hq.line1}, {company.hq.line2}{" "}
               <Link href="/contact" className="text-red hover:text-bone">
                 map & inquiry form →
               </Link>

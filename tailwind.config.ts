@@ -13,25 +13,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        coal: "#F4F5F7", // page ground — soft cement white
-        iron: "#FFFFFF", // white panels — one step up
-        mist: "#EEF1FB", // light blue-tinted panel
-        seam: "#DCE0E7", // hairlines / dividers
+        coal: "#F5F3EF", // page ground — warm cement white
+        iron: "#FCFBF9", // panels — faint warm white, one step up
+        mist: "#EDF0FA", // light blue-tinted panel (the one cool voice)
+        seam: "#E1DDD5", // hairlines / dividers — warm cement gray
         bone: {
-          DEFAULT: "#0E1116", // near-black type
-          dim: "#454C58", // secondary type
+          DEFAULT: "#16130E", // near-black warm charcoal type
+          dim: "#4C463D", // secondary warm-taupe type
         },
-        ash: "#6B7280", // muted grey type
+        ash: "#6E6A62", // muted warm stone gray type
         red: {
-          DEFAULT: "#FC1303", // primary accent
+          DEFAULT: "#FC1303", // primary accent (kept exact)
           deep: "#C70F02",
         },
         blue: {
-          DEFAULT: "#3B41ED", // secondary / feature accent
+          DEFAULT: "#3B41ED", // secondary / feature accent (kept exact)
           deep: "#2D32CC",
         },
         inst: "#3B41ED", // institutional / feature blocks = blue
-        ink: "#0B0D12", // dark cinematic sections
+        ink: "#0C0A08", // warm charcoal-black — dark cinematic sections
         navy: "#1A1D4D", // deep blue — quiet fills
       },
       fontFamily: {

@@ -14,10 +14,10 @@ const BagScene = dynamic(() => import("./hero/BagScene"), {
 });
 
 const TRUST = [
-  "Quality materials",
-  "Reliable supply",
-  "Built for cement packaging",
-  "Trusted manufacturing",
+  "Product Quality",
+  "Reliable Supply",
+  "Industrial Manufacturing",
+  "Trusted Partner",
 ];
 
 function PosterStage() {
@@ -73,15 +73,15 @@ export function AssembledBagHero() {
             </p>
           </div>
 
-          <h1 className="display mt-6 text-[clamp(2.6rem,6vw,5rem)] text-bone">
-            Built for strength.
+          <h1 className="display mt-6 text-[clamp(2.5rem,5.6vw,4.8rem)] leading-[1.04] text-bone">
+            Built Layer by Layer
             <br />
-            <span className="text-red">Made to protect.</span>
+            for <span className="text-red">Reliable Strength.</span>
           </h1>
 
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-bone-dim">
-            Engineered cement bags, layered from quality materials and built to keep cement dry,
-            intact, and reliable from our factory floor to your site.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">
+            KTK manufactures cement packaging designed for consistent quality, dependable handling,
+            and trusted supply across Myanmar&rsquo;s construction industry.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

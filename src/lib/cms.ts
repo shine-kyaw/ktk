@@ -27,6 +27,9 @@ import {
   VALUES,
   INDUSTRIES,
   PARTNERS,
+  QUALITY_PILLARS,
+  PROCESS_STEPS,
+  WHY_POINTS,
 } from "@/content/company";
 
 export type { Product, ProductCategory, Service, Job, NewsPost, Activity, BagAnatomy, BagLayer };
@@ -81,6 +84,15 @@ export async function getIndustries() {
 }
 export async function getPartners() {
   return (await fetchSingleton<typeof PARTNERS>("partners")) ?? PARTNERS;
+}
+export async function getQualityPillars() {
+  return (await fetchSingleton<typeof QUALITY_PILLARS>("quality_pillars")) ?? QUALITY_PILLARS;
+}
+export async function getProcessSteps() {
+  return (await fetchSingleton<typeof PROCESS_STEPS>("process_steps")) ?? PROCESS_STEPS;
+}
+export async function getWhyPoints() {
+  return (await fetchSingleton<typeof WHY_POINTS>("why_points")) ?? WHY_POINTS;
 }
 
 // ── Products ────────────────────────────────────────────────────────────────

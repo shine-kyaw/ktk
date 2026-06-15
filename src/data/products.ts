@@ -3,6 +3,33 @@
 // directly. When the admin backend ships, the getter bodies swap to fetch()
 // and this file can be deleted.
 
+export type ProductMedia = {
+  /** Path under /public, e.g. "/products/ad-star/hero.jpg". */
+  src: string;
+  /** Required alt text for accessibility. */
+  alt: string;
+  /** Optional one-line caption shown under the image in the gallery. */
+  caption?: string;
+};
+
+/**
+ * One reusable material layer for the product-page breakdown. Mirrors the
+ * BagLayer language from src/data/anatomy.ts so the same `variant` art
+ * (BagSheet) can render here. `note` is a PLACEHOLDER until KTK confirms specs.
+ */
+export type ProductMaterialLayer = {
+  id: string;
+  /** Low number = outer layer (same convention as BagLayer.order). */
+  order: number;
+  name: string;
+  /** Short chip label, e.g. "Load-bearing core". */
+  tag: string;
+  description: string;
+  /** Engineering note — PLACEHOLDER until verified. */
+  note?: string;
+  variant: import("./anatomy").BagLayerVariant;
+};
+
 export type Product = {
   slug: string;
   name: string;
@@ -13,6 +40,20 @@ export type Product = {
   /** Optional media path, drop a file in /public and set this; UI reveals it. */
   image?: string | null;
   featured?: boolean;
+
+  // ── Enriched detail fields, all optional (backward compatible) ─────────────
+  /** 2–4 sentence richer narrative under the summary. */
+  longDescription?: string;
+  /** "Best for" scenarios, short noun phrases. */
+  useCases?: string[];
+  /** Key benefits, each a short title + one-line proof. */
+  benefits?: { title: string; detail: string }[];
+  /** Extra photos beyond `image` (the lead/hero shot). */
+  gallery?: ProductMedia[];
+  /** Material teardown, reuses the anatomy/BagSheet layer language. */
+  materialLayers?: ProductMaterialLayer[];
+  /** Path to a PDF in /public; the button is DISABLED until set. */
+  brochureUrl?: string | null;
 };
 
 export type ProductCategory =
@@ -63,6 +104,19 @@ export const PRODUCTS: Product[] = [
     category: "Cement Sacks",
     summary:
       "High-strength block-bottom valve sack produced on STARLINGER AD-Star lines, coated for moisture resistance and engineered for automated cement filling at high line speeds.",
+    longDescription:
+      "The AD-Star sack is built layer by layer for reliable strength: a printed outer face, a moisture-resistant coating, a woven polypropylene core, reinforced seams, and a self-sealing block-bottom valve. It is engineered for high-speed automated filling at cement plants and dependable handling through stacking, transport, and storage.",
+    useCases: [
+      "High-speed automated cement filling lines",
+      "Bulk cement distribution and stacking",
+      "Moisture-sensitive storage and transport",
+    ],
+    benefits: [
+      { title: "Built for line speed", detail: "Block-bottom valve self-seals on automated fillers, with no separate closing step." },
+      { title: "Moisture resistance", detail: "Laminated coating shields cement from humidity, dust, and abrasion." },
+      { title: "Consistent lot quality", detail: "Produced on European STARLINGER AD-Star lines for repeatable strength." },
+      { title: "Brand-ready", detail: "Sharp print, up to six colors, legible through handling and stacking." },
+    ],
     specs: [
       { label: "Capacity", value: "50 kg" },
       { label: "Construction", value: "Block-bottom valve" },
@@ -70,6 +124,14 @@ export const PRODUCTS: Product[] = [
       { label: "Printing", value: "Up to 6 colors" },
     ],
     applications: ["Cement plants", "Automated filling lines", "Bulk distribution"],
+    materialLayers: [
+      { id: "print", order: 1, name: "Printed outer layer", tag: "Outer surface", variant: "print", description: "Your brand printed sharp on the bag's outer face, legible through handling and stacking.", note: "Placeholder: confirm print method and ink durability with KTK." },
+      { id: "lam", order: 2, name: "Moisture-resistant coating", tag: "Protective film", variant: "lamination", description: "A laminated film seals the woven surface against moisture, dust, and abrasion.", note: "Placeholder: confirm coating type and moisture rating with KTK." },
+      { id: "woven", order: 3, name: "Woven polypropylene core", tag: "Load-bearing core", variant: "woven", description: "Tightly woven PP tapes carry the load and resist tearing under weight.", note: "Placeholder: confirm tape denier and tensile strength with KTK." },
+      { id: "seam", order: 4, name: "Reinforced seams", tag: "Seams", variant: "stitching", description: "Reinforced seams hold the bag together at its weakest points.", note: "Placeholder: confirm seam construction with KTK." },
+      { id: "valve", order: 5, name: "Block-bottom valve", tag: "Filling structure", variant: "valve", description: "Fills fast on automated lines and self-seals once packed.", note: "Placeholder: confirm valve type and fill-speed compatibility with KTK." },
+    ],
+    brochureUrl: null,
     featured: true,
   },
   {

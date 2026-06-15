@@ -40,6 +40,19 @@
     @apply transition-transform duration-150 active:scale-[0.97];
   }
 
+  /* Warm paper grain for light premium bands */
+  .paper {
+    background-color: #f5f3ef;
+    background-image: radial-gradient(rgb(22 19 14 / 0.022) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  /* Realistic, warm-tinted product drop-shadow */
+  .realshadow {
+    filter: drop-shadow(0 30px 45px rgb(22 19 14 / 0.16))
+      drop-shadow(0 8px 14px rgb(22 19 14 / 0.1));
+  }
+
   /* Film grain, laid over cinematic imagery so photos feel graded, not stock */
   .grain::after {
     content: "";
