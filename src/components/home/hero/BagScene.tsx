@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 // ── timeline helpers ─────────────────────────────────────────────────────────
@@ -314,6 +315,11 @@ function Bag() {
     () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.9, transparent: true, opacity: 0, emissive: new THREE.Color("#ffd9a8"), emissiveIntensity: 0 }),
     [],
   );
+  const glintGeo = useMemo(() => new THREE.PlaneGeometry(0.45, 2.7), []);
+  const glintMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }),
+    [],
+  );
 
   const bag = useRef<THREE.Group>(null!);
   const body = useRef<THREE.Group>(null!);
@@ -322,6 +328,7 @@ function Bag() {
   const frontMat = useRef<THREE.MeshStandardMaterial>(null!);
   const seamRefs = useRef<(THREE.Group | null)[]>([]);
   const strandRefs = useRef<(THREE.Group | null)[]>([]);
+  const glint = useRef<THREE.Group>(null!);
   const start = useRef<number | null>(null);
   const O = 0.04; // over-under depth while weaving
 
@@ -362,7 +369,12 @@ function Bag() {
     // 5 — printing applied to the fabric
     frontMat.current.opacity = easeOutCubic(seg(p, 0.82, 0.97));
 
-    // 6 — settle
+    // 6 — a one-time specular shine sweep as the product completes
+    const gl = seg(p, 0.88, 1);
+    glint.current.position.x = lerp(-1.15, 1.15, easeInOutCubic(gl));
+    glintMat.opacity = Math.sin(gl * Math.PI) * 0.32;
+
+    // 7 — settle
     bag.current.scale.setScalar(lerp(1.008, 1, easeOutCubic(seg(p, 0.96, 1))));
   });
 
@@ -423,6 +435,11 @@ function Bag() {
         <mesh geometry={frontGeo}>
           <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.62} depthWrite={false} />
         </mesh>
+      </group>
+
+      {/* one-time specular shine sweep */}
+      <group ref={glint}>
+        <mesh position={[0, 0, 0.42]} rotation={[0, 0, 0.1]} geometry={glintGeo} material={glintMat} />
       </group>
     </group>
   );
@@ -572,7 +589,12 @@ export default function BagScene() {
           </PresentationControls>
         </PremiumIdle>
 
-        <ContactShadows position={[0, -1.28, 0]} opacity={0.22} scale={9.5} blur={4.8} far={3.6} resolution={1024} color={SHADOW} />
+        <ContactShadows position={[0, -1.3, 0]} opacity={0.2} scale={9.5} blur={5} far={3.6} resolution={1024} color={SHADOW} />
+
+        {/* cinematic grade: a gentle bloom on the highlights */}
+        <EffectComposer>
+          <Bloom intensity={0.32} luminanceThreshold={0.82} luminanceSmoothing={0.3} mipmapBlur />
+        </EffectComposer>
       </Canvas>
     </div>
   );
