@@ -83,7 +83,7 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
           </ol>
         </div>
 
-        <p className="mono mt-4 max-w-xl text-[0.62rem] leading-relaxed text-white/45">
+        <p className="mono mt-4 max-w-xl text-[0.62rem] leading-relaxed text-white/55">
           Process stages are representative pending confirmation of KTK's verified line sequence.
         </p>
       </div>

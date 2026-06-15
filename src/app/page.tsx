@@ -146,8 +146,17 @@ export default async function HomePage() {
               </Reveal>
             ))}
 
-            {/* browse-all card spans to fill the row cleanly */}
-            <Reveal delay={0.16} className="bg-iron sm:col-span-2 lg:col-span-2">
+            {/* browse-all card always fills the remaining columns, for any featured count */}
+            <Reveal
+              delay={0.16}
+              className={`bg-iron ${featured.length % 2 === 0 ? "sm:col-span-2" : "sm:col-span-1"} ${
+                featured.length % 3 === 0
+                  ? "lg:col-span-3"
+                  : featured.length % 3 === 1
+                    ? "lg:col-span-2"
+                    : "lg:col-span-1"
+              }`}
+            >
               <Link
                 href="/products"
                 className="group flex h-full flex-col justify-between p-7 transition-colors hover:bg-coal"
@@ -186,7 +195,7 @@ export default async function HomePage() {
                 <span
                   key={p.name}
                   title={`${p.origin}, ${p.note}`}
-                  className="display text-xl tracking-wide text-bone/35 transition-colors hover:text-bone/70"
+                  className="display text-xl tracking-wide text-bone/60 transition-colors hover:text-bone"
                 >
                   {p.name}
                 </span>

@@ -57,7 +57,7 @@ export function MaterialBreakdown({
                 <h3 className="display mt-2 text-lg text-white">{l.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/60">{l.description}</p>
                 {l.note && (
-                  <p className="mt-3 border-l border-white/12 pl-3 text-[0.72rem] leading-relaxed text-white/40">
+                  <p className="mt-3 border-l border-white/12 pl-3 text-[0.72rem] leading-relaxed text-white/55">
                     {l.note}
                   </p>
                 )}
@@ -66,7 +66,7 @@ export function MaterialBreakdown({
           ))}
         </ol>
 
-        <p className="mono mt-10 text-[0.6rem] leading-relaxed text-white/45">
+        <p className="mono mt-10 text-[0.6rem] leading-relaxed text-white/55">
           Layer details are representative placeholders pending confirmation of KTK&apos;s verified
           product specifications.
         </p>

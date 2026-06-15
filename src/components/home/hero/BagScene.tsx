@@ -87,18 +87,20 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
 }
 
 function useWovenNormal() {
-  return useMemo(() => heightToNormal(drawWeaveHeight, 256, 2.2, [6, 8]), []);
+  // 128² (tiled 6×8) keeps the same lit-weave read at a quarter of the Sobel cost.
+  return useMemo(() => heightToNormal(drawWeaveHeight, 128, 2.2, [6, 8]), []);
 }
 
 function useRoughnessMap() {
   return useMemo(() => {
+    const N = 128;
     const c = document.createElement("canvas");
-    c.width = c.height = 256;
+    c.width = c.height = N;
     const ctx = c.getContext("2d")!;
     ctx.fillStyle = "#6f6f6f"; // laminate = fairly glossy
-    ctx.fillRect(0, 0, 256, 256);
-    for (let i = 0; i < 256 * 256 * 0.15; i++) {
-      const x = Math.random() * 256, y = Math.random() * 256;
+    ctx.fillRect(0, 0, N, N);
+    for (let i = 0; i < N * N * 0.08; i++) {
+      const x = Math.random() * N, y = Math.random() * N;
       const v = 130 + Math.random() * 70;
       ctx.fillStyle = `rgba(${v},${v},${v},0.15)`;
       ctx.fillRect(x, y, 2, 2);
@@ -124,8 +126,11 @@ function star(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) 
   ctx.fill();
 }
 
-function usePrintTexture() {
+function usePrintTexture(fontsReady: boolean) {
+  // `fontsReady` is a dep so the print is redrawn in Archivo once the webfont
+  // loads, instead of permanently baking the system-ui fallback.
   return useMemo(() => {
+    void fontsReady;
     const W = 512, H = 700;
     const c = document.createElement("canvas");
     c.width = W;
@@ -173,14 +178,26 @@ function usePrintTexture() {
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 8;
     return tex;
-  }, []);
+  }, [fontsReady]);
 }
 
 // ── the bag ─────────────────────────────────────────────────────────────────
 function Bag() {
+  const [fontsReady, setFontsReady] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+    (fonts?.ready ?? Promise.resolve()).then(() => {
+      if (alive) setFontsReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const wovenNormal = useWovenNormal();
   const roughnessMap = useRoughnessMap();
-  const print = usePrintTexture();
+  const print = usePrintTexture(fontsReady);
 
   const bag = useRef<THREE.Group>(null!);
   const body = useRef<THREE.Group>(null!);
@@ -196,8 +213,11 @@ function Bag() {
   const start = useRef<number | null>(null);
 
   useFrame((state) => {
-    if (start.current === null) start.current = state.clock.elapsedTime;
-    const p = Math.min((state.clock.elapsedTime - start.current) / DURATION, 1);
+    // Wall clock, NOT state.clock: toggling Canvas frameloop (the offscreen
+    // gate) resets the R3F clock to 0, which would otherwise replay the whole
+    // assembly every time the hero scrolls back into view.
+    if (start.current === null) start.current = performance.now();
+    const p = Math.min((performance.now() - start.current) / (DURATION * 1000), 1);
 
     // 1 — fibers interlock (scale + weave normal ramps in)
     const e1 = easeOutCubic(seg(p, 0, 0.22));
@@ -320,7 +340,7 @@ export default function BagScene() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="h-full w-full">
+    <div ref={wrapRef} className="h-full w-full" aria-hidden>
       <Canvas
         frameloop={active ? "always" : "never"}
         camera={{ position: [1.15, 0.55, 5.6], fov: 28, near: 0.1, far: 50 }}

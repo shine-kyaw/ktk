@@ -40,7 +40,9 @@
     @apply transition-transform duration-150 active:scale-[0.97];
   }
 
-  /* Warm paper grain for light premium bands */
+  /* Warm paper grain for light premium bands.
+     NOTE: background-color must stay in sync with the `coal` token, and the
+     grain/shadow tints with `bone`, if the palette changes. */
   .paper {
     background-color: #f5f3ef;
     background-image: radial-gradient(rgb(22 19 14 / 0.022) 1px, transparent 1px);
@@ -69,12 +71,12 @@
     background-image:
       repeating-linear-gradient(
         0deg,
-        rgb(14 17 22 / 0.04) 0 2px,
+        rgb(22 19 14 / 0.04) 0 2px,
         transparent 2px 14px
       ),
       repeating-linear-gradient(
         90deg,
-        rgb(14 17 22 / 0.04) 0 2px,
+        rgb(22 19 14 / 0.04) 0 2px,
         transparent 2px 14px
       );
   }
@@ -82,8 +84,8 @@
   /* Faint engineering grid */
   .blueprint {
     background-image:
-      linear-gradient(rgb(14 17 22 / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(14 17 22 / 0.05) 1px, transparent 1px);
+      linear-gradient(rgb(22 19 14 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(22 19 14 / 0.05) 1px, transparent 1px);
     background-size: 72px 72px;
   }
 

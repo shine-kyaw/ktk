@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ProductMedia } from "@/data/products";
@@ -8,6 +8,23 @@ import type { ProductMedia } from "@/data/products";
 /** Thumbnail grid with a lightweight click-to-zoom overlay. No lightbox lib. */
 export function ProductGallery({ items }: { items: ProductMedia[] }) {
   const [open, setOpen] = useState<number | null>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const lastFocused = useRef<HTMLElement | null>(null);
+
+  // Keyboard + focus management for the modal lightbox.
+  useEffect(() => {
+    if (open === null) return;
+    lastFocused.current = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      lastFocused.current?.focus();
+    };
+  }, [open]);
 
   return (
     <>
@@ -45,6 +62,7 @@ export function ProductGallery({ items }: { items: ProductMedia[] }) {
             onClick={() => setOpen(null)}
             role="dialog"
             aria-modal="true"
+            aria-label={items[open].alt}
           >
             <div className="relative max-h-[85vh] w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
               <div className="relative aspect-[4/3] w-full">
@@ -56,6 +74,7 @@ export function ProductGallery({ items }: { items: ProductMedia[] }) {
                 </p>
               )}
               <button
+                ref={closeRef}
                 type="button"
                 onClick={() => setOpen(null)}
                 aria-label="Close"

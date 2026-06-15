@@ -304,7 +304,7 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
                 </div>
                 <h3 className="display mt-1.5 text-lg text-white">{layer.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/55">{layer.description}</p>
-                <p className="mt-3 border-l border-white/12 pl-3 text-[0.74rem] leading-relaxed text-white/45">
+                <p className="mt-3 border-l border-white/12 pl-3 text-[0.74rem] leading-relaxed text-white/55">
                   {layer.note}
                 </p>
               </div>
