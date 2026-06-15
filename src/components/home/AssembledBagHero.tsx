@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { HeroBagPoster } from "./hero/HeroBagPoster";
 
-// The 3D scene is client-only and lazy-loaded; the static poster covers SSR,
-// the loading window, mobile, and reduced-motion.
+// The 3D scene is client-only and lazy-loaded. The poster is the static
+// fallback for mobile/reduced-motion only — during the chunk-load window we
+// show quiet empty space (not the poster) so no "card" flashes before the
+// scene fades in.
 const BagScene = dynamic(() => import("./hero/BagScene"), {
   ssr: false,
-  loading: () => <PosterStage />,
+  loading: () => <QuietStage />,
 });
 
 const TRUST = [
@@ -26,6 +28,12 @@ function PosterStage() {
       <HeroBagPoster className="h-[80%] max-h-[560px] w-auto drop-shadow-[0_40px_60px_rgba(11,13,18,0.18)]" />
     </div>
   );
+}
+
+// Quiet placeholder for the brief 3D chunk-load window — no rectangle, no
+// poster, just space the scene fades into.
+function QuietStage() {
+  return <div className="h-full w-full" />;
 }
 
 export function AssembledBagHero() {
@@ -131,7 +139,7 @@ export function AssembledBagHero() {
 
         {/* bag stage */}
         <div className="relative h-[42vh] w-full sm:h-[50vh] lg:h-[78vh]">
-          {use3D ? <BagScene /> : <PosterStage />}
+          {!mounted ? <QuietStage /> : use3D ? <BagScene /> : <PosterStage />}
           {use3D && (
             <span className="mono pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.56rem] uppercase tracking-[0.22em] text-ash/70">
               ↻ Drag to rotate

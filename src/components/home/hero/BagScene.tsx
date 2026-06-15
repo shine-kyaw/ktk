@@ -19,7 +19,7 @@ const seg = (p: number, a: number, b: number) => Math.min(Math.max((p - a) / (b 
 // NOT a flat sheet. White laminated woven fabric, red emblem + blue KTK print.
 const BODY = "#F0EFEA";
 const STRAND = "#ECEAE3";
-const SEAM = "#CAC4B5";
+const SEAM = "#DCD6CA"; // close to body — a subtle sewn fold, not a dark frame
 const BRAND_RED = "#FC1303";
 const BRAND_BLUE = "#3B41ED";
 const SHADOW = "#15120D";
@@ -272,13 +272,29 @@ function frontZ(x: number, y: number) {
   return (BAG_D / 2) * surfaceMul(x / (BAG_W / 2), y / (BAG_H / 2));
 }
 
+const CORNER_R = 0.26; // rounds the silhouette so it reads as a sewn sack, not a slab
+
+// Push a vertex's (x,y) onto a rounded-rect outline so the four corners curve
+// instead of meeting at a hard 90°. Returns the (possibly) adjusted x,y.
+function roundCorner(x: number, y: number, hw: number, hh: number) {
+  const r = CORNER_R;
+  if (Math.abs(x) > hw - r && Math.abs(y) > hh - r) {
+    const cx = Math.sign(x) * (hw - r), cy = Math.sign(y) * (hh - r);
+    const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy);
+    if (d > r) return [cx + (dx / d) * r, cy + (dy / d) * r] as const;
+  }
+  return [x, y] as const;
+}
+
 function useBagGeometry() {
   return useMemo(() => {
-    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 48, 60, 3);
+    const geo = new THREE.BoxGeometry(BAG_W, BAG_H, BAG_D, 56, 72, 3);
     const pos = geo.attributes.position;
     const hw = BAG_W / 2, hh = BAG_H / 2;
     for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i), y = pos.getY(i);
+      const [x, y] = roundCorner(pos.getX(i), pos.getY(i), hw, hh);
+      pos.setX(i, x);
+      pos.setY(i, y);
       pos.setZ(i, pos.getZ(i) * surfaceMul(x / hw, y / hh));
     }
     geo.computeVertexNormals();
@@ -342,10 +358,10 @@ function Bag() {
     () => new THREE.MeshStandardMaterial({ color: STRAND, roughness: 0.85, metalness: 0, transparent: true, opacity: 1, depthWrite: false }),
     [],
   );
-  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.99, 0.05, BAG_D + 0.02), []);
-  const seamVGeo = useMemo(() => new THREE.BoxGeometry(0.04, BAG_H * 0.97, BAG_D + 0.02), []);
+  // sewn top + bottom closure bands, inset so they tuck inside the rounded corners
+  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.74, 0.08, BAG_D * 1.04), []);
   const seamMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.9, transparent: true, opacity: 0, emissive: new THREE.Color("#ffd9a8"), emissiveIntensity: 0 }),
+    () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.88, transparent: true, opacity: 0, emissive: new THREE.Color("#ffe7c4"), emissiveIntensity: 0 }),
     [],
   );
   const glintTex = useGlintTexture();
@@ -390,15 +406,14 @@ function Bag() {
     const ns = 0.4 + 0.85 * easeInOutCubic(seg(p, 0.5, 0.72));
     bodyMat.current.normalScale.set(ns, ns);
 
-    // 4 — fold / seal: reinforced seam edges form, then briefly highlight
+    // 4 — fold / seal: the top + bottom seam bands grow in, then briefly catch light
     const seamGrow = easeOutCubic(seg(p, 0.68, 0.86));
-    seamRefs.current.forEach((g, k) => {
+    seamRefs.current.forEach((g) => {
       if (!g) return;
-      if (k < 2) g.scale.x = 0.0001 + seamGrow;
-      else g.scale.y = 0.0001 + seamGrow;
+      g.scale.x = 0.0001 + seamGrow;
     });
-    seamMat.opacity = easeOutCubic(seg(p, 0.68, 0.84));
-    seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.4;
+    seamMat.opacity = easeOutCubic(seg(p, 0.68, 0.84)) * 0.62;
+    seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.3;
 
     // 5 — printing applied to the fabric
     frontMat.current.opacity = easeOutCubic(seg(p, 0.82, 0.97));
@@ -455,18 +470,12 @@ function Bag() {
         </mesh>
       </group>
 
-      {/* reinforced seam edges */}
-      <group ref={(el) => { seamRefs.current[0] = el; }} position={[0, BAG_H / 2 - 0.04, 0]}>
+      {/* sewn top + bottom seam bands (sides are smooth folds) */}
+      <group ref={(el) => { seamRefs.current[0] = el; }} position={[0, BAG_H / 2 - 0.08, 0]}>
         <mesh geometry={seamHGeo} material={seamMat} />
       </group>
-      <group ref={(el) => { seamRefs.current[1] = el; }} position={[0, -BAG_H / 2 + 0.04, 0]}>
+      <group ref={(el) => { seamRefs.current[1] = el; }} position={[0, -BAG_H / 2 + 0.08, 0]}>
         <mesh geometry={seamHGeo} material={seamMat} />
-      </group>
-      <group ref={(el) => { seamRefs.current[2] = el; }} position={[BAG_W / 2 - 0.03, 0, 0]}>
-        <mesh geometry={seamVGeo} material={seamMat} />
-      </group>
-      <group ref={(el) => { seamRefs.current[3] = el; }} position={[-BAG_W / 2 + 0.03, 0, 0]}>
-        <mesh geometry={seamVGeo} material={seamMat} />
       </group>
 
       {/* printed brand on the fabric, conforming to the surface */}
@@ -594,7 +603,8 @@ export default function BagScene() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="h-full w-full" aria-hidden>
+    <div ref={wrapRef} className="h-full w-full" style={{ animation: "ktkBagFade 700ms ease-out both" }} aria-hidden>
+      <style>{`@keyframes ktkBagFade { from { opacity: 0 } to { opacity: 1 } }`}</style>
       <Canvas
         frameloop={active ? "always" : "never"}
         camera={{ position: [1.5, 0.35, 5.0], fov: 28, near: 0.05, far: 50 }}
