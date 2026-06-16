@@ -26,7 +26,7 @@ const SHADOW = "#15120D";
 
 const BAG_W = 1.5;
 const BAG_H = 1.98;
-const BAG_D = 0.46; // deep fill so the sack reads as a solid 3D form when rotated
+const BAG_D = 0.54; // deep fill so the sack reads as a solid 3D form when rotated
 
 // ── height-field → tangent-space normal map (Sobel) ─────────────────────────
 function heightToNormal(
@@ -268,11 +268,13 @@ function widthAt(b: number) {
   return w;
 }
 function depthAt(b: number) {
-  const belly = Math.exp(-Math.pow((b + 0.4) / 0.72, 2));
-  let d = 0.16 + 0.84 * belly;
-  d *= 1 - smoothstep(0.52, 0.99, b);        // sewn flat top
-  d *= 1 - 0.6 * smoothstep(-0.82, -1.0, b); // settled base
-  return Math.max(0.03, Math.min(1, d));
+  // fuller, more uniform body (rounded side profile, not a teardrop); only the
+  // very top tapers to the sewn seam, the base settles a touch.
+  const belly = Math.exp(-Math.pow((b + 0.15) / 1.05, 2));
+  let d = 0.36 + 0.64 * belly;
+  d *= 1 - smoothstep(0.64, 1.0, b);         // taper only near the very top
+  d *= 1 - 0.5 * smoothstep(-0.86, -1.0, b); // settled base
+  return Math.max(0.04, Math.min(1, d));
 }
 
 function useSackGeometry() {
@@ -291,7 +293,10 @@ function useSackGeometry() {
         const u = i / NU;
         const th = u * Math.PI * 2; // front centre at th = π/2
         const ct = Math.cos(th), st = Math.sin(th);
-        let z = hd * dfac * st;
+        // collapse the very top + bottom rings to z=0 so the bag is CLOSED
+        // (a sewn flat seam, no open hole to see through when rotated)
+        const isEnd = j === 0 || j === NV;
+        let z = isEnd ? 0 : hd * dfac * st;
         const sideCrease = bump(ct, 1, 0.18) + bump(ct, -1, 0.18); // soft gusset fold
         z *= 1 - 0.05 * sideCrease * dfac;
         positions.push(hw * wfac * ct, hh * b, z);
@@ -325,7 +330,7 @@ function frontConformZ(px: number, py: number) {
 
 function useFrontGeometry() {
   return useMemo(() => {
-    const geo = new THREE.PlaneGeometry(1.3, 1.6, 40, 48);
+    const geo = new THREE.PlaneGeometry(1.2, 1.58, 40, 48);
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       pos.setZ(i, frontConformZ(pos.getX(i), pos.getY(i)) + 0.008);
@@ -380,7 +385,7 @@ function Bag() {
     [],
   );
   // sewn top + bottom closure bands, inset so they tuck inside the rounded ends
-  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.66, 0.08, BAG_D * 0.34), []);
+  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.66, 0.08, BAG_D * 0.24), []);
   const seamMat = useMemo(
     () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.88, transparent: true, opacity: 0, emissive: new THREE.Color("#ffe7c4"), emissiveIntensity: 0 }),
     [],
@@ -397,6 +402,7 @@ function Bag() {
   const bodyMat = useRef<THREE.MeshPhysicalMaterial>(null!);
   const front = useRef<THREE.Group>(null!);
   const frontMat = useRef<THREE.MeshStandardMaterial>(null!);
+  const backMat = useRef<THREE.MeshStandardMaterial>(null!);
   const seamRefs = useRef<(THREE.Group | null)[]>([]);
   const strandRefs = useRef<(THREE.Group | null)[]>([]);
   const glint = useRef<THREE.Group>(null!);
@@ -436,8 +442,9 @@ function Bag() {
     seamMat.opacity = easeOutCubic(seg(p, 0.68, 0.84)) * 0.62;
     seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.3;
 
-    // 5 — printing applied to the fabric
+    // 5 — printing applied to the fabric (front + back)
     frontMat.current.opacity = easeOutCubic(seg(p, 0.82, 0.97));
+    backMat.current.opacity = frontMat.current.opacity;
 
     // 6 — one refined specular sweep: a soft highlight rakes across the
     // laminate, which briefly catches the light (clearcoat lift) as it passes.
@@ -485,6 +492,7 @@ function Bag() {
             sheenRoughness={0.85}
             sheenColor="#ffffff"
             envMapIntensity={0.6}
+            side={THREE.DoubleSide}
             transparent
             opacity={0}
           />
@@ -499,10 +507,13 @@ function Bag() {
         <mesh geometry={seamHGeo} material={seamMat} />
       </group>
 
-      {/* printed brand on the fabric, conforming to the surface */}
+      {/* printed brand on the fabric — front + back, conforming to the surface */}
       <group ref={front}>
         <mesh geometry={frontGeo}>
           <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.62} depthWrite={false} />
+        </mesh>
+        <mesh geometry={frontGeo} rotation={[0, Math.PI, 0]}>
+          <meshStandardMaterial ref={backMat} map={print} transparent opacity={0} roughness={0.62} depthWrite={false} />
         </mesh>
       </group>
 
@@ -652,8 +663,8 @@ export default function BagScene() {
             cursor={false}
             snap
             speed={1.6}
-            polar={[-0.22, 0.22]}
-            azimuth={[-0.5, 0.5]}
+            polar={[-0.35, 0.35]}
+            azimuth={[-Math.PI, Math.PI]}
           >
             <Bag />
           </PresentationControls>
