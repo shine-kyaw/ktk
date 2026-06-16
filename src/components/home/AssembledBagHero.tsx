@@ -64,20 +64,43 @@ export function AssembledBagHero() {
 
   return (
     <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
-      {/* light cinematic background — clean, soft, premium */}
+      {/* cinematic graded background — light page that deepens into a moody
+          pocket around the bag. All dark stops feather to transparent well
+          inside the viewport, so the page corners stay light (no dark box). */}
       <div className="absolute inset-0 -z-10 bg-coal" />
       <div className="blueprint absolute inset-0 -z-10 opacity-40" />
+      {/* soft highlight wash behind the bag */}
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(56% 56% at 70% 42%, rgba(255,255,255,0.92) 0%, transparent 64%)" }}
+        style={{ background: "radial-gradient(40% 40% at 70% 40%, rgba(255,255,255,0.85) 0%, transparent 56%)" }}
+      />
+      {/* moody pocket: core darkening */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: "radial-gradient(46% 52% at 70% 50%, rgba(20,17,12,0.50) 0%, rgba(28,23,16,0.28) 34%, rgba(40,33,23,0.10) 52%, transparent 66%)" }}
+      />
+      {/* moody pocket: outer frame */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: "radial-gradient(70% 78% at 68% 48%, transparent 40%, rgba(46,34,20,0.16) 70%, rgba(30,24,16,0.22) 88%, rgba(20,17,12,0.16) 100%)" }}
+      />
+      {/* warm key glow + brand-warm accent */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: "radial-gradient(38% 44% at 78% 36%, rgba(255,176,108,0.18) 0%, rgba(255,150,80,0.07) 40%, transparent 68%)" }}
       />
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(130% 95% at 84% 16%, rgba(59,65,237,0.08) 0%, transparent 56%)" }}
+        style={{ background: "radial-gradient(130% 95% at 84% 16%, rgba(181,52,31,0.06) 0%, transparent 56%)" }}
+      />
+      {/* grounding smear under the bag */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: "radial-gradient(34% 12% at 70% 78%, rgba(58,42,24,0.28) 0%, transparent 72%)" }}
       />
       <div
         className="pointer-events-none absolute inset-0 -z-10"
-        style={{ boxShadow: "inset 0 0 260px 56px rgba(11,13,18,0.08)" }}
+        style={{ boxShadow: "inset 0 0 260px 56px rgba(11,13,18,0.10)" }}
       />
 
       <div className="container-x grid flex-1 items-center gap-8 pb-20 pt-28 lg:grid-cols-2 lg:gap-10">
