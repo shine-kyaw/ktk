@@ -31,9 +31,9 @@
     @apply mono text-[0.68rem] uppercase tracking-[0.22em] text-red;
   }
 
-  /* Display headline treatment, industrial mega-type */
+  /* Display headline treatment — wide, engineered, industrial mega-type */
   .display {
-    @apply font-sans font-extrabold uppercase leading-[0.94] tracking-mega;
+    @apply font-display font-extrabold uppercase leading-[0.96] tracking-mega;
   }
 
   .press {
