@@ -28,7 +28,7 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
       <div className="blueprint-light absolute inset-0 opacity-50" />
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(80% 70% at 15% 0%, rgb(59 65 237 / 0.18) 0%, transparent 55%)" }}
+        style={{ background: "radial-gradient(80% 70% at 15% 0%, rgb(47 49 141 / 0.18) 0%, transparent 55%)" }}
       />
       <div className="container-x relative py-28 lg:py-36">
         <div className="grid gap-14 lg:grid-cols-12">

@@ -12,7 +12,7 @@ function Star({ cx, cy, r }: { cx: number; cy: number; r: number }) {
     pts.push(`${cx + Math.cos(a) * r},${cy + Math.sin(a) * r}`);
     pts.push(`${cx + Math.cos(a2) * r * 0.45},${cy + Math.sin(a2) * r * 0.45}`);
   }
-  return <polygon points={pts.join(" ")} fill="#FC1303" />;
+  return <polygon points={pts.join(" ")} fill="#ED1C24" />;
 }
 
 // Flat, structured, rectangular woven bag with softly rounded corners.
@@ -60,9 +60,9 @@ export function HeroBagPoster({ className = "" }: { className?: string }) {
 
         {/* red circular emblem */}
         <g>
-          <circle cx="180" cy="122" r="33" fill="none" stroke="#FC1303" strokeWidth="2.4" />
-          <path d="M157 133 A25 25 0 0 1 203 133" fill="none" stroke="#FC1303" strokeWidth="1.6" />
-          <path d="M162 129 A19 19 0 0 1 198 129" fill="none" stroke="#FC1303" strokeWidth="1.6" />
+          <circle cx="180" cy="122" r="33" fill="none" stroke="#ED1C24" strokeWidth="2.4" />
+          <path d="M157 133 A25 25 0 0 1 203 133" fill="none" stroke="#ED1C24" strokeWidth="1.6" />
+          <path d="M162 129 A19 19 0 0 1 198 129" fill="none" stroke="#ED1C24" strokeWidth="1.6" />
           <Star cx={163} cy={109} r={3.6} />
           <Star cx={171} cy={105} r={3.6} />
           <Star cx={180} cy={104} r={3.6} />
@@ -71,9 +71,9 @@ export function HeroBagPoster({ className = "" }: { className?: string }) {
         </g>
 
         {/* blue KTK wordmark */}
-        <text x="180" y="206" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="56" letterSpacing="2" fill="#3B41ED">KTK</text>
+        <text x="180" y="206" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="800" fontSize="56" letterSpacing="2" fill="#2F318D">KTK</text>
         {/* red rule */}
-        <rect x="110" y="221" width="140" height="5" rx="2.5" fill="#FC1303" />
+        <rect x="110" y="221" width="140" height="5" rx="2.5" fill="#ED1C24" />
         {/* Net : 25 KG */}
         <text x="180" y="258" textAnchor="middle" fontFamily="Archivo, system-ui, sans-serif" fontWeight="600" fontSize="18" fill="#1A1714">Net : 25 KG</text>
         {/* real KTK logo lockup */}

@@ -14,7 +14,7 @@ const SEAM = "#33333C";
 const BONE = "#FFFFFF";
 const DIM = "#C9CAD2";
 const ASH = "#85868F";
-const RED = "#FC1303";
+const RED = "#ED1C24";
 
 export function BagSheet({ variant, active }: { variant: BagLayerVariant; active: boolean }) {
   const uid = `bag-${variant}`;

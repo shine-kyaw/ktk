@@ -20,9 +20,9 @@ export function Footer() {
             <Image
               src="/brand/ktk-logo.png"
               alt="Kaung Thu Kha Trading Co., Ltd."
-              width={543}
-              height={93}
-              className="h-6 w-auto"
+              width={1600}
+              height={357}
+              className="h-7 w-auto max-w-[15rem]"
             />
           </span>
         </Link>

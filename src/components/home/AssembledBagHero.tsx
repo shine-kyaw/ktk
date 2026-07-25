@@ -63,10 +63,13 @@ export function AssembledBagHero() {
         };
 
   return (
-    <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
+    <section className="ktk-film relative isolate flex min-h-screen flex-col overflow-hidden">
       {/* light cinematic background — clean, soft, premium */}
       <div className="absolute inset-0 -z-10 bg-coal" />
       <div className="blueprint absolute inset-0 -z-10 opacity-40" />
+      <div className="ktk-film-vignette pointer-events-none absolute inset-0 -z-10" />
+      <div className="ktk-film-grain pointer-events-none absolute inset-0 -z-10" />
+      <div className="ktk-film-sweep pointer-events-none absolute inset-y-0 -z-10 w-[28vw]" />
       <div
         className="absolute inset-0 -z-10"
         style={{ background: "radial-gradient(56% 56% at 70% 42%, rgba(255,255,255,0.92) 0%, transparent 64%)" }}
@@ -80,7 +83,14 @@ export function AssembledBagHero() {
         style={{ boxShadow: "inset 0 0 260px 56px rgba(11,13,18,0.08)" }}
       />
 
-      <div className="container-x grid flex-1 items-center gap-8 pb-20 pt-28 lg:grid-cols-2 lg:gap-10">
+      <div className="pointer-events-none absolute left-6 top-28 z-10 hidden lg:block">
+        <p className="ktk-film-label mono text-[0.55rem] uppercase tracking-[0.28em] text-ash/70">
+          KTK / MATERIAL STUDY 01
+        </p>
+        <div className="mt-3 h-20 w-px bg-gradient-to-b from-red via-red/40 to-transparent" />
+      </div>
+
+      <div className="container-x relative grid flex-1 items-center gap-8 pb-20 pt-28 lg:grid-cols-2 lg:gap-10">
         {/* copy */}
         <div className="relative z-10">
           <motion.div {...rise(0)}>
@@ -91,7 +101,7 @@ export function AssembledBagHero() {
               </p>
             </div>
             <p className="mono mt-3 text-[0.64rem] uppercase tracking-[0.2em] text-ash">
-              Industrial Packaging · Myanmar · Since 1991
+              Woven packaging · Myanmar · Since 1991
             </p>
           </motion.div>
 
@@ -99,14 +109,13 @@ export function AssembledBagHero() {
             {...rise(1)}
             className="display mt-6 text-[clamp(2.5rem,5.6vw,4.8rem)] leading-[1.04] text-bone"
           >
-            Built Layer by Layer
+            From woven fibre
             <br />
-            for <span className="text-red">Reliable Strength.</span>
+            to <span className="text-red">reliable strength.</span>
           </motion.h1>
 
           <motion.p {...rise(2)} className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">
-            KTK manufactures cement packaging designed for consistent quality, dependable handling,
-            and trusted supply across Myanmar&rsquo;s construction industry.
+            A closer look at the material, machinery, and discipline behind every KTK cement bag.
           </motion.p>
 
           <motion.div {...rise(3)} className="mt-9 flex flex-wrap gap-4">
@@ -145,14 +154,47 @@ export function AssembledBagHero() {
               ↻ Drag to rotate
             </span>
           )}
+          <div className="pointer-events-none absolute bottom-3 right-0 hidden items-center gap-3 lg:flex">
+            <span className="mono text-[0.55rem] uppercase tracking-[0.2em] text-ash/60">Material / 01</span>
+            <span className="h-px w-16 bg-red/70" />
+          </div>
+        </div>
+      </div>
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 border-t border-seam/70">
+        <div className="container-x flex items-center justify-between py-4">
+          <div className="flex items-center gap-3">
+            <span className="ktk-film-dot h-1.5 w-1.5 rounded-full bg-red" />
+            <span className="mono text-[0.55rem] uppercase tracking-[0.25em] text-ash">Manufacturing in motion</span>
+          </div>
+          <span className="mono text-[0.55rem] uppercase tracking-[0.25em] text-ash/60">01 — 04</span>
         </div>
       </div>
 
       <style>{`
+        .ktk-film::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 2;
+          opacity: .18;
+          background: repeating-linear-gradient(180deg, transparent 0, transparent 3px, rgba(255,255,255,.035) 4px, transparent 5px);
+          mix-blend-mode: overlay;
+        }
+        .ktk-film-vignette { background: radial-gradient(ellipse at center, transparent 38%, rgba(7,8,11,.28) 100%); }
+        .ktk-film-grain { opacity: .055; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E"); }
+        .ktk-film-sweep { left: -30vw; transform: skewX(-14deg); background: linear-gradient(90deg, transparent, rgba(237,28,36,.08), rgba(255,255,255,.13), transparent); animation: ktkFilmSweep 9s cubic-bezier(.4,0,.2,1) infinite; }
+        .ktk-film-label { animation: ktkFilmLabel 7s ease-in-out infinite; }
+        .ktk-film-dot { animation: ktkFilmDot 2.2s ease-in-out infinite; box-shadow: 0 0 0 0 rgba(237,28,36,.6); }
+        @keyframes ktkFilmSweep { 0%, 18% { transform: translateX(0) skewX(-14deg); opacity: 0; } 30% { opacity: 1; } 58%, 100% { transform: translateX(180vw) skewX(-14deg); opacity: 0; } }
+        @keyframes ktkFilmLabel { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+        @keyframes ktkFilmDot { 0%, 100% { box-shadow: 0 0 0 0 rgba(237,28,36,.5); } 50% { box-shadow: 0 0 0 7px rgba(237,28,36,0); } }
         .ktk-hero-float { animation: ktkHeroFloat 6s ease-in-out infinite; }
         @keyframes ktkHeroFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
         @media (prefers-reduced-motion: reduce) {
           .ktk-hero-float { animation: none; }
+          .ktk-film-sweep, .ktk-film-label, .ktk-film-dot { animation: none; }
         }
       `}</style>
     </section>

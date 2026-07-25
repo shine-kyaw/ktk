@@ -80,10 +80,10 @@ export function Header() {
             <Image
               src="/brand/ktk-logo.png"
               alt="Kaung Thu Kha Trading Co., Ltd."
-              width={543}
-              height={93}
+              width={1600}
+              height={357}
               priority
-              className="h-7 w-auto"
+              className="h-8 w-auto max-w-[15rem]"
             />
           </span>
         </Link>

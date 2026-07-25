@@ -23,14 +23,14 @@ export default {
         },
         ash: "#6E6A62", // muted warm stone gray type
         red: {
-          DEFAULT: "#FC1303", // primary accent (kept exact)
-          deep: "#C70F02",
+          DEFAULT: "#ED1C24", // KTK brand red from the official guideline
+          deep: "#C4121A",
         },
         blue: {
-          DEFAULT: "#3B41ED", // secondary / feature accent (kept exact)
-          deep: "#2D32CC",
+          DEFAULT: "#2F318D", // KTK brand blue from the official guideline
+          deep: "#25266F",
         },
-        inst: "#3B41ED", // institutional / feature blocks = blue
+        inst: "#2F318D", // institutional / feature blocks = blue
         ink: "#0C0A08", // warm charcoal-black — dark cinematic sections
         navy: "#1A1D4D", // deep blue — quiet fills
       },
