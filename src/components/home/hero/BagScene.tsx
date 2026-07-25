@@ -20,8 +20,8 @@ const seg = (p: number, a: number, b: number) => Math.min(Math.max((p - a) / (b 
 const BODY = "#F0EFEA";
 const STRAND = "#ECEAE3";
 const SEAM = "#DCD6CA"; // close to body — a subtle sewn fold, not a dark frame
-const BRAND_RED = "#FC1303";
-const BRAND_BLUE = "#3B41ED";
+const BRAND_RED = "#ED1C24";
+const BRAND_BLUE = "#2F318D";
 const SHADOW = "#15120D";
 
 const BAG_W = 1.5;

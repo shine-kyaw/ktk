@@ -12,7 +12,7 @@ export function ProductQuality({ pillars }: { pillars: Pillar[] }) {
     <section className="paper relative overflow-hidden border-t border-seam">
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(90% 80% at 100% 0%, rgb(59 65 237 / 0.06) 0%, transparent 55%)" }}
+        style={{ background: "radial-gradient(90% 80% at 100% 0%, rgb(47 49 141 / 0.06) 0%, transparent 55%)" }}
       />
       <div className="container-x relative py-24">
         <Reveal>
