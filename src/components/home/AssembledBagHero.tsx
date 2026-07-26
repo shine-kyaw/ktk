@@ -90,12 +90,23 @@ export function AssembledBagHero() {
       deviceMemory?: number;
     };
     const connection = device.connection;
+    const probe = document.createElement("canvas");
+    let webglAvailable = false;
+    try {
+      webglAvailable = Boolean(
+        probe.getContext("webgl2", { failIfMajorPerformanceCaveat: true }) ||
+          probe.getContext("webgl", { failIfMajorPerformanceCaveat: true }),
+      );
+    } catch {
+      webglAvailable = false;
+    }
     const updateCapability = () => {
       setLowPower(
         Boolean(
+          !webglAvailable ||
           (device.deviceMemory !== undefined && device.deviceMemory < 4) ||
-            navigator.hardwareConcurrency < 4 ||
-        connection?.saveData ||
+          navigator.hardwareConcurrency < 4 ||
+          connection?.saveData ||
             connection?.effectiveType === "slow-2g" ||
             connection?.effectiveType === "2g",
         ),
