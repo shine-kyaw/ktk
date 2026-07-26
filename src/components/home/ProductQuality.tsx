@@ -30,12 +30,12 @@ export function ProductQuality({ pillars }: { pillars: Pillar[] }) {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid gap-x-7 gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
           {pillars.map((p, i) => (
-            <Reveal key={p.tag} delay={(i % 5) * 0.06} className="bg-iron">
-              <div className="flex h-full flex-col p-7">
+            <Reveal key={p.tag} delay={(i % 5) * 0.06}>
+              <div className="flex h-full flex-col border-t border-seam py-6">
                 <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">{p.tag}</span>
-                <h3 className="display mt-3 text-lg leading-tight text-bone">{p.title}</h3>
+                <h3 className="mt-3 text-lg font-semibold leading-tight text-bone">{p.title}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{p.body}</p>
                 <span className="mono mt-6 text-[0.62rem] text-bone-dim">
                   {String(i + 1).padStart(2, "0")}
