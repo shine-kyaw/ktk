@@ -16,26 +16,26 @@ export function ProductQuality({ pillars }: { pillars: Pillar[] }) {
       />
       <div className="container-x relative py-24">
         <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
+          <div className="grid gap-7 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
               <p className="eyebrow">Product quality</p>
-              <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
+              <h2 className="section-title text-bone">
                 Why KTK bags are <span className="text-red">dependable.</span>
               </h2>
             </div>
-            <p className="max-w-xs text-sm leading-relaxed text-ash">
+            <p className="section-copy border-l border-seam pl-5 text-sm text-ash lg:col-span-3 lg:col-start-10 lg:pl-7">
               Every bag is the sum of five decisions: material, strength, durability,
               consistency, and the line it is made on.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-x-7 gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-14 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {pillars.map((p, i) => (
             <Reveal key={p.tag} delay={(i % 5) * 0.06}>
               <div className="flex h-full flex-col border-t border-seam py-6">
                 <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">{p.tag}</span>
-                <h3 className="mt-3 text-lg font-semibold leading-tight text-bone">{p.title}</h3>
+                <h3 className="mt-3 text-lg font-semibold leading-snug text-bone">{p.title}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-ash">{p.body}</p>
                 <span className="mono mt-6 text-[0.62rem] text-bone-dim">
                   {String(i + 1).padStart(2, "0")}
@@ -46,7 +46,7 @@ export function ProductQuality({ pillars }: { pillars: Pillar[] }) {
         </div>
 
         <Reveal>
-          <p className="mono mt-10 text-right text-[0.66rem] uppercase tracking-[0.18em] text-ash">
+          <p className="mono mt-12 border-t border-seam pt-6 text-left text-[0.66rem] uppercase tracking-[0.18em] text-ash sm:text-right">
             See it taken apart, layer by layer <span className="text-red">↓</span>
           </p>
         </Reveal>

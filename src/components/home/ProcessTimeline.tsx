@@ -31,18 +31,18 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
         style={{ background: "radial-gradient(80% 70% at 15% 0%, rgb(47 49 141 / 0.18) 0%, transparent 55%)" }}
       />
       <div className="container-x relative py-28 lg:py-36">
-        <div className="grid gap-14 lg:grid-cols-12">
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
           {/* sticky header */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-red" />
                 <p className="mono text-[0.7rem] uppercase tracking-[0.24em] text-white/70">The process</p>
               </div>
-              <h2 className="display mt-5 text-4xl text-white sm:text-5xl">
+              <h2 className="display mt-5 max-w-lg text-[2.35rem] text-white sm:text-5xl">
                 From resin to <span className="text-red">ready to ship.</span>
               </h2>
-              <p className="mt-6 max-w-xs leading-relaxed text-white/60">
+              <p className="section-copy mt-6 max-w-md text-white/60">
                 Four controlled manufacturing phases on European STARLINGER lines. Every bag
                 follows the same disciplined path, every time.
               </p>
@@ -56,7 +56,7 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
           </div>
 
           {/* step rail */}
-          <ol ref={railRef} className="relative lg:col-span-8">
+          <ol ref={railRef} className="relative lg:col-span-7">
             <span className="absolute bottom-2 left-[7px] top-2 w-px bg-white/12" aria-hidden />
             <motion.span
               style={{ scaleY: reduce ? 1 : spineRaw }}

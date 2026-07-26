@@ -277,8 +277,8 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
             {data.eyebrow}
           </p>
         </div>
-        <h2 className="display mt-6 text-4xl text-white">{data.title}</h2>
-        <p className="mt-4 max-w-md leading-relaxed text-white/55">{data.intro}</p>
+        <h2 className="display mt-6 text-[2.35rem] text-white sm:text-4xl">{data.title}</h2>
+        <p className="section-copy mt-4 text-white/60">{data.intro}</p>
 
         <div className="mt-12 space-y-4">
           {data.layers.map((layer, i) => (
@@ -288,9 +288,9 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              className="flex gap-5 border border-white/12 bg-white/[0.05] p-5"
+              className="grid grid-cols-[3.75rem,1fr] gap-4 border border-white/12 bg-white/[0.05] p-5 sm:grid-cols-[5rem,1fr] sm:gap-5"
             >
-              <div className="h-28 w-20 shrink-0">
+              <div className="h-24 w-[3.75rem] sm:h-28 sm:w-20">
                 <BagSheet variant={layer.variant} active />
               </div>
               <div>
@@ -302,7 +302,7 @@ function AnatomyCards({ data }: { data: BagAnatomy }) {
                     {layer.tag}
                   </span>
                 </div>
-                <h3 className="display mt-1.5 text-lg text-white">{layer.name}</h3>
+                <h3 className="mt-2 text-lg font-semibold leading-snug text-white">{layer.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/55">{layer.description}</p>
                 <p className="mt-3 border-l border-white/12 pl-3 text-[0.74rem] leading-relaxed text-white/55">
                   {layer.note}

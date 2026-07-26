@@ -85,15 +85,13 @@ export default async function HomePage() {
       {/* 2, Compact company trust bridge */}
       <section className="relative bg-coal">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-20 -translate-y-full bg-gradient-to-b from-transparent to-coal" />
-        <div className="container-x grid gap-12 pb-20 pt-14 lg:grid-cols-[1.1fr_.9fr]">
-          <Reveal>
+        <div className="container-x grid gap-x-10 gap-y-14 py-20 lg:grid-cols-12 lg:py-24">
+          <Reveal className="lg:col-span-7">
             <p className="eyebrow">The company</p>
-            <h2 className="display mt-5 text-4xl text-bone sm:text-5xl">
-              The supplier behind
-              <br />
-              the <span className="text-red">supply chain.</span>
+            <h2 className="section-title text-bone">
+              The supplier behind the <span className="text-red">supply chain.</span>
             </h2>
-            <p className="mt-7 max-w-md leading-relaxed text-bone-dim">
+            <p className="section-copy mt-7 text-bone-dim">
               Founded in 2008 and manufacturing since 1991, Kaung Thu Kha grew from Myanmar&apos;s
               authorized bearing distributor into its leading industrial-packaging maker. We run
               European STARLINGER lines at the San Kaung factory and supply the machinery,
@@ -101,23 +99,30 @@ export default async function HomePage() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.15}>
-            <h3 className="eyebrow">Industries we supply</h3>
-            <div className="mt-6 flex flex-wrap gap-x-2 gap-y-3">
-              {industries.map((ind) => (
-                <div key={ind} className="border border-seam bg-iron/60 px-4 py-2.5 text-sm text-bone-dim">
-                  {ind}
-                </div>
-              ))}
+          <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9 lg:pt-20">
+            <div className="border-l border-seam pl-5 sm:pl-7">
+              <h3 className="eyebrow">Industries we supply</h3>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                {industries.map((ind) => (
+                  <div
+                    key={ind}
+                    className="border border-seam bg-iron/70 px-3.5 py-2 text-sm leading-snug text-bone-dim"
+                  >
+                    {ind}
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
 
-          <Reveal className="border-t border-seam pt-8 lg:col-span-2">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-4">
+          <Reveal className="border-t border-seam pt-9 lg:col-span-12">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-9 sm:grid-cols-4">
               {proof.map((p) => (
                 <div key={p.label}>
-                  <p className="display text-3xl text-bone sm:text-4xl">{p.value}</p>
-                  <p className="mono mt-2 text-[0.58rem] uppercase tracking-[0.16em] text-ash">
+                  <p className="font-display text-3xl font-extrabold leading-none tracking-mega text-bone sm:text-4xl">
+                    {p.value}
+                  </p>
+                  <p className="mono mt-3 max-w-[10rem] text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-ash">
                     {p.label}
                   </p>
                 </div>
@@ -135,24 +140,30 @@ export default async function HomePage() {
 
       {/* 4, Featured products */}
       <section className="border-t border-seam bg-coal">
-        <div className="container-x py-24">
+        <div className="container-x py-24 lg:py-28">
           <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-6">
-              <div>
+            <div className="grid gap-7 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-8">
                 <p className="eyebrow">Products</p>
-                <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
+                <h2 className="section-title text-bone">
                   Built for the bag, and everything around it.
                 </h2>
               </div>
-              <Link
-                href="/products"
-                className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone"
-              >
-                Full catalog →
-              </Link>
+              <div className="border-l border-seam pl-5 lg:col-span-3 lg:col-start-10 lg:pl-7">
+                <p className="text-sm leading-relaxed text-ash">
+                  Explore specifications, applications, and material options across our industrial
+                  range.
+                </p>
+                <Link
+                  href="/products"
+                  className="mono mt-4 inline-flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone"
+                >
+                  Full catalog <span>→</span>
+                </Link>
+              </div>
             </div>
           </Reveal>
-          <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((p, i) => (
               <Reveal key={p.slug} delay={(i % 3) * 0.08} className="bg-iron">
                 <Link
@@ -241,20 +252,26 @@ export default async function HomePage() {
 
       {/* 6, Why choose KTK */}
       <section className="border-t border-seam bg-mist">
-        <div className="container-x py-24">
+        <div className="container-x py-24 lg:py-28">
           <Reveal>
-            <p className="eyebrow">Why KTK</p>
-            <h2 className="display mt-5 max-w-2xl text-3xl text-bone sm:text-4xl">
-              One partner. The whole line.
-            </h2>
+            <div className="grid gap-7 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-7">
+                <p className="eyebrow">Why KTK</p>
+                <h2 className="section-title text-bone">One partner. The whole line.</h2>
+              </div>
+              <p className="section-copy border-l border-seam pl-5 text-sm text-ash lg:col-span-4 lg:col-start-9 lg:pl-7">
+                Manufacturing scale, proven equipment, and accountable local service—connected
+                through one industrial partner.
+              </p>
+            </div>
           </Reveal>
-          <div className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {why.map((w, i) => (
               <Reveal key={w.title} delay={(i % 3) * 0.08}>
-                <div className="h-full border-t border-seam py-6">
+                <div className="h-full border-t border-seam py-7">
                   <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
-                  <h3 className="mt-4 text-base font-semibold text-bone">{w.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ash">{w.desc}</p>
+                  <h3 className="mt-4 text-lg font-semibold leading-snug text-bone">{w.title}</h3>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-ash">{w.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -264,19 +281,22 @@ export default async function HomePage() {
 
       {/* 7, Latest news & activities */}
       <section className="border-t border-seam bg-coal">
-        <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
+        <div className="container-x grid gap-16 py-24 lg:grid-cols-2 lg:gap-20 lg:py-28">
           <Reveal>
-            <div className="flex items-end justify-between gap-6">
-              <h2 className="display text-3xl text-bone">Latest news</h2>
+            <div className="flex items-end justify-between gap-5 border-b border-seam pb-5">
+              <div>
+                <p className="eyebrow">Company updates</p>
+                <h2 className="display mt-3 text-[1.75rem] text-bone sm:text-3xl">Latest news</h2>
+              </div>
               <Link href="/blog" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 Newsroom →
               </Link>
             </div>
-            <div className="mt-8 divide-y divide-seam border-y border-seam">
+            <div className="divide-y divide-seam border-b border-seam">
               {news.slice(0, 3).map((n) => (
-                <Link key={n.slug} href={`/blog/${n.slug}`} className="group block py-5">
+                <Link key={n.slug} href={`/blog/${n.slug}`} className="group block py-6">
                   <span className="mono text-[0.62rem] text-red">{n.date}</span>
-                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-red">
+                  <h3 className="mt-2 font-semibold leading-snug text-bone transition-colors group-hover:text-red">
                     {n.title}
                   </h3>
                 </Link>
@@ -284,19 +304,22 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="flex items-end justify-between gap-6">
-              <h2 className="display text-3xl text-bone">Activities</h2>
+            <div className="flex items-end justify-between gap-5 border-b border-seam pb-5">
+              <div>
+                <p className="eyebrow">Beyond production</p>
+                <h2 className="display mt-3 text-[1.75rem] text-bone sm:text-3xl">Activities</h2>
+              </div>
               <Link href="/activities" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
                 All activities →
               </Link>
             </div>
-            <div className="mt-8 divide-y divide-seam border-y border-seam">
+            <div className="divide-y divide-seam border-b border-seam">
               {activities.slice(0, 3).map((a) => (
-                <Link key={a.slug} href="/activities" className="group block py-5">
+                <Link key={a.slug} href="/activities" className="group block py-6">
                   <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">
                     {a.category}
                   </span>
-                  <h3 className="mt-1.5 font-semibold text-bone transition-colors group-hover:text-red">
+                  <h3 className="mt-2 font-semibold leading-snug text-bone transition-colors group-hover:text-red">
                     {a.title}
                   </h3>
                 </Link>
@@ -308,7 +331,7 @@ export default async function HomePage() {
 
       {/* 8, Two-lane inquiry CTA (product + dealer) */}
       <section className="border-t border-seam">
-        <div className="container-x grid gap-px bg-seam md:grid-cols-2">
+        <div className="container-x grid gap-px bg-seam py-14 md:grid-cols-2 lg:py-20">
           {/* Lane A — Product inquiry (light) */}
           <Reveal className="bg-coal">
             <div className="weave flex h-full flex-col justify-between p-10 lg:p-14">
@@ -360,7 +383,7 @@ export default async function HomePage() {
 
       {/* 9b, Contact strip (wired to CMS company) */}
       <section className="border-t border-seam bg-coal">
-        <div className="container-x grid gap-10 py-24 md:grid-cols-3">
+        <div className="container-x grid gap-12 py-20 md:grid-cols-3 lg:py-24">
           <Reveal>
             <h3 className="eyebrow">Call</h3>
             {company.phones.map((phone) => (
