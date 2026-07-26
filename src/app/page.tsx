@@ -3,6 +3,7 @@ import { AssembledBagHero } from "@/components/home/AssembledBagHero";
 import { ProductQuality } from "@/components/home/ProductQuality";
 import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
+import { HeroBagPoster } from "@/components/home/hero/HeroBagPoster";
 import { Reveal } from "@/components/Reveal";
 import {
   getProofPoints,
@@ -11,7 +12,6 @@ import {
   getQualityPillars,
   getProcessSteps,
   getWhyPoints,
-  getJobs,
   getNews,
   getActivities,
   getIndustries,
@@ -19,8 +19,50 @@ import {
   getCompany,
 } from "@/lib/cms";
 
+function ProductVisual({ category }: { category: string }) {
+  const type = category.toLowerCase();
+
+  if (type.includes("cement") || type.includes("woven bag")) {
+    return (
+      <div className="relative flex h-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,.12),transparent_42%),#17191f]">
+        <div className="absolute inset-0 weave-light opacity-45" />
+        <HeroBagPoster className="relative h-[82%] w-auto translate-y-2 drop-shadow-[0_22px_30px_rgba(0,0,0,.42)] transition-transform duration-700 group-hover:-translate-y-1 group-hover:scale-[1.03]" />
+      </div>
+    );
+  }
+
+  if (type.includes("bearing")) {
+    return (
+      <div className="relative flex h-full items-center justify-center overflow-hidden bg-[#17191f]">
+        <div className="h-36 w-36 rounded-full border-[22px] border-white/16 shadow-[inset_0_0_0_2px_rgba(255,255,255,.24),0_30px_45px_rgba(0,0,0,.35)] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105">
+          <div className="m-auto mt-[31px] h-8 w-8 rounded-full border border-red/80" />
+        </div>
+      </div>
+    );
+  }
+
+  if (type.includes("machin")) {
+    return (
+      <div className="relative h-full overflow-hidden bg-[#17191f]">
+        <div className="absolute inset-x-[14%] bottom-[22%] top-[25%] border border-white/18">
+          <span className="absolute left-[10%] top-1/2 h-12 w-[80%] -translate-y-1/2 border-y border-red/60" />
+          <span className="absolute bottom-full left-[12%] h-[28%] w-px bg-white/35" />
+          <span className="absolute bottom-full right-[12%] h-[28%] w-px bg-white/35" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-full overflow-hidden bg-[#17191f]">
+      <div className="weave-light absolute inset-0 scale-110 opacity-75 transition-transform duration-700 group-hover:scale-100" />
+      <div className="absolute inset-x-[18%] bottom-[20%] h-px bg-red/80" />
+    </div>
+  );
+}
+
 export default async function HomePage() {
-  const [proof, featured, anatomy, quality, process, why, jobs, news, activities, industries, partners, company] =
+  const [proof, featured, anatomy, quality, process, why, news, activities, industries, partners, company] =
     await Promise.all([
       getProofPoints(),
       getFeaturedProducts(6),
@@ -28,7 +70,6 @@ export default async function HomePage() {
       getQualityPillars(),
       getProcessSteps(),
       getWhyPoints(),
-      getJobs(),
       getNews(),
       getActivities(),
       getIndustries(),
@@ -41,9 +82,10 @@ export default async function HomePage() {
       {/* 1, Hero, the assembled cement bag */}
       <AssembledBagHero />
 
-      {/* 2, Company trust introduction */}
-      <section className="border-t border-seam bg-coal">
-        <div className="container-x grid gap-14 py-24 lg:grid-cols-2">
+      {/* 2, Compact company trust bridge */}
+      <section className="relative bg-coal">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 -translate-y-full bg-gradient-to-b from-transparent to-coal" />
+        <div className="container-x grid gap-12 pb-20 pt-14 lg:grid-cols-[1.1fr_.9fr]">
           <Reveal>
             <p className="eyebrow">The company</p>
             <h2 className="display mt-5 text-4xl text-bone sm:text-5xl">
@@ -57,24 +99,27 @@ export default async function HomePage() {
               European STARLINGER lines at the San Kaung factory and supply the machinery,
               consumables, and service around every bag.
             </p>
-            <div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
-              {proof.map((p) => (
-                <div key={p.label}>
-                  <p className="display text-3xl text-bone">{p.value}</p>
-                  <p className="mono mt-2 text-[0.6rem] uppercase tracking-[0.14em] text-ash">
-                    {p.label}
-                  </p>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <h3 className="eyebrow">Industries we supply</h3>
+            <div className="mt-6 flex flex-wrap gap-x-2 gap-y-3">
+              {industries.map((ind) => (
+                <div key={ind} className="border border-seam bg-iron/60 px-4 py-2.5 text-sm text-bone-dim">
+                  {ind}
                 </div>
               ))}
             </div>
           </Reveal>
 
-          <Reveal delay={0.15}>
-            <h3 className="eyebrow">Industries we supply</h3>
-            <div className="mt-6 grid gap-px bg-seam sm:grid-cols-2">
-              {industries.map((ind) => (
-                <div key={ind} className="bg-iron px-5 py-4 text-sm text-bone-dim">
-                  {ind}
+          <Reveal className="border-t border-seam pt-8 lg:col-span-2">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-4">
+              {proof.map((p) => (
+                <div key={p.label}>
+                  <p className="display text-3xl text-bone sm:text-4xl">{p.value}</p>
+                  <p className="mono mt-2 text-[0.58rem] uppercase tracking-[0.16em] text-ash">
+                    {p.label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -87,18 +132,6 @@ export default async function HomePage() {
 
       {/* 3b, Product anatomy — the dark teardown, evidence for the pillars */}
       <ProductAnatomyScroll data={anatomy} />
-
-      {/* 3c, Quality close-line */}
-      <section className="border-t border-seam bg-coal">
-        <div className="container-x py-14">
-          <Reveal>
-            <p className="eyebrow text-center">Engineered to be trusted</p>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-lg leading-relaxed text-bone-dim">
-              Five layers, one job: protect what is inside, from our factory floor to your site.
-            </p>
-          </Reveal>
-        </div>
-      </section>
 
       {/* 4, Featured products */}
       <section className="border-t border-seam bg-coal">
@@ -126,11 +159,13 @@ export default async function HomePage() {
                   href={`/products/${p.slug}`}
                   className="group flex h-full flex-col p-7 transition-colors hover:bg-coal"
                 >
-                  <div className="weave relative mb-6 aspect-[4/3] overflow-hidden border border-seam bg-coal realshadow" />
+                  <div className="relative mb-6 aspect-[4/3] overflow-hidden border border-seam bg-coal realshadow">
+                    <ProductVisual category={p.category} />
+                  </div>
                   <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
                     {p.category}
                   </span>
-                  <h3 className="display mt-2 text-xl leading-tight text-bone transition-colors group-hover:text-red">
+                  <h3 className="mt-2 text-xl font-semibold leading-tight text-bone transition-colors group-hover:text-red">
                     {p.name}
                   </h3>
                   <p className="mono mt-2 text-[0.62rem] uppercase tracking-[0.16em] text-ash">
@@ -139,7 +174,7 @@ export default async function HomePage() {
                   <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ash">
                     {p.summary}
                   </p>
-                  <span className="mono mt-6 inline-flex items-center gap-2 text-[0.62rem] uppercase tracking-[0.18em] text-red opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="mono mt-6 inline-flex items-center gap-2 text-[0.62rem] uppercase tracking-[0.18em] text-red opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
                     View product <span className="transition-transform group-hover:translate-x-1">→</span>
                   </span>
                 </Link>
@@ -180,47 +215,43 @@ export default async function HomePage() {
               </Link>
             </Reveal>
           </div>
-        </div>
-      </section>
 
-      {/* 4b, Technology & brand partners (credibility footnote to products) */}
-      <section className="border-t border-seam bg-coal">
-        <div className="container-x py-14">
           <Reveal>
-            <p className="mono text-center text-[0.62rem] uppercase tracking-[0.24em] text-ash">
-              Technology & brand partners
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
-              {partners.map((p) => (
-                <span
-                  key={p.name}
-                  title={`${p.origin}, ${p.note}`}
-                  className="display text-xl tracking-wide text-bone/60 transition-colors hover:text-bone"
-                >
-                  {p.name}
-                </span>
-              ))}
+            <div className="mt-14 border-t border-seam pt-9">
+              <p className="mono text-[0.6rem] uppercase tracking-[0.22em] text-ash">
+                Technology & brand partners
+              </p>
+              <div className="mt-7 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+                {partners.map((p) => (
+                  <div key={p.name}>
+                    <p className="text-sm font-semibold text-bone">{p.name}</p>
+                    <p className="mono mt-1 text-[0.57rem] uppercase tracking-[0.12em] text-ash">
+                      {p.origin} · {p.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* 5, Manufacturing process timeline (dark cinematic) */}
-      <ProcessTimeline steps={process} />
+      <ProcessTimeline steps={process.slice(0, 4)} />
 
       {/* 6, Why choose KTK */}
       <section className="border-t border-seam bg-mist">
         <div className="container-x py-24">
           <Reveal>
             <p className="eyebrow">Why KTK</p>
-            <h2 className="display mt-5 max-w-2xl text-4xl text-bone sm:text-5xl">
-              Market leader, by the numbers.
+            <h2 className="display mt-5 max-w-2xl text-3xl text-bone sm:text-4xl">
+              One partner. The whole line.
             </h2>
           </Reveal>
-          <div className="mt-14 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {why.map((w, i) => (
-              <Reveal key={w.title} delay={(i % 3) * 0.08} className="bg-iron">
-                <div className="h-full p-7">
+              <Reveal key={w.title} delay={(i % 3) * 0.08}>
+                <div className="h-full border-t border-seam py-6">
                   <span className="mono text-[0.64rem] text-red">0{i + 1}</span>
                   <h3 className="mt-4 text-base font-semibold text-bone">{w.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-ash">{w.desc}</p>
@@ -275,41 +306,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 8, Careers preview */}
-      <section className="border-t border-seam bg-iron">
-        <div className="container-x py-24">
-          <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <p className="eyebrow">Careers</p>
-                <h2 className="display mt-5 max-w-xl text-4xl text-bone sm:text-5xl">We&apos;re hiring.</h2>
-              </div>
-              <Link href="/careers" className="mono text-[0.7rem] uppercase tracking-[0.18em] text-red hover:text-bone">
-                All positions →
-              </Link>
-            </div>
-          </Reveal>
-          <div className="mt-10 divide-y divide-seam border-y border-seam">
-            {jobs.slice(0, 3).map((j, i) => (
-              <Reveal key={j.slug} delay={i * 0.05}>
-                <Link
-                  href={`/careers/${j.slug}`}
-                  className="group flex flex-wrap items-baseline justify-between gap-3 py-6 transition-colors hover:bg-coal sm:px-4"
-                >
-                  <h3 className="display text-xl text-bone transition-colors group-hover:text-red">
-                    {j.title}
-                  </h3>
-                  <span className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-                    {j.department} · {j.location}
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 9, Two-lane inquiry CTA (product + dealer) */}
+      {/* 8, Two-lane inquiry CTA (product + dealer) */}
       <section className="border-t border-seam">
         <div className="container-x grid gap-px bg-seam md:grid-cols-2">
           {/* Lane A — Product inquiry (light) */}

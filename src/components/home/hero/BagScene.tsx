@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PresentationControls } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 // ── timeline helpers ─────────────────────────────────────────────────────────
-const DURATION = 5.0; // seconds for the full "woven into strength" sequence
 const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
 const easeInOutCubic = (x: number) =>
   x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
@@ -26,7 +24,8 @@ const SHADOW = "#15120D";
 
 const BAG_W = 1.5;
 const BAG_H = 1.98;
-const BAG_D = 0.54; // deep fill so the sack reads as a solid 3D form when rotated
+const BAG_D = 0.4;
+const WEAVE_REPEAT: [number, number] = [28, 38];
 
 // ── height-field → tangent-space normal map (Sobel) ─────────────────────────
 function heightToNormal(
@@ -83,7 +82,11 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.fillStyle = "#2c2c2c"; // deep valleys
   ctx.fillRect(0, 0, w, h);
   const tape = 16, gap = 4, pitch = tape + gap;
-  const rnd = () => Math.random() - 0.5;
+  let seed = 12891;
+  const rnd = () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 4294967296 - 0.5;
+  };
 
   // one elongated rounded fiber-tape segment (a raised ridge)
   const fiber = (cx: number, cy: number, hl: number, hw: number, bright: number, vertical: boolean) => {
@@ -124,7 +127,7 @@ function drawWeaveHeight(ctx: CanvasRenderingContext2D, w: number, h: number) {
 }
 
 function useWovenNormal() {
-  return useMemo(() => heightToNormal(drawWeaveHeight, 256, 2.6, [15, 9]), []);
+  return useMemo(() => heightToNormal(drawWeaveHeight, 256, 1.9, WEAVE_REPEAT), []);
 }
 
 function useRoughnessMap() {
@@ -149,7 +152,7 @@ function useRoughnessMap() {
     }
     const tex = new THREE.CanvasTexture(c);
     tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(15, 9);
+    tex.repeat.set(WEAVE_REPEAT[0], WEAVE_REPEAT[1]);
     tex.colorSpace = THREE.NoColorSpace;
     return tex;
   }, []);
@@ -261,25 +264,23 @@ const bump = (x: number, c: number, w: number) => Math.exp(-((x - c) / w) * ((x 
 // ellipse, so the fabric wraps front → side → back continuously — there is NO
 // flat side plate, and the bag reads as a solid 3D form from any rotation.
 function widthAt(b: number) {
-  const belly = Math.exp(-Math.pow((b + 0.3) / 0.95, 2));
-  let w = 0.9 + 0.1 * belly;
+  const settledLoad = Math.exp(-Math.pow((b + 0.36) / 0.72, 2));
+  let w = 0.96 + 0.035 * settledLoad;
   const corner = smoothstep(0.78, 1.0, Math.abs(b));
-  w *= 1 - 0.22 * corner; // tuck the sewn top + bottom corners
+  w *= 1 - 0.13 * corner;
   return w;
 }
 function depthAt(b: number) {
-  // fuller, more uniform body (rounded side profile, not a teardrop); only the
-  // very top tapers to the sewn seam, the base settles a touch.
-  const belly = Math.exp(-Math.pow((b + 0.15) / 1.05, 2));
-  let d = 0.36 + 0.64 * belly;
-  d *= 1 - smoothstep(0.64, 1.0, b);         // taper only near the very top
-  d *= 1 - 0.5 * smoothstep(-0.86, -1.0, b); // settled base
-  return Math.max(0.04, Math.min(1, d));
+  const settledLoad = Math.exp(-Math.pow((b + 0.24) / 0.82, 2));
+  let d = 0.76 + 0.18 * settledLoad;
+  d *= 1 - 0.72 * smoothstep(0.68, 1, b);
+  d *= 1 - 0.5 * smoothstep(-0.7, -1, b);
+  return Math.max(0.1, Math.min(0.96, d));
 }
 
 function useSackGeometry() {
   return useMemo(() => {
-    const NU = 144, NV = 120; // around the cross-section, up the height
+    const NU = 112, NV = 112;
     const hw = BAG_W / 2, hh = BAG_H / 2, hd = BAG_D / 2;
     const positions: number[] = [];
     const uvs: number[] = [];
@@ -293,13 +294,20 @@ function useSackGeometry() {
         const u = i / NU;
         const th = u * Math.PI * 2; // front centre at th = π/2
         const ct = Math.cos(th), st = Math.sin(th);
+        // A rounded-rect section gives the front and back broad, controlled
+        // planes while keeping dimensional side gussets. An ellipse made the
+        // previous sack read like an inflated pillow.
+        const superellipse = 0.58;
+        const sx = Math.sign(ct) * Math.pow(Math.abs(ct), superellipse);
+        const sz = Math.sign(st) * Math.pow(Math.abs(st), superellipse);
         // collapse the very top + bottom rings to z=0 so the bag is CLOSED
         // (a sewn flat seam, no open hole to see through when rotated)
         const isEnd = j === 0 || j === NV;
-        let z = isEnd ? 0 : hd * dfac * st;
-        const sideCrease = bump(ct, 1, 0.18) + bump(ct, -1, 0.18); // soft gusset fold
-        z *= 1 - 0.05 * sideCrease * dfac;
-        positions.push(hw * wfac * ct, hh * b, z);
+        let z = isEnd ? 0 : hd * dfac * sz;
+        const sideCrease = bump(sx, 1, 0.14) + bump(sx, -1, 0.14);
+        z *= 1 - 0.12 * sideCrease * dfac;
+        const sideTuck = (bump(sx, 0.9, 0.12) - bump(sx, -0.9, 0.12)) * Math.sin((b + 1) * Math.PI * 2.5) * 0.006;
+        positions.push(hw * wfac * sx + sideTuck, hh * b, z);
         uvs.push(u, v);
       }
     }
@@ -343,7 +351,7 @@ function useFrontGeometry() {
 // ── the bag — "woven into strength" ─────────────────────────────────────────
 type Strand = { axis: "h" | "v"; a: number; side: 1 | -1; over: boolean; delay: number };
 
-function Bag() {
+function Bag({ progressRef }: { progressRef: RefObject<number> }) {
   const [fontsReady, setFontsReady] = useState(false);
   const [logo, setLogo] = useState<HTMLImageElement | null>(null);
   useEffect(() => {
@@ -366,14 +374,19 @@ function Bag() {
   const strands = useMemo<Strand[]>(() => {
     const hw = BAG_W / 2, hh = BAG_H / 2;
     const arr: Strand[] = [];
+    let seed = 7241;
+    const rnd = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 4294967296 - 0.5;
+    };
     const NH = 16;
     for (let i = 0; i < NH; i++) {
-      const j = (Math.random() - 0.5) * 0.03;
+      const j = rnd() * 0.03;
       arr.push({ axis: "h", a: lerp(-hh * 0.92, hh * 0.92, i / (NH - 1)) + j, side: i % 2 ? 1 : -1, over: i % 2 === 0, delay: (i / NH) * 0.26 });
     }
     const NV = 12;
     for (let k = 0; k < NV; k++) {
-      const j = (Math.random() - 0.5) * 0.03;
+      const j = rnd() * 0.03;
       arr.push({ axis: "v", a: lerp(-hw * 0.92, hw * 0.92, k / (NV - 1)) + j, side: k % 2 ? 1 : -1, over: k % 2 === 1, delay: 0.05 + (k / NV) * 0.26 });
     }
     return arr;
@@ -385,7 +398,7 @@ function Bag() {
     [],
   );
   // sewn top + bottom closure bands, inset so they tuck inside the rounded ends
-  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.66, 0.08, BAG_D * 0.24), []);
+  const seamHGeo = useMemo(() => new THREE.BoxGeometry(BAG_W * 0.9, 0.065, BAG_D * 0.15), []);
   const seamMat = useMemo(
     () => new THREE.MeshStandardMaterial({ color: SEAM, roughness: 0.88, transparent: true, opacity: 0, emissive: new THREE.Color("#ffe7c4"), emissiveIntensity: 0 }),
     [],
@@ -406,21 +419,19 @@ function Bag() {
   const seamRefs = useRef<(THREE.Group | null)[]>([]);
   const strandRefs = useRef<(THREE.Group | null)[]>([]);
   const glint = useRef<THREE.Group>(null!);
-  const start = useRef<number | null>(null);
   const O = 0.09; // over-under depth while weaving (reads against the deep body)
 
-  useFrame((state) => {
-    if (start.current === null) start.current = performance.now();
-    const p = Math.min((performance.now() - start.current) / (DURATION * 1000), 1);
+  useFrame(() => {
+    const p = progressRef.current ?? 0;
 
-    const tighten = easeInOutCubic(seg(p, 0.5, 0.68)); // over-under flattens AFTER the macro
-    const strandFade = easeOutCubic(seg(p, 0.62, 0.76));
+    const tighten = easeInOutCubic(seg(p, 0.24, 0.38));
+    const strandFade = easeOutCubic(seg(p, 0.36, 0.49));
 
     // 1+2 — threads weave in (over-under depth held through the macro), then tighten
     strands.forEach((s, k) => {
       const g = strandRefs.current[k];
       if (!g) return;
-      const grow = easeOutCubic(seg(p, s.delay, s.delay + 0.15));
+      const grow = easeOutCubic(seg(p, s.delay * 0.85, s.delay * 0.85 + 0.15));
       if (s.axis === "h") g.scale.x = 0.0001 + grow;
       else g.scale.y = 0.0001 + grow;
       g.position.z = (1 - tighten) * (s.over ? O : -O);
@@ -428,36 +439,42 @@ function Bag() {
     strandMat.opacity = 1 - strandFade;
 
     // 3 — woven sheet becomes the bag surface (fades in as strands fade out)
-    bodyMat.current.opacity = easeOutCubic(seg(p, 0.64, 0.8));
+    bodyMat.current.opacity = easeOutCubic(seg(p, 0.34, 0.48));
     bodyMat.current.depthWrite = bodyMat.current.opacity > 0.6;
-    const ns = 0.4 + 0.85 * easeInOutCubic(seg(p, 0.5, 0.72));
+    const form = easeInOutCubic(seg(p, 0.4, 0.64));
+    body.current.scale.z = lerp(0.025, 1, form);
+    body.current.scale.x = lerp(0.97, 1, form);
+    const ns = 0.12 + 0.18 * easeInOutCubic(seg(p, 0.28, 0.5));
     bodyMat.current.normalScale.set(ns, ns);
 
     // 4 — fold / seal: the top + bottom seam bands grow in, then briefly catch light
-    const seamGrow = easeOutCubic(seg(p, 0.68, 0.86));
+    const seamGrow = easeOutCubic(seg(p, 0.56, 0.72));
     seamRefs.current.forEach((g) => {
       if (!g) return;
       g.scale.x = 0.0001 + seamGrow;
     });
-    seamMat.opacity = easeOutCubic(seg(p, 0.68, 0.84)) * 0.62;
-    seamMat.emissiveIntensity = Math.sin(seg(p, 0.86, 0.98) * Math.PI) * 0.3;
+    seamMat.opacity = easeOutCubic(seg(p, 0.56, 0.7)) * 0.7;
+    seamMat.emissiveIntensity = Math.sin(seg(p, 0.62, 0.78) * Math.PI) * 0.22;
 
     // 5 — printing applied to the fabric (front + back)
-    frontMat.current.opacity = easeOutCubic(seg(p, 0.82, 0.97));
+    frontMat.current.opacity = easeOutCubic(seg(p, 0.76, 0.9));
     backMat.current.opacity = frontMat.current.opacity;
 
     // 6 — one refined specular sweep: a soft highlight rakes across the
     // laminate, which briefly catches the light (clearcoat lift) as it passes.
-    const gl = seg(p, 0.82, 1);
+    const gl = seg(p, 0.85, 0.98);
     const ge = easeInOutCubic(gl);
     glint.current.position.x = lerp(-1.3, 1.3, ge);
     glint.current.position.y = lerp(0.26, -0.26, ge); // slight diagonal rake
     const glow = Math.pow(Math.sin(gl * Math.PI), 1.6);
     glintMat.opacity = glow * 0.24;
-    bodyMat.current.clearcoat = 0.1 + glow * 0.16;
+    bodyMat.current.clearcoat = 0.08 + glow * 0.08;
 
     // 7 — settle
-    bag.current.scale.setScalar(lerp(1.008, 1, easeOutCubic(seg(p, 0.96, 1))));
+    const settle = easeOutCubic(seg(p, 0.88, 1));
+    bag.current.scale.setScalar(lerp(1.015, 1, settle));
+    bag.current.position.x = lerp(0, 0.92, easeInOutCubic(seg(p, 0.84, 0.96)));
+    bag.current.position.y = lerp(0.06, -0.12, settle);
   });
 
   return (
@@ -482,16 +499,17 @@ function Bag() {
             ref={bodyMat}
             color={BODY}
             normalMap={wovenNormal}
-            normalScale={new THREE.Vector2(1.1, 1.1)}
+            normalScale={new THREE.Vector2(0.26, 0.26)}
             roughnessMap={roughnessMap}
-            roughness={0.92}
+            roughness={0.64}
             metalness={0}
-            clearcoat={0.1}
-            clearcoatRoughness={0.65}
-            sheen={0.45}
-            sheenRoughness={0.85}
+            clearcoat={0.08}
+            clearcoatRoughness={0.55}
+            sheen={0.1}
+            sheenRoughness={0.76}
             sheenColor="#ffffff"
-            envMapIntensity={0.6}
+            envMapIntensity={0.86}
+            ior={1.46}
             side={THREE.DoubleSide}
             transparent
             opacity={0}
@@ -510,10 +528,34 @@ function Bag() {
       {/* printed brand on the fabric — front + back, conforming to the surface */}
       <group ref={front}>
         <mesh geometry={frontGeo}>
-          <meshStandardMaterial ref={frontMat} map={print} transparent opacity={0} roughness={0.62} depthWrite={false} />
+          <meshStandardMaterial
+            ref={frontMat}
+            map={print}
+            normalMap={wovenNormal}
+            normalScale={new THREE.Vector2(0.2, 0.2)}
+            roughnessMap={roughnessMap}
+            transparent
+            opacity={0}
+            roughness={0.64}
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-1}
+          />
         </mesh>
         <mesh geometry={frontGeo} rotation={[0, Math.PI, 0]}>
-          <meshStandardMaterial ref={backMat} map={print} transparent opacity={0} roughness={0.62} depthWrite={false} />
+          <meshStandardMaterial
+            ref={backMat}
+            map={print}
+            normalMap={wovenNormal}
+            normalScale={new THREE.Vector2(0.2, 0.2)}
+            roughnessMap={roughnessMap}
+            transparent
+            opacity={0}
+            roughness={0.64}
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-1}
+          />
         </mesh>
       </group>
 
@@ -526,31 +568,42 @@ function Bag() {
 }
 
 // Cinematic camera: product view -> macro dive into the weave -> back to product.
-const PRODUCT_POS = new THREE.Vector3(1.5, 0.35, 5.0); // slight 3/4 so the fill volume reads
-const PRODUCT_TGT = new THREE.Vector3(0, 0, 0);
-const MACRO_POS = new THREE.Vector3(0.28, -0.06, 0.92);
-const MACRO_TGT = new THREE.Vector3(0.12, -0.06, 0.18);
+const MACRO_POS = new THREE.Vector3(0.2, -0.08, 0.72);
+const MACRO_TGT = new THREE.Vector3(0.08, -0.05, 0.04);
+const WEAVE_POS = new THREE.Vector3(0.44, 0.06, 1.34);
+const WEAVE_TGT = new THREE.Vector3(0.03, 0, 0);
+const FORM_POS = new THREE.Vector3(0.9, 0.2, 2.85);
+const FORM_TGT = new THREE.Vector3(0, -0.02, 0);
+const DETAIL_POS = new THREE.Vector3(-0.62, 0.72, 2.08);
+const DETAIL_TGT = new THREE.Vector3(-0.22, 0.54, 0);
+const PRODUCT_POS = new THREE.Vector3(1.55, 0.28, 4.72);
+const PRODUCT_TGT = new THREE.Vector3(0.34, -0.04, 0);
 
-function CameraRig() {
+function CameraRig({ progressRef }: { progressRef: RefObject<number> }) {
   const { camera } = useThree();
-  const start = useRef<number | null>(null);
   const pos = useMemo(() => new THREE.Vector3(), []);
   const tgt = useMemo(() => new THREE.Vector3(), []);
   useFrame(() => {
-    if (start.current === null) start.current = performance.now();
-    const p = Math.min((performance.now() - start.current) / (DURATION * 1000), 1);
-    if (p < 0.36) {
-      pos.copy(PRODUCT_POS); tgt.copy(PRODUCT_TGT);
-    } else if (p < 0.5) {
-      const e = easeInOutCubic(seg(p, 0.36, 0.5));
-      pos.copy(PRODUCT_POS).lerp(MACRO_POS, e);
-      tgt.copy(PRODUCT_TGT).lerp(MACRO_TGT, e);
-    } else if (p < 0.6) {
-      pos.copy(MACRO_POS); tgt.copy(MACRO_TGT);
-    } else if (p < 0.76) {
-      const e = easeInOutCubic(seg(p, 0.6, 0.76));
-      pos.copy(MACRO_POS).lerp(PRODUCT_POS, e);
-      tgt.copy(MACRO_TGT).lerp(PRODUCT_TGT, e);
+    const p = progressRef.current ?? 0;
+    if (p < 0.22) {
+      const e = easeInOutCubic(seg(p, 0, 0.22));
+      pos.copy(MACRO_POS).lerp(WEAVE_POS, e);
+      tgt.copy(MACRO_TGT).lerp(WEAVE_TGT, e);
+    } else if (p < 0.47) {
+      pos.copy(WEAVE_POS);
+      tgt.copy(WEAVE_TGT);
+    } else if (p < 0.65) {
+      const e = easeInOutCubic(seg(p, 0.47, 0.65));
+      pos.copy(WEAVE_POS).lerp(FORM_POS, e);
+      tgt.copy(WEAVE_TGT).lerp(FORM_TGT, e);
+    } else if (p < 0.78) {
+      const e = easeInOutCubic(seg(p, 0.65, 0.78));
+      pos.copy(FORM_POS).lerp(DETAIL_POS, e);
+      tgt.copy(FORM_TGT).lerp(DETAIL_TGT, e);
+    } else if (p < 0.94) {
+      const e = easeInOutCubic(seg(p, 0.78, 0.94));
+      pos.copy(DETAIL_POS).lerp(PRODUCT_POS, e);
+      tgt.copy(DETAIL_TGT).lerp(PRODUCT_TGT, e);
     } else {
       pos.copy(PRODUCT_POS); tgt.copy(PRODUCT_TGT);
     }
@@ -560,69 +613,38 @@ function CameraRig() {
   return null;
 }
 
-// Premium idle — a slow, smooth sway that reveals the product's dimension in
-// the light, like a suspended studio display. Refined, never busy.
-function PremiumIdle({ children }: { children: ReactNode }) {
-  const ref = useRef<THREE.Group>(null!);
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.y = Math.sin(t * 0.16) * 0.085; // ~±5°, slow + smooth
-    ref.current.rotation.x = Math.sin(t * 0.12 + 1) * 0.018;
-    ref.current.position.y = Math.sin(t * 0.2) * 0.01; // barely-there float
-  });
-  return <group ref={ref}>{children}</group>;
-}
-
-// A slow studio light sweep so a soft highlight travels across the laminate,
-// plus a quiet rim for a premium edge — refined product-render lighting.
-function Lights() {
+function Lights({ progressRef }: { progressRef: RefObject<number> }) {
   const key = useRef<THREE.DirectionalLight>(null!);
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    const a = 0.5 + Math.sin(t * 0.13) * 0.5;
-    key.current.position.set(lerp(2.6, 6, a), 1.2 + Math.sin(t * 0.1) * 0.7, lerp(2.8, 0.9, a));
+  const red = useRef<THREE.DirectionalLight>(null!);
+  useFrame(() => {
+    const progress = progressRef.current ?? 0;
+    const sweep = easeInOutCubic(seg(progress, 0.7, 0.96));
+    key.current.position.set(lerp(-1.4, 5.2, sweep), lerp(0.4, 2.8, sweep), lerp(1.1, 2.2, sweep));
+    red.current.intensity = Math.sin(seg(progress, 0.58, 0.78) * Math.PI) * 0.85;
   });
   return (
     <>
       <directionalLight ref={key} intensity={1.25} color="#fff4ea" />
-      <directionalLight position={[-3.5, 3, 3]} intensity={0.3} color="#e8eeff" />
-      <directionalLight position={[-1.2, 1.8, -4]} intensity={0.7} color="#ffffff" />
+      <directionalLight position={[-3.5, 3, 3]} intensity={0.38} color="#c9d0ff" />
+      <directionalLight ref={red} position={[2.8, -0.4, -3.2]} intensity={0} color={BRAND_RED} />
+      <directionalLight position={[-1.2, 1.8, -4]} intensity={0.52} color="#ffffff" />
     </>
   );
 }
 
-function Dust() {
-  const ref = useRef<THREE.Points>(null!);
-  const geo = useMemo(() => {
-    const N = 70;
-    const arr = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 9;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 6;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 3 - 0.5;
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(arr, 3));
-    return g;
-  }, []);
-  useFrame((_, dt) => {
-    const d = Math.min(dt, 0.05);
-    const pos = ref.current.geometry.attributes.position as THREE.BufferAttribute;
-    for (let i = 0; i < pos.count; i++) {
-      let y = pos.getY(i) + d * 0.04;
-      if (y > 3.2) y = -3.2;
-      pos.setY(i, y);
-    }
-    pos.needsUpdate = true;
-  });
-  return (
-    <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.016} color="#bcb5a8" transparent opacity={0.28} sizeAttenuation depthWrite={false} />
-    </points>
-  );
-}
-
-export default function BagScene() {
+export default function BagScene({
+  progress,
+  progressRef,
+  interactive,
+  onReady,
+  onFailure,
+}: {
+  progress: number;
+  progressRef: RefObject<number>;
+  interactive: boolean;
+  onReady: () => void;
+  onFailure: () => void;
+}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(true);
 
@@ -638,45 +660,56 @@ export default function BagScene() {
     <div ref={wrapRef} className="h-full w-full" style={{ animation: "ktkBagFade 700ms ease-out both" }} aria-hidden>
       <style>{`@keyframes ktkBagFade { from { opacity: 0 } to { opacity: 1 } }`}</style>
       <Canvas
-        frameloop={active ? "always" : "never"}
-        camera={{ position: [1.5, 0.35, 5.0], fov: 28, near: 0.05, far: 50 }}
-        gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
-        dpr={[1, 1.6]}
+        frameloop={!active ? "never" : interactive ? "demand" : "always"}
+        camera={{ position: [0.2, -0.08, 0.72], fov: 30, near: 0.035, far: 50 }}
+        gl={{ alpha: true, antialias: false, powerPreference: "high-performance", stencil: false }}
+        dpr={[1, 1.25]}
+        onCreated={({ gl }) => {
+          onReady();
+          gl.domElement.addEventListener(
+            "webglcontextlost",
+            (event) => {
+              event.preventDefault();
+              onFailure();
+            },
+            { once: true },
+          );
+        }}
         style={{ width: "100%", height: "100%" }}
       >
-        <CameraRig />
+        <CameraRig progressRef={progressRef} />
         <ambientLight intensity={0.34} color="#fff6ec" />
 
-        <Environment resolution={256}>
+        <Environment resolution={128}>
           <Lightformer form="rect" intensity={2.4} color="#fff3e6" position={[3.5, 4, 4]} scale={[6, 6, 1]} target={[0, 0, 0]} />
           <Lightformer form="circle" intensity={1.2} color="#ffffff" position={[0, 5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
           <Lightformer form="rect" intensity={0.8} color="#cdd6ff" position={[-4, 1.5, 2]} scale={[5, 5, 1]} target={[0, 0, 0]} />
         </Environment>
 
-        <Lights />
+        <Lights progressRef={progressRef} />
 
-        <Dust />
+        <PresentationControls
+          enabled={interactive}
+          global={false}
+          cursor={interactive}
+          snap
+          speed={1}
+          polar={[-0.12, 0.12]}
+          azimuth={[-0.18, 0.18]}
+        >
+          <Bag progressRef={progressRef} />
+        </PresentationControls>
 
-        <PremiumIdle>
-          <PresentationControls
-            global={false}
-            cursor={false}
-            snap
-            speed={1.6}
-            polar={[-0.35, 0.35]}
-            azimuth={[-Math.PI, Math.PI]}
-          >
-            <Bag />
-          </PresentationControls>
-        </PremiumIdle>
-
-        <ContactShadows position={[0, -1.3, 0]} opacity={0.2} scale={9.5} blur={5} far={3.6} resolution={1024} color={SHADOW} />
-
-        {/* cinematic grade: bloom only the true speculars, so the white bag
-            stays crisp instead of milky */}
-        <EffectComposer>
-          <Bloom intensity={0.22} luminanceThreshold={0.9} luminanceSmoothing={0.2} mipmapBlur />
-        </EffectComposer>
+        <ContactShadows
+          position={[lerp(0, 0.92, easeInOutCubic(seg(progress, 0.84, 0.96))), -1.14, 0]}
+          opacity={seg(progress, 0.72, 0.9) * 0.28}
+          scale={7}
+          blur={4.5}
+          far={3}
+          resolution={256}
+          frames={interactive ? 1 : Infinity}
+          color={SHADOW}
+        />
       </Canvas>
     </div>
   );

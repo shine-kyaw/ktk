@@ -43,8 +43,8 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
                 From resin to <span className="text-red">ready to ship.</span>
               </h2>
               <p className="mt-6 max-w-xs leading-relaxed text-white/60">
-                Eight controlled stages on European STARLINGER lines. Every bag follows the same
-                path, every time.
+                Four controlled manufacturing phases on European STARLINGER lines. Every bag
+                follows the same disciplined path, every time.
               </p>
               <Link
                 href="/manufacturing"
