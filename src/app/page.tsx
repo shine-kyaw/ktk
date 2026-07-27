@@ -395,9 +395,13 @@ export default async function HomePage() {
           <Reveal delay={0.08}>
             <h3 className="eyebrow">Write</h3>
             {company.emails.map((email) => (
-              <p key={email} className="mono mt-3 text-lg text-bone">
+              <a
+                key={email}
+                href={`mailto:${email}`}
+                className="mono mt-3 block text-lg text-bone transition-colors hover:text-red"
+              >
                 {email}
-              </p>
+              </a>
             ))}
           </Reveal>
           <Reveal delay={0.16}>
