@@ -236,7 +236,12 @@ export default async function ProductDetailPage({
           >
             Enquire now
           </Link>
-          <p className="mono mt-5 text-[0.64rem] text-ash">sales@ktk.com.mm</p>
+          <a
+            href="mailto:sales@ktk.com.mm"
+            className="mono mt-5 inline-block text-[0.64rem] text-ash transition-colors hover:text-red"
+          >
+            sales@ktk.com.mm
+          </a>
         </div>
       </div>
 
