@@ -16,7 +16,7 @@ export const NEWS: NewsPost[] = [
     title: "KTK launches its redesigned website",
     excerpt: "A new digital home for our dealers, customers, and partners.",
     body: [
-      "Kaung Thu Kha Trading Co., Ltd has launched a fully redesigned corporate website, built to serve the dealers, contractors, and industrial customers who rely on our products every day.",
+      "Kaung Thu Kha Group Co., Ltd. has launched a fully redesigned corporate website, built to serve the dealers, contractors, and industrial customers who rely on our products every day.",
       "The new site brings the full product catalog, service information, careers, and company news into one place, with inquiry forms connected directly to our sales team.",
     ],
   },

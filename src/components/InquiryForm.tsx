@@ -16,7 +16,7 @@ export function InquiryForm() {
     const body = encodeURIComponent(
       `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nPhone: ${data.get("phone")}\n\n${data.get("message")}`,
     );
-    window.location.href = `mailto:kaungthukha@ktk.com.mm?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:sales@ktk.com.mm?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -46,8 +46,10 @@ export function InquiryForm() {
       </button>
       {sent && (
         <p className="mono text-[0.68rem] uppercase tracking-[0.14em] text-red">
-          Your email app should open with the message ready, or write us directly at
-          kaungthukha@ktk.com.mm
+          Your email app should open with the message ready, or write us directly at{" "}
+          <a href="mailto:sales@ktk.com.mm" className="underline underline-offset-4">
+            sales@ktk.com.mm
+          </a>
         </p>
       )}
     </form>

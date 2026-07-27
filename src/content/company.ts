@@ -6,7 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 export const COMPANY = {
-  legalName: "Kaung Thu Kha Trading Co., Ltd",
+  legalName: "Kaung Thu Kha Group Co., Ltd.",
   group: "Kaung Thu Kha Group",
   short: "KTK",
   tagline: "Key To Smart Power",
@@ -23,7 +23,7 @@ export const COMPANY = {
     line2: "Zone (2), Hlaing Thar Yar Township, Yangon, Myanmar",
   },
   phones: ["(959) 264 817 108", "(959) 264 817 109"],
-  emails: ["kaungthukha@ktk.com.mm", "sales@ktk.com.mm"],
+  emails: ["sales@ktk.com.mm"],
   facebook: "https://www.facebook.com/",
 } as const;
 

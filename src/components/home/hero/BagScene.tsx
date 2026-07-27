@@ -242,7 +242,7 @@ function usePrintTexture(fontsReady: boolean, logo: HTMLImageElement | null) {
     } else {
       ctx.fillStyle = BRAND_BLUE;
       ctx.font = "600 24px Archivo, system-ui, sans-serif";
-      ctx.fillText("Kaung Thu Kha Trading Co.,Ltd", W / 2, 560);
+      ctx.fillText("Kaung Thu Kha Group Co., Ltd.", W / 2, 560);
     }
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;

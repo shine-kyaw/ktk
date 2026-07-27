@@ -19,7 +19,7 @@ export function Footer() {
           <span className="rounded-md bg-white px-2.5 py-1.5">
             <Image
               src="/brand/ktk-logo.png"
-              alt="Kaung Thu Kha Trading Co., Ltd."
+              alt="Kaung Thu Kha Group Co., Ltd."
               width={1600}
               height={357}
               className="h-7 w-auto max-w-[15rem]"
@@ -43,11 +43,14 @@ export function Footer() {
       <div className="border-t border-seam">
         <div className="container-x flex flex-wrap items-center justify-between gap-2 py-4">
           <p className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
-            © {new Date().getFullYear()} Kaung Thu Kha Trading Co., Ltd
+            © {new Date().getFullYear()} Kaung Thu Kha Group Co., Ltd.
           </p>
-          <p className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
-            sales@ktk.com.mm · (959) 264 817 108
-          </p>
+          <div className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
+            <a href="mailto:sales@ktk.com.mm" className="transition-colors hover:text-red">
+              sales@ktk.com.mm
+            </a>{" "}
+            · (959) 264 817 108
+          </div>
         </div>
       </div>
     </footer>

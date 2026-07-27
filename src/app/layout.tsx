@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s · KTK",
   },
   description:
-    "Kaung Thu Kha Trading Co., Ltd, Myanmar's industrial packaging manufacturer. Cement sacks and PP woven bags produced on European STARLINGER lines since 2012, plus fillers, thread, bag-closing machinery, and bearings.",
+    "Kaung Thu Kha Group Co., Ltd. is Myanmar's industrial packaging manufacturer. Cement sacks and PP woven bags produced on European STARLINGER lines since 2012, plus fillers, thread, bag-closing machinery, and bearings.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

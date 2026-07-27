@@ -27,7 +27,12 @@ export default function ContactPage() {
               Yangon, Myanmar
             </p>
             <p className="mono mt-6 text-sm text-bone">(959) 264 817 108 · (959) 264 817 109</p>
-            <p className="mono mt-2 text-sm text-bone">kaungthukha@ktk.com.mm</p>
+            <a
+              href="mailto:sales@ktk.com.mm"
+              className="mono mt-2 inline-block text-sm text-bone transition-colors hover:text-red"
+            >
+              sales@ktk.com.mm
+            </a>
           </div>
           <div className="mt-6 aspect-[4/3] w-full overflow-hidden border border-seam grayscale contrast-110">
             <iframe

@@ -79,7 +79,7 @@ export function Header() {
           <span className="rounded-md bg-white px-2.5 py-1.5">
             <Image
               src="/brand/ktk-logo.png"
-              alt="Kaung Thu Kha Trading Co., Ltd."
+              alt="Kaung Thu Kha Group Co., Ltd."
               width={1600}
               height={357}
               priority

@@ -90,7 +90,7 @@ export const JOBS: Job[] = [
 ];
 
 export const RECRUITMENT_PROCESS = [
-  { step: "Apply", detail: "Submit the application form or email your CV to kaungthukha@ktk.com.mm." },
+  { step: "Apply", detail: "Submit the application form or email your CV to sales@ktk.com.mm." },
   { step: "Screening", detail: "Our HR team reviews applications and shortlists within two weeks." },
   { step: "Interview", detail: "One or two interviews, practical assessment for technical roles." },
   { step: "Offer", detail: "Successful candidates receive an offer and onboarding schedule." },

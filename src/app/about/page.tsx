@@ -32,12 +32,12 @@ export default async function AboutPage() {
           One <span className="text-red">supply chain.</span>
         </h1>
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim">
-          {company.legalName}, part of the {company.group}, is both a manufacturer and a
-          distribution house. It manufactures cement sacks and PP woven bags at the San Kaung
-          factory on European STARLINGER lines, holding roughly 55% of Myanmar&apos;s woven-bag
-          market, and it is the country&apos;s sole authorized distributor for HCH bearings and
-          YAO HAN machinery. Together that makes KTK a one-stop partner for the industries that
-          build Myanmar.
+          Kaung Thu Kha Group Co., Ltd. operates as both a manufacturer and an authorized
+          distribution house. We produce high-strength cement sacks and PP woven bags at our San
+          Kaung factory on European STARLINGER lines—supplying approximately 55% of
+          Myanmar&apos;s woven-bag market. Additionally, KTK serves as the sole authorized
+          distributor for HCH bearings and YAO HAN machinery, providing a true one-stop supply
+          chain partner for Myanmar&apos;s industrial sector.
         </p>
       </Reveal>
 

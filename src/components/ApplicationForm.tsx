@@ -18,7 +18,7 @@ export function ApplicationForm({ position }: { position: string }) {
     const body = encodeURIComponent(
       `Position: ${position}\nName: ${data.get("name")}\nPhone: ${data.get("phone")}\nEmail: ${data.get("email")}\n\n${data.get("cover")}\n\n(Please attach your CV to this email before sending.)`,
     );
-    window.location.href = `mailto:kaungthukha@ktk.com.mm?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:sales@ktk.com.mm?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -57,8 +57,10 @@ export function ApplicationForm({ position }: { position: string }) {
       </button>
       {sent && (
         <p className="mono text-[0.66rem] uppercase leading-relaxed tracking-[0.14em] text-red">
-          Your email app should open, attach your CV before sending, or write directly to
-          kaungthukha@ktk.com.mm
+          Your email app should open, attach your CV before sending, or write directly to{" "}
+          <a href="mailto:sales@ktk.com.mm" className="underline underline-offset-4">
+            sales@ktk.com.mm
+          </a>
         </p>
       )}
     </form>
