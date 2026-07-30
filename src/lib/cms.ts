@@ -97,7 +97,25 @@ export async function getWhyPoints() {
 
 // ── Products ────────────────────────────────────────────────────────────────
 export async function getProducts(): Promise<Product[]> {
-  return (await fetchCollection<Product>("products")) ?? PRODUCTS;
+  const remote = await fetchCollection<Product>("products");
+  if (!remote || remote.length === 0) return PRODUCTS;
+
+  // Keep verified local product media/content available even when an older CMS
+  // row is still present. The CMS can override copy later, but it must not
+  // silently replace the official Drive imagery with an empty or stale field.
+  const remoteBySlug = new Map(remote.map((product) => [product.slug, product]));
+  return PRODUCTS.map((local) => {
+    const saved = remoteBySlug.get(local.slug);
+    if (!saved) return local;
+    return {
+      ...local,
+      ...saved,
+      image: local.image ?? saved.image ?? null,
+      gallery: local.gallery?.length ? local.gallery : saved.gallery ?? [],
+      applications: saved.applications?.length ? saved.applications : local.applications,
+      specs: saved.specs?.length ? saved.specs : local.specs,
+    };
+  });
 }
 export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
   const all = await getProducts();
@@ -112,7 +130,10 @@ export async function getProductSlugs(): Promise<string[]> {
   return all.map((p) => p.slug);
 }
 export async function getProductCategories() {
-  return (await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories")) ?? CATEGORY_META;
+  const remote = await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories");
+  if (!remote || remote.length === 0) return CATEGORY_META;
+  const remoteByName = new Map(remote.map((category) => [category.name, category]));
+  return CATEGORY_META.map((local) => ({ ...local, ...remoteByName.get(local.name) }));
 }
 export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
   const all = await getProducts();

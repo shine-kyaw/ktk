@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AssembledBagHero } from "@/components/home/AssembledBagHero";
 import { ProductQuality } from "@/components/home/ProductQuality";
 import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
-import { HeroBagPoster } from "@/components/home/hero/HeroBagPoster";
 import { Reveal } from "@/components/Reveal";
 import {
   getProofPoints,
@@ -19,44 +19,21 @@ import {
   getCompany,
 } from "@/lib/cms";
 
-function ProductVisual({ category }: { category: string }) {
-  const type = category.toLowerCase();
-
-  if (type.includes("cement") || type.includes("woven bag")) {
-    return (
-      <div className="relative flex h-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,.12),transparent_42%),#17191f]">
-        <div className="absolute inset-0 weave-light opacity-45" />
-        <HeroBagPoster className="relative h-[82%] w-auto translate-y-2 drop-shadow-[0_22px_30px_rgba(0,0,0,.42)] transition-transform duration-700 group-hover:-translate-y-1 group-hover:scale-[1.03]" />
-      </div>
-    );
-  }
-
-  if (type.includes("bearing")) {
-    return (
-      <div className="relative flex h-full items-center justify-center overflow-hidden bg-[#17191f]">
-        <div className="h-36 w-36 rounded-full border-[22px] border-white/16 shadow-[inset_0_0_0_2px_rgba(255,255,255,.24),0_30px_45px_rgba(0,0,0,.35)] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105">
-          <div className="m-auto mt-[31px] h-8 w-8 rounded-full border border-red/80" />
-        </div>
-      </div>
-    );
-  }
-
-  if (type.includes("machin")) {
-    return (
-      <div className="relative h-full overflow-hidden bg-[#17191f]">
-        <div className="absolute inset-x-[14%] bottom-[22%] top-[25%] border border-white/18">
-          <span className="absolute left-[10%] top-1/2 h-12 w-[80%] -translate-y-1/2 border-y border-red/60" />
-          <span className="absolute bottom-full left-[12%] h-[28%] w-px bg-white/35" />
-          <span className="absolute bottom-full right-[12%] h-[28%] w-px bg-white/35" />
-        </div>
-      </div>
-    );
-  }
-
+function ProductVisual({ product }: { product: { name: string; image?: string | null; category: string } }) {
   return (
-    <div className="relative h-full overflow-hidden bg-[#17191f]">
-      <div className="weave-light absolute inset-0 scale-110 opacity-75 transition-transform duration-700 group-hover:scale-100" />
-      <div className="absolute inset-x-[18%] bottom-[20%] h-px bg-red/80" />
+    <div className="relative flex h-full items-center justify-center overflow-hidden bg-[#f2f1eb]">
+      {product.image ? (
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
+          className="object-contain p-4 transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-coal text-sm text-ash">{product.category}</div>
+      )}
+      <span className="absolute bottom-3 left-3 bg-ink/75 px-2.5 py-1 mono text-[0.54rem] uppercase tracking-[0.15em] text-white">Official image</span>
     </div>
   );
 }
@@ -171,7 +148,7 @@ export default async function HomePage() {
                   className="group flex h-full flex-col p-7 transition-colors hover:bg-coal"
                 >
                   <div className="relative mb-6 aspect-[4/3] overflow-hidden border border-seam bg-coal realshadow">
-                    <ProductVisual category={p.category} />
+                    <ProductVisual product={p} />
                   </div>
                   <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
                     {p.category}

@@ -1,264 +1,416 @@
-// Product catalog, seed content shaped exactly like the future API response.
-// Read through the async getters in src/lib/cms.ts; pages never import this
-// directly. When the admin backend ships, the getter bodies swap to fetch()
-// and this file can be deleted.
+import type { BagLayerVariant } from "./anatomy";
 
 export type ProductMedia = {
-  /** Path under /public, e.g. "/products/ad-star/hero.jpg". */
   src: string;
-  /** Required alt text for accessibility. */
   alt: string;
-  /** Optional one-line caption shown under the image in the gallery. */
   caption?: string;
 };
 
-/**
- * One reusable material layer for the product-page breakdown. Mirrors the
- * BagLayer language from src/data/anatomy.ts so the same `variant` art
- * (BagSheet) can render here. `note` is a PLACEHOLDER until KTK confirms specs.
- */
-export type ProductMaterialLayer = {
-  id: string;
-  /** Low number = outer layer (same convention as BagLayer.order). */
-  order: number;
-  name: string;
-  /** Short chip label, e.g. "Load-bearing core". */
-  tag: string;
-  description: string;
-  /** Engineering note — PLACEHOLDER until verified. */
-  note?: string;
-  variant: import("./anatomy").BagLayerVariant;
+export type ProductBenefit = {
+  title: string;
+  detail: string;
+};
+
+export type ProductSpec = {
+  label: string;
+  value: string;
 };
 
 export type Product = {
   slug: string;
   name: string;
   category: ProductCategory;
+  eyebrow?: string;
   summary: string;
-  specs: { label: string; value: string }[];
-  applications: string[];
-  /** Optional media path, drop a file in /public and set this; UI reveals it. */
-  image?: string | null;
-  featured?: boolean;
-
-  // ── Enriched detail fields, all optional (backward compatible) ─────────────
-  /** 2–4 sentence richer narrative under the summary. */
   longDescription?: string;
-  /** "Best for" scenarios, short noun phrases. */
-  useCases?: string[];
-  /** Key benefits, each a short title + one-line proof. */
-  benefits?: { title: string; detail: string }[];
-  /** Extra photos beyond `image` (the lead/hero shot). */
+  bestFor?: string;
+  uniqueValue?: string;
+  printing?: string;
+  applications: string[];
+  specs: ProductSpec[];
+  benefits?: ProductBenefit[];
+  image?: string | null;
   gallery?: ProductMedia[];
-  /** Material teardown, reuses the anatomy/BagSheet layer language. */
+  featured?: boolean;
+  model?: string;
+  brand?: string;
   materialLayers?: ProductMaterialLayer[];
-  /** Path to a PDF in /public; the button is DISABLED until set. */
   brochureUrl?: string | null;
 };
 
 export type ProductCategory =
   | "Cement Sacks"
   | "PP Woven Bags"
-  | "Fillers & Thread"
+  | "Fillers"
+  | "Thread"
   | "Machinery"
   | "Bearings";
 
-export const CATEGORY_META: { name: ProductCategory; tagline: string; blurb: string }[] = [
+export type ProductCategoryMeta = {
+  name: ProductCategory;
+  slug: string;
+  tagline: string;
+  blurb: string;
+};
+
+export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Cement Sacks",
-    tagline: "15 million a month",
+    slug: "cement-sacks",
+    tagline: "AD*STAR-ready packaging",
     blurb:
-      "AD-star block-bottom valve sacks produced on European STARLINGER lines, engineered for high-speed automated filling at cement plants.",
+      "Block-bottom and woven valve sacks for cement and other powdered products, with artwork and structures suited to automated filling lines.",
   },
   {
     name: "PP Woven Bags",
-    tagline: "Food-grade, SABIC resin",
+    slug: "pp-woven-bags",
+    tagline: "Three performance levels",
     blurb:
-      "Plain and printed polypropylene woven bags from virgin food-grade resin, light, heavy-duty, and brand-printed up to six colors.",
+      "Plain and printed, laminated, and BOPP laminated packaging made on European STARLINGER lines from 100% Virgin SABIC Resin.",
   },
   {
-    name: "Fillers & Thread",
-    tagline: "The consumables around the bag",
+    name: "Fillers",
+    slug: "fillers",
+    tagline: "Color · cost · consistency",
     blurb:
-      "Calcium-carbonate filler from century-old Vietnamese limestone, plus high-tenacity bag-closing thread, the inputs and consumables that complete the line.",
+      "Calcium-carbonate filler and color masterbatch for woven sacks, film, extrusion coating, and molding applications.",
+  },
+  {
+    name: "Thread",
+    slug: "thread",
+    tagline: "Six visible color options",
+    blurb:
+      "KTK bag-closing thread in the colors shown in the supplied product set, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
   },
   {
     name: "Machinery",
+    slug: "machinery",
     tagline: "NEWLONG · YAO HAN",
     blurb:
-      "Bag-closing and converting machinery from Japan and Taiwan, distributed, installed, and serviced by KTK's own technicians.",
+      "Portable, automatic, and conveyor bag-closing equipment from Japan and Taiwan, with parts, maintenance, repair, and service support.",
   },
   {
     name: "Bearings",
-    tagline: "Sole HCH distributor in Myanmar",
+    slug: "bearings",
+    tagline: "HCH · TR distribution",
     blurb:
-      "HCH and TR precision bearings for industry, the distribution business KTK was built on, grown 6× since 2008.",
+      "HCH and TR bearing products for industrial equipment, supported by KTK’s authorized distribution and sourcing capability in Myanmar.",
   },
 ];
 
+const media = (src: string, alt: string, caption?: string): ProductMedia => ({ src, alt, caption });
+
+const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], label: string) =>
+  files.map((file) => media(`/assets/products/pp-woven/${folder}/${file}.webp`, `${label} product photograph`));
+
+const threadGallery = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
+  media(`/assets/products/thread/${file}.webp`, `KTK thread color option ${index + 1}`, ["Orange", "Blue", "Red", "Green", "White", "Yellow"][index]),
+);
+
+const newlongGallery = [
+  media("/assets/products/machinery/newlong/ks16.webp", "NEWLONG KS16 conveyor bag-closing system", "KS16 conveyor system"),
+  media("/assets/products/machinery/newlong/ds-6ac.webp", "NEWLONG DS-6AC bag-closing machine", "DS-6AC"),
+  media("/assets/products/machinery/newlong/ds-9c.webp", "NEWLONG DS-9C bag-closing machine", "DS-9C"),
+  media("/assets/products/machinery/newlong/np-3ii.webp", "NEWLONG NP-3II portable bag-closing machine", "NP-3II"),
+  media("/assets/products/machinery/newlong/np-7.webp", "NEWLONG NP-7 portable bag-closing machine", "NP-7"),
+];
+
+const yaohanGallery = [
+  ["facc-n980ac", "YAOHAN FACC-N980AC automatic conveyor bag closer"],
+  ["fn600a", "YAOHAN FN600A bag-closing machine"],
+  ["n-600-a", "YAOHAN N 600 A bag-closing machine"],
+  ["n320a", "YAOHAN N320A bag-closing machine"],
+  ["n600ac", "YAOHAN N600AC bag-closing machine"],
+  ["n620a", "YAOHAN N620A bag-closing machine"],
+  ["n980a", "YAOHAN N980A bag-closing machine"],
+  ["n980aw", "YAOHAN N980AW bag-closing machine"],
+  ["u700c", "YAOHAN U700C bag-closing machine"],
+].map(([file, alt]) => media(`/assets/products/machinery/yaohan/${file}.webp`, alt, file.toUpperCase()));
+
+const hchGallery = [
+  media("/assets/products/bearings/hch/deep-groove.webp", "HCH deep groove ball bearings", "Deep groove ball bearing"),
+  media("/assets/products/bearings/hch/tapered-roller.webp", "HCH tapered roller bearings", "Tapered roller bearing"),
+  media("/assets/products/bearings/hch/slideshow-1.webp", "HCH bearing product photography"),
+  media("/assets/products/bearings/hch/slideshow-2.webp", "HCH bearing product photography"),
+  media("/assets/products/bearings/hch/slideshow-3.webp", "HCH bearing product photography"),
+  media("/assets/products/bearings/hch/slideshow-4.webp", "HCH bearing product photography"),
+  media("/assets/products/bearings/hch/slideshow-5.webp", "HCH bearing product photography"),
+];
+
+const trGallery = [
+  media("/assets/products/bearings/tr/spherical-roller.webp", "TR spherical roller bearing", "Spherical roller bearing"),
+  media("/assets/products/bearings/tr/unit-bearing.webp", "TR unit bearing", "Unit bearing"),
+  media("/assets/products/bearings/tr/slideshow-1.webp", "TR bearing product photography"),
+  media("/assets/products/bearings/tr/slideshow-2.webp", "TR bearing product photography"),
+  media("/assets/products/bearings/tr/slideshow-3.webp", "TR bearing product photography"),
+  media("/assets/products/bearings/tr/slideshow-4.webp", "TR bearing product photography"),
+  media("/assets/products/bearings/tr/slideshow-5.webp", "TR bearing product photography"),
+  media("/assets/products/bearings/tr/slideshow-6.webp", "TR bearing product photography"),
+];
+
 export const PRODUCTS: Product[] = [
-  // ── Cement Sacks ──────────────────────────────────────────────────────
   {
-    slug: "ad-star-cement-sack",
-    name: "AD-Star Block-Bottom Cement Sack",
+    slug: "ad-star-cement-sacks",
+    name: "AD*STAR Woven Valve Sacks",
     category: "Cement Sacks",
-    summary:
-      "High-strength block-bottom valve sack produced on STARLINGER AD-Star lines, coated for moisture resistance and engineered for automated cement filling at high line speeds.",
+    eyebrow: "Cement packaging",
+    summary: "Block-bottom woven valve sacks for cement and powdered products, presented in the supplied AD*STAR artwork set.",
     longDescription:
-      "The AD-Star sack is built layer by layer for reliable strength: a printed outer face, a moisture-resistant coating, a woven polypropylene core, reinforced seams, and a self-sealing block-bottom valve. It is engineered for high-speed automated filling at cement plants and dependable handling through stacking, transport, and storage.",
-    useCases: [
-      "High-speed automated cement filling lines",
-      "Bulk cement distribution and stacking",
-      "Moisture-sensitive storage and transport",
+      "The supplied AD*STAR artwork shows a structured woven valve sack format designed for automated filling and clean stacking. KTK can support artwork-led packaging discussions around dimensions, print, capacity, and filling-line requirements.",
+    applications: ["Cement", "Powdered materials", "Automated filling lines"],
+    specs: [
+      { label: "Format", value: "Woven valve sack" },
+      { label: "Artwork source", value: "CEMENT.zip" },
+      { label: "Shown capacities", value: "20 kg · 50 kg" },
     ],
     benefits: [
-      { title: "Built for line speed", detail: "Block-bottom valve self-seals on automated fillers, with no separate closing step." },
-      { title: "Moisture resistance", detail: "Laminated coating shields cement from humidity, dust, and abrasion." },
-      { title: "Consistent lot quality", detail: "Produced on European STARLINGER AD-Star lines for repeatable strength." },
-      { title: "Brand-ready", detail: "Sharp print, up to six colors, legible through handling and stacking." },
+      { title: "Automation-ready direction", detail: "A block-bottom valve format suited to high-throughput filling conversations." },
+      { title: "Clear brand surface", detail: "The supplied artwork demonstrates how a finished cement sack can carry strong front and side branding." },
+      { title: "Specification-led", detail: "Confirm size, construction, and line compatibility with KTK before production." },
     ],
-    specs: [
-      { label: "Capacity", value: "50 kg" },
-      { label: "Construction", value: "Block-bottom valve" },
-      { label: "Technology", value: "STARLINGER AD-Star" },
-      { label: "Printing", value: "Up to 6 colors" },
-    ],
-    applications: ["Cement plants", "Automated filling lines", "Bulk distribution"],
-    materialLayers: [
-      { id: "print", order: 1, name: "Printed outer layer", tag: "Outer surface", variant: "print", description: "Your brand printed sharp on the bag's outer face, legible through handling and stacking.", note: "Placeholder: confirm print method and ink durability with KTK." },
-      { id: "lam", order: 2, name: "Moisture-resistant coating", tag: "Protective film", variant: "lamination", description: "A laminated film seals the woven surface against moisture, dust, and abrasion.", note: "Placeholder: confirm coating type and moisture rating with KTK." },
-      { id: "woven", order: 3, name: "Woven polypropylene core", tag: "Load-bearing core", variant: "woven", description: "Tightly woven PP tapes carry the load and resist tearing under weight.", note: "Placeholder: confirm tape denier and tensile strength with KTK." },
-      { id: "seam", order: 4, name: "Reinforced seams", tag: "Seams", variant: "stitching", description: "Reinforced seams hold the bag together at its weakest points.", note: "Placeholder: confirm seam construction with KTK." },
-      { id: "valve", order: 5, name: "Block-bottom valve", tag: "Filling structure", variant: "valve", description: "Fills fast on automated lines and self-seals once packed.", note: "Placeholder: confirm valve type and fill-speed compatibility with KTK." },
-    ],
-    brochureUrl: null,
+    image: "/assets/cement/ad-star-cement-bag.jpg",
+    gallery: [media("/assets/cement/ad-star-cement-bag.jpg", "AD*STAR woven valve sack artwork"), media("/assets/cement/cement-bag.jpg", "Cement bag portfolio artwork")],
     featured: true,
   },
   {
-    slug: "cement-sack-standard",
-    name: "Standard Cement Sack",
-    category: "Cement Sacks",
-    summary:
-      "Cost-efficient woven cement sack for standard filling operations, with full custom-print branding and consistent lot quality.",
-    specs: [
-      { label: "Capacity", value: "50 kg" },
-      { label: "Construction", value: "Woven PP" },
-      { label: "Technology", value: "STARLINGER (EU)" },
-      { label: "Printing", value: "Up to 6 colors" },
-    ],
-    applications: ["Cement plants", "Regional distribution"],
-  },
-  // ── PP Woven Bags ─────────────────────────────────────────────────────
-  {
-    slug: "pp-woven-printed",
-    name: "Printed PP Woven Bag",
+    slug: "plain-printed-pp-woven-bag",
+    name: "Plain & Printed PP Woven Bag",
     category: "PP Woven Bags",
-    summary:
-      "Brand-printed polypropylene woven bag from virgin food-grade SABIC resin, flexo-printed both sides for retail-facing packaging. No recycled content, no odor.",
+    eyebrow: "Standard PP woven bag",
+    bestFor: "Bulk storage & breathable crops",
+    uniqueValue: "High-strength woven polypropylene allows air circulation to help keep contents dry and fresh.",
+    printing: "Flexo printing up to 6 colors",
+    summary: "The standard breathable option for agricultural and food-related bulk packaging, available plain or printed.",
+    longDescription:
+      "Standard PP woven bags are built for dependable bulk handling where breathable woven fabric is the right fit. The supplied general product set shows rice, food, and agricultural packaging examples; final size, construction, and print artwork are confirmed per order.",
+    applications: ["Agricultural products", "Flour", "Local rice", "Export rice", "Beans"],
     specs: [
-      { label: "Capacity", value: "5–50 kg" },
-      { label: "Resin", value: "Virgin food-grade (SABIC)" },
-      { label: "Printing", value: "Flexo, both sides" },
-      { label: "Finish", value: "Plain / laminated" },
+      { label: "Capacity", value: "5 kg – 50 kg" },
+      { label: "Material", value: "100% Virgin SABIC Resin" },
+      { label: "Recycled content", value: "0%" },
+      { label: "Odor", value: "100% odor-free" },
+      { label: "Printing", value: "Flexo · up to 6 colors" },
     ],
-    applications: ["Animal feed", "Flour & salt", "Fertilizer", "Seafood"],
+    benefits: [
+      { title: "Breathable construction", detail: "Woven fabric supports airflow for dry goods and agricultural contents." },
+      { title: "Flexible branding", detail: "Plain or flexo-printed finishes support both operational and branded packaging." },
+      { title: "STARLINGER production", detail: "Manufactured on European STARLINGER lines using the specified virgin resin standard." },
+    ],
+    image: "/assets/products/pp-woven/general/143.webp",
+    gallery: ppGallery("general", ["143", "207", "208", "209", "210"], "Standard PP woven bag"),
     featured: true,
   },
   {
-    slug: "pp-woven-plain",
-    name: "Plain PP Woven Bag",
+    slug: "laminated-pp-woven-bag",
+    name: "Laminated PP Woven Bag",
     category: "PP Woven Bags",
-    summary:
-      "General-purpose woven bag in white or colored PP, light, strong, and heavy-duty for agricultural and industrial filling.",
+    eyebrow: "Protective PP woven bag",
+    bestFor: "Moisture & dust protection",
+    uniqueValue: "Woven fabric bonded with an extra protective film layer designed to provide strong protection against humidity and dust.",
+    printing: "Flexo printing with enhanced moisture barrier",
+    summary: "A protective woven format for fertilizer, feed, chemicals, and fine powders that need an added film layer.",
+    longDescription:
+      "Laminated PP woven bags add a protective film layer to the woven substrate. The supplied lamination set shows feed, pet-food, and fine-product packaging examples; barrier performance and final structure should be matched to the product and filling environment.",
+    applications: ["Fertilizer", "Animal feed", "Chemicals", "Fine powders"],
     specs: [
-      { label: "Capacity", value: "5–50 kg" },
-      { label: "Resin", value: "Virgin food-grade (SABIC)" },
-      { label: "Finish", value: "Plain / laminated" },
-      { label: "Bottom", value: "Folded, open mouth" },
+      { label: "Capacity", value: "5 kg – 50 kg" },
+      { label: "Material", value: "100% Virgin SABIC Resin" },
+      { label: "Recycled content", value: "0%" },
+      { label: "Odor", value: "100% odor-free" },
+      { label: "Structure", value: "Woven PP + protective film" },
     ],
-    applications: ["Rice & grain", "Animal feed", "Fertilizer", "Agriculture"],
+    benefits: [
+      { title: "Added barrier layer", detail: "Designed to provide stronger protection against humidity, dust, and surface contamination." },
+      { title: "Product-led selection", detail: "The structure can be matched to powders, feed, fertilizer, and other filling requirements." },
+      { title: "Print-ready surface", detail: "Flexo printing keeps packaging clear and recognizable through handling." },
+    ],
+    image: "/assets/products/pp-woven/lamination/0157.webp",
+    gallery: ppGallery("lamination", ["0157", "0162", "0188", "6", "7"], "Laminated PP woven bag"),
+    featured: true,
   },
-  // ── Fillers & Thread ──────────────────────────────────────────────────
   {
-    slug: "caco3-filler",
+    slug: "bopp-laminated-bag",
+    name: "BOPP Laminated Bag",
+    category: "PP Woven Bags",
+    eyebrow: "Premium packaging",
+    bestFor: "Photo-quality retail branding",
+    uniqueValue: "A three-layer structure with high-definition reverse-printed BOPP film sealed beneath the surface for highly scratch-resistant and water-resistant graphics.",
+    printing: "HD gravure photo-realistic printing · Glossy or Matt finish",
+    summary: "The premium retail-facing option for rice, pet food, aquafeed, and consumer products where the pack is part of the brand experience.",
+    longDescription:
+      "BOPP laminated bags combine a woven base with a high-definition reverse-printed film layer. The supplied BOPP set shows colorful retail and food packaging examples; finish, artwork, and dimensions are developed around the intended shelf presentation.",
+    applications: ["Premium retail rice", "Pet food", "Aquafeed", "Consumer products"],
+    specs: [
+      { label: "Capacity", value: "5 kg – 25 kg" },
+      { label: "Structure", value: "3-layer BOPP laminate" },
+      { label: "Printing", value: "HD gravure" },
+      { label: "Finish", value: "Glossy or Matt" },
+      { label: "Protection", value: "Scratch-resistant · water-resistant" },
+    ],
+    benefits: [
+      { title: "Retail-first presentation", detail: "Photo-realistic gravure printing is designed for high-impact shelf branding." },
+      { title: "Protected graphics", detail: "The reverse-printed film places artwork beneath the surface for durable presentation." },
+      { title: "Finish choice", detail: "Glossy or Matt finish lets the package match the intended brand character." },
+    ],
+    image: "/assets/products/pp-woven/bopp/0153.webp",
+    gallery: ppGallery("bopp", ["18", "0144", "0153", "0203", "211"], "BOPP laminated bag"),
+    featured: true,
+  },
+  {
+    slug: "calcium-carbonate-filler",
     name: "Calcium-Carbonate Filler",
-    category: "Fillers & Thread",
-    summary:
-      "Filler masterbatch from century-old high-calcium Vietnamese limestone, reduces production cost across woven sacks, film, extrusion coating, and molding. Custom grades and color masterbatch available.",
+    category: "Fillers",
+    eyebrow: "Material input",
+    summary: "Filler masterbatch and color options for woven sacks, film, extrusion coating, and molding applications.",
+    longDescription:
+      "The supplied FILLER images show both the finished KTK bag and the granular material. Use this product to start a specification discussion around base resin, loading, color, and the process where the filler will run.",
+    applications: ["Woven sacks", "Blown film", "Extrusion coating", "Injection molding", "Blow molding"],
     specs: [
-      { label: "Base", value: "High-calcium CaCO₃" },
+      { label: "Format", value: "Filler / color masterbatch" },
       { label: "Source", value: "Vietnam limestone" },
-      { label: "Forms", value: "Filler / color / compound" },
+      { label: "Use", value: "Film · extrusion · molding" },
     ],
-    applications: ["Woven sacks", "Blown film", "Extrusion coating", "Injection & blow molding"],
+    benefits: [
+      { title: "Process-aware supply", detail: "Discuss the grade around your production process and target finish." },
+      { title: "Color flexibility", detail: "The supplied image set includes color material examples for a visual starting point." },
+      { title: "Inquiry-led specifications", detail: "Contact KTK for grade, loading, and application-specific information." },
+    ],
+    image: "/assets/products/filler/filler-bag.webp",
+    gallery: [media("/assets/products/filler/filler-bag.webp", "KTK filler bag"), media("/assets/products/filler/filler.webp", "Color calcium-carbonate filler material")],
+    featured: true,
   },
   {
-    slug: "bag-closing-thread",
-    name: "Bag-Closing Thread",
-    category: "Fillers & Thread",
-    summary:
-      "High-tenacity thread engineered for bag-closing machines, consistent runnability at speed, compatible with NEWLONG and YAO HAN closers.",
+    slug: "ktk-thread",
+    name: "KTK Bag-Closing Thread",
+    category: "Thread",
+    eyebrow: "Bag-closing consumable",
+    bestFor: "Reliable bag closure across common sewing systems",
+    summary: "KTK thread in six visible color options for bag-closing operations, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
+    longDescription:
+      "The supplied thread set shows six KTK color options: orange, blue, red, green, white, and yellow. KTK Thread is presented as a compatible bag-closing consumable; confirm denier, cone format, and sewing-line requirements with the sales team.",
+    applications: ["Cement sacks", "PP woven bags", "Bag-closing machines", "Sack stitching"],
     specs: [
-      { label: "Material", value: "Spun polyester" },
-      { label: "Put-up", value: "Cone" },
-      { label: "Compatibility", value: "NEWLONG / YAO HAN" },
+      { label: "Brand", value: "KTK" },
+      { label: "Visible options", value: "6 colors" },
+      { label: "Compatibility", value: "NEWLONG · YAO HAN · other closers" },
     ],
-    applications: ["Bag closing", "Sack stitching"],
+    benefits: [
+      { title: "Six color references", detail: "Choose from the supplied orange, blue, red, green, white, and yellow product photographs." },
+      { title: "Line-compatible direction", detail: "Suitable for inquiry across common Newlong, Yao Han, and other bag-closing machines." },
+      { title: "No unsupported origin claim", detail: "The catalog avoids labeling KTK Thread as a China import." },
+    ],
+    image: "/assets/products/thread/1-1.webp",
+    gallery: threadGallery,
+    featured: true,
   },
-  // ── Machinery ─────────────────────────────────────────────────────────
   {
-    slug: "newlong-bag-closers",
+    slug: "newlong-bag-closing-machinery",
     name: "NEWLONG Bag-Closing Machinery",
     category: "Machinery",
-    summary:
-      "Japanese NEWLONG printing, converting, bag-making and sealing machinery, distributed and serviced by KTK since 2009, with a dedicated service center.",
+    eyebrow: "Authorized machinery",
+    brand: "NEWLONG",
+    summary: "Japanese bag-closing equipment ranging from portable sewing heads to conveyor systems, with parts, maintenance, repair, and service support.",
+    longDescription:
+      "The supplied NEWLONG set includes portable and standalone sewing heads as well as the KS16 conveyor system. KTK can help match the machine format to the bag, line speed, filling environment, and service requirements.",
+    applications: ["Cement filling lines", "PP woven bag closing", "Packing stations", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Japan" },
-      { label: "Partner since", value: "2009" },
-      { label: "Support", value: "Service center · parts" },
+      { label: "Models shown", value: "5 supplied references" },
+      { label: "Support", value: "Parts · maintenance · repair" },
+      { label: "Service", value: "1-year service warranty" },
     ],
-    applications: ["Filling lines", "Packing stations", "Food & chemical", "Retail bags"],
+    benefits: [
+      { title: "Portable and conveyor formats", detail: "The gallery includes NP, DS, and KS16 references for different operating setups." },
+      { title: "Service-backed supply", detail: "KTK supports parts, maintenance, and repair around the supplied equipment range." },
+      { title: "Specification matching", detail: "Confirm the correct model against bag format, thread, and production line requirements." },
+    ],
+    image: "/assets/products/machinery/newlong/ks16.webp",
+    gallery: newlongGallery,
+    model: "KS16 · DS-6AC · DS-9C · NP-3II · NP-7",
     featured: true,
   },
   {
-    slug: "yaohan-bag-closers",
-    name: "YAO HAN Bag Closers",
+    slug: "yaohan-bag-closing-machinery",
+    name: "YAO HAN Bag-Closing Machinery",
     category: "Machinery",
-    summary:
-      "Taiwanese YAO HAN portable and high-speed automatic bag closers, plus 70,000+ spare-part varieties. KTK is the sole authorized Myanmar distributor.",
+    eyebrow: "Authorized machinery",
+    brand: "YAO HAN",
+    summary: "Taiwanese portable, automatic, and conveyor bag-closing equipment, supplied with spare parts and after-sales service support.",
+    longDescription:
+      "The supplied YAO HAN set includes conveyor, automatic, and portable machine references. KTK presents the actual models and leaves capacity, configuration, and line suitability to a proper inquiry rather than inventing specifications from the photographs.",
+    applications: ["Bag closing", "Cement and woven sacks", "Conveyor packing lines", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Taiwan" },
-      { label: "Partner since", value: "2013" },
-      { label: "Spare parts", value: "70,000+ varieties" },
+      { label: "Models shown", value: "9 supplied references" },
+      { label: "Support", value: "Spare parts · maintenance · repair" },
+      { label: "Service", value: "1-year service warranty" },
     ],
-    applications: ["Field packing", "Warehouse operations", "Carpet over-edging"],
+    benefits: [
+      { title: "A broad supplied set", detail: "The gallery covers FACC-N980AC, FN600A, N-series, and U700C references." },
+      { title: "One-stop support", detail: "KTK can support machinery, thread, spare parts, and service conversations together." },
+      { title: "Model-led inquiry", detail: "Ask KTK to confirm the correct model for your bag, line, and closure method." },
+    ],
+    image: "/assets/products/machinery/yaohan/facc-n980ac.webp",
+    gallery: yaohanGallery,
+    model: "FACC-N980AC · FN600A · N320A · N600A · N980A · others",
+    featured: true,
   },
-  // ── Bearings ──────────────────────────────────────────────────────────
   {
     slug: "hch-bearings",
     name: "HCH Bearings",
     category: "Bearings",
-    summary:
-      "Sole authorized Myanmar distributor since 2008. HCH runs one of the world's largest miniature-bearing operations (15–25M/month), certified ISO/TS 16949 by TÜV Germany.",
+    eyebrow: "Authorized distribution",
+    brand: "HCH",
+    summary: "Deep-groove ball and tapered roller bearings from HCH, supplied through KTK’s authorized Myanmar distribution relationship.",
+    longDescription:
+      "The supplied bearing document identifies deep-groove ball bearings and tapered roller bearings, and describes HCH’s quality systems and manufacturing capability. KTK has distributed HCH bearing products in Myanmar since 2008; confirm the exact series and dimensions for your application.",
+    applications: ["Industrial equipment", "High-speed applications", "Radial and axial loads", "Maintenance stock"],
     specs: [
-      { label: "Brand", value: "HCH (sole MM distributor)" },
-      { label: "Certification", value: "ISO/TS 16949 (TÜV)" },
-      { label: "Types", value: "Deep-groove, tapered, spherical, unit" },
+      { label: "Brand", value: "HCH" },
+      { label: "Formats shown", value: "Deep groove · tapered roller" },
+      { label: "Distribution", value: "Authorized Myanmar distributor" },
     ],
-    applications: ["Ventilation", "Agriculture", "Logistics", "Construction", "Ports", "Minerals"],
+    benefits: [
+      { title: "Two core formats", detail: "The supplied gallery separates deep-groove and tapered roller bearing references." },
+      { title: "Industrial fit", detail: "Deep-groove formats support radial and axial load conversations across common equipment." },
+      { title: "Local distribution", detail: "KTK provides a Myanmar route for HCH sourcing and inquiry." },
+    ],
+    image: "/assets/products/bearings/hch/deep-groove.webp",
+    gallery: hchGallery,
     featured: true,
   },
   {
     slug: "tr-bearings",
     name: "TR Bearings",
     category: "Bearings",
-    summary:
-      "TR bearing units and spherical roller bearings, 2,000+ variants, 9M units/year capacity, Chinese Famous Brand. Stocked locally for industrial customers.",
+    eyebrow: "Industrial bearing supply",
+    brand: "TR",
+    summary: "TR spherical roller and unit bearing products for ventilation, agriculture, logistics, construction, engineering, and minerals.",
+    longDescription:
+      "The supplied TR archive includes spherical roller and unit bearing references, plus a product photography set. The companion document describes TR’s bearing-unit and spherical-roller range; confirm dimensions, seals, load requirements, and availability with KTK.",
+    applications: ["Ventilation", "Agriculture", "Logistics", "Construction", "Engineering", "Minerals"],
     specs: [
       { label: "Brand", value: "TR" },
-      { label: "Established", value: "1979" },
-      { label: "Range", value: "2,000+ variants" },
+      { label: "Formats shown", value: "Spherical roller · unit bearing" },
+      { label: "Product range", value: "2000+ items stated in supplied brief" },
     ],
-    applications: ["Plant maintenance", "OEM supply", "Engineering"],
+    benefits: [
+      { title: "Spherical roller reference", detail: "Supports rotation with low friction and accommodates angular misalignment in the described format." },
+      { title: "Unit bearing reference", detail: "The supplied image set includes sealed unit-bearing formats for equipment applications." },
+      { title: "Application-led selection", detail: "Use the inquiry path to confirm the correct bearing unit for your shaft and environment." },
+    ],
+    image: "/assets/products/bearings/tr/spherical-roller.webp",
+    gallery: trGallery,
+    featured: true,
   },
 ];
+
+export type ProductMaterialLayer = {
+  id: string;
+  order: number;
+  name: string;
+  tag: string;
+  description: string;
+  note?: string;
+  variant: BagLayerVariant;
+};
