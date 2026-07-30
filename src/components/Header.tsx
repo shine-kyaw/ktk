@@ -30,7 +30,8 @@ const NAV: NavItem[] = [
     children: [
       { label: "Cement Sacks", href: "/products#cement-sacks" },
       { label: "PP Woven Bags", href: "/products#pp-woven-bags" },
-      { label: "Fillers & Thread", href: "/products#fillers-thread" },
+      { label: "Fillers", href: "/products#fillers" },
+      { label: "Thread", href: "/products#thread" },
       { label: "Machinery", href: "/products#machinery" },
       { label: "Bearings", href: "/products#bearings" },
       { label: "All products", href: "/products" },

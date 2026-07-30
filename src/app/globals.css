@@ -31,6 +31,10 @@
     @apply mono text-[0.68rem] uppercase tracking-[0.22em] text-red;
   }
 
+  .data-chip {
+    @apply mono inline-flex border border-seam bg-coal px-3 py-2 text-[0.57rem] uppercase tracking-[0.12em] text-bone-dim;
+  }
+
   /* Display headline treatment — wide, engineered, industrial mega-type */
   .display {
     @apply font-display font-extrabold uppercase leading-[0.96] tracking-mega;
