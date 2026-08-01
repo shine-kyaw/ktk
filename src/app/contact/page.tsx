@@ -4,7 +4,14 @@ import { InquiryForm } from "@/components/InquiryForm";
 
 export const metadata: Metadata = { title: "Contact" };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const initialProduct = typeof query.product === "string" ? query.product : "";
+
   return (
     <div className="container-x pb-28 pt-40">
       <Reveal>
@@ -16,7 +23,7 @@ export default function ContactPage() {
 
       <div className="mt-16 grid gap-12 lg:grid-cols-2">
         <Reveal>
-          <InquiryForm />
+          <InquiryForm initialProduct={initialProduct} />
         </Reveal>
 
         <Reveal delay={0.1}>

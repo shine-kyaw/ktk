@@ -16,6 +16,17 @@ export type ProductSpec = {
   value: string;
 };
 
+export type ProductVariant = {
+  name: string;
+  description: string;
+  attributes?: string[];
+};
+
+export type ProductColor = {
+  name: string;
+  hex: string;
+};
+
 export type Product = {
   slug: string;
   name: string;
@@ -34,6 +45,9 @@ export type Product = {
   featured?: boolean;
   model?: string;
   brand?: string;
+  qualityAttributes?: string[];
+  variants?: ProductVariant[];
+  colorOptions?: ProductColor[];
   materialLayers?: ProductMaterialLayer[];
   brochureUrl?: string | null;
 };
@@ -78,9 +92,9 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Thread",
     slug: "thread",
-    tagline: "Six visible color options",
+    tagline: "High quality · food grade",
     blurb:
-      "KTK bag-closing thread in the colors shown in the supplied product set, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
+      "High Quality, Food Grade bag-closing thread from KTK and NEWLONG, with KTK available in 200 g and 1 kg sizes and color options for production-line identification.",
   },
   {
     name: "Machinery",
@@ -103,9 +117,25 @@ const media = (src: string, alt: string, caption?: string): ProductMedia => ({ s
 const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], label: string) =>
   files.map((file) => media(`/assets/products/pp-woven/${folder}/${file}.webp`, `${label} product photograph`));
 
-const threadGallery = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
-  media(`/assets/products/thread/${file}.webp`, `KTK thread color option ${index + 1}`, ["Orange", "Blue", "Red", "Green", "White", "Yellow"][index]),
-);
+const threadGallery = [
+  media(
+    "/assets/products/thread/ktk-multicolor.webp",
+    "KTK High Quality Food Grade bag-closing thread in multiple colors",
+    "KTK multicolor thread range",
+  ),
+  ...["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
+    media(`/assets/products/thread/${file}.webp`, `KTK thread color option ${index + 1}`, ["Orange", "Blue", "Red", "Green", "White", "Yellow"][index]),
+  ),
+];
+
+const ktkThreadColors = [
+  { name: "White", hex: "#F4F2EA" },
+  { name: "Red", hex: "#C7282D" },
+  { name: "Yellow", hex: "#E8C62B" },
+  { name: "Green", hex: "#19945C" },
+  { name: "Blue", hex: "#184E9D" },
+  { name: "Orange", hex: "#E56D22" },
+];
 
 const newlongGallery = [
   media("/assets/products/machinery/newlong/ks16.webp", "NEWLONG KS16 conveyor bag-closing system", "KS16 conveyor system"),
@@ -160,7 +190,8 @@ export const PRODUCTS: Product[] = [
     applications: ["Cement", "Powdered materials", "Automated filling lines"],
     specs: [
       { label: "Format", value: "Woven valve sack" },
-      { label: "Artwork source", value: "CEMENT.zip" },
+      { label: "Artwork source", value: "Custom Printing Available (Provide your artwork in .ai, .pdf or .zip formats)" },
+      { label: "Source archive", value: "CEMENT.zip" },
       { label: "Shown capacities", value: "20 kg · 50 kg" },
     ],
     benefits: [
@@ -169,7 +200,15 @@ export const PRODUCTS: Product[] = [
       { title: "Specification-led", detail: "Confirm size, construction, and line compatibility with KTK before production." },
     ],
     image: "/assets/cement/ad-star-cement-bag.jpg",
-    gallery: [media("/assets/cement/ad-star-cement-bag.jpg", "AD*STAR woven valve sack artwork"), media("/assets/cement/cement-bag.jpg", "Cement bag portfolio artwork")],
+    gallery: [
+      media(
+        "/assets/cement/cement-bag-double-rhinos-first.webp",
+        "Cement bag portfolio with Double Rhinos shown before Rhino",
+        "Double Rhinos first · Rhino follows",
+      ),
+      media("/assets/cement/cement-bag.jpg", "Rhino and cement bag portfolio artwork", "Rhino and supplied cement range"),
+      media("/assets/cement/ad-star-cement-bag.jpg", "AD*STAR woven valve sack artwork", "AD*STAR woven valve sack"),
+    ],
     featured: true,
   },
   {
@@ -197,7 +236,14 @@ export const PRODUCTS: Product[] = [
       { title: "STARLINGER production", detail: "Manufactured on European STARLINGER lines using the specified virgin resin standard." },
     ],
     image: "/assets/products/pp-woven/general/143.webp",
-    gallery: ppGallery("general", ["143", "207", "208", "209", "210"], "Standard PP woven bag"),
+    gallery: [
+      ...ppGallery("general", ["143", "207", "208", "209", "210"], "Standard PP woven bag"),
+      media(
+        "/assets/products/pp-woven/general/master-chef-dinurado.webp",
+        "Master Chef Dinurado plain and printed PP woven rice bag",
+        "Master Chef Dinurado",
+      ),
+    ],
     featured: true,
   },
   {
@@ -206,11 +252,11 @@ export const PRODUCTS: Product[] = [
     category: "PP Woven Bags",
     eyebrow: "Protective PP woven bag",
     bestFor: "Moisture & dust protection",
-    uniqueValue: "Woven fabric bonded with an extra protective film layer designed to provide strong protection against humidity and dust.",
+    uniqueValue: "Woven fabric coated with an extra protective resin layer, engineered to deliver maximum resistance against humidity, moisture, and dust.",
     printing: "Flexo printing with enhanced moisture barrier",
     summary: "A protective woven format for fertilizer, feed, chemicals, and fine powders that need an added film layer.",
     longDescription:
-      "Laminated PP woven bags add a protective film layer to the woven substrate. The supplied lamination set shows feed, pet-food, and fine-product packaging examples; barrier performance and final structure should be matched to the product and filling environment.",
+      "Laminated PP woven bags feature an extrusion-coated protective layer over the woven substrate to seal the weave and form an effective moisture barrier. The supplied lamination set shows feed, pet food, and fine-product packaging examples; barrier performance and final structure are customized to suit your product and filling environment.",
     applications: ["Fertilizer", "Animal feed", "Chemicals", "Fine powders"],
     specs: [
       { label: "Capacity", value: "5 kg – 50 kg" },
@@ -224,8 +270,15 @@ export const PRODUCTS: Product[] = [
       { title: "Product-led selection", detail: "The structure can be matched to powders, feed, fertilizer, and other filling requirements." },
       { title: "Print-ready surface", detail: "Flexo printing keeps packaging clear and recognizable through handling." },
     ],
-    image: "/assets/products/pp-woven/lamination/0157.webp",
-    gallery: ppGallery("lamination", ["0157", "0162", "0188", "6", "7"], "Laminated PP woven bag"),
+    image: "/assets/products/pp-woven/lamination/7.webp",
+    gallery: [
+      ...ppGallery("lamination", ["7", "0157", "0162", "0188", "6"], "Laminated PP woven bag"),
+      media(
+        "/assets/products/pp-woven/lamination/myo-hla-sugar-green.webp",
+        "Myo Hla Sugar green laminated PP woven bag",
+        "Myo Hla Sugar · Green",
+      ),
+    ],
     featured: true,
   },
   {
@@ -238,8 +291,8 @@ export const PRODUCTS: Product[] = [
     printing: "HD gravure photo-realistic printing · Glossy or Matt finish",
     summary: "The premium retail-facing option for rice, pet food, aquafeed, and consumer products where the pack is part of the brand experience.",
     longDescription:
-      "BOPP laminated bags combine a woven base with a high-definition reverse-printed film layer. The supplied BOPP set shows colorful retail and food packaging examples; finish, artwork, and dimensions are developed around the intended shelf presentation.",
-    applications: ["Premium retail rice", "Pet food", "Aquafeed", "Consumer products"],
+      "BOPP laminated bags combine a high-strength PP woven base with an outer reverse-printed film layer, delivering premium photo-quality graphics alongside superior moisture and puncture resistance. The supplied BOPP set shows colorful retail and food packaging examples; finish, artwork, and dimensions are custom-tailored around your intended shelf presentation.",
+    applications: ["Premium retail rice", "Pet food", "Aquafeed", "Consumer products", "Fertilizer"],
     specs: [
       { label: "Capacity", value: "5 kg – 25 kg" },
       { label: "Structure", value: "3-layer BOPP laminate" },
@@ -253,7 +306,14 @@ export const PRODUCTS: Product[] = [
       { title: "Finish choice", detail: "Glossy or Matt finish lets the package match the intended brand character." },
     ],
     image: "/assets/products/pp-woven/bopp/0153.webp",
-    gallery: ppGallery("bopp", ["18", "0144", "0153", "0203", "211"], "BOPP laminated bag"),
+    gallery: [
+      ...ppGallery("bopp", ["18", "0144", "0153", "0203", "211"], "BOPP laminated bag"),
+      media(
+        "/assets/products/pp-woven/bopp/kujaku-fertilizer.webp",
+        "Kujaku BOPP laminated fertilizer bag",
+        "Kujaku fertilizer",
+      ),
+    ],
     featured: true,
   },
   {
@@ -281,27 +341,65 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: "ktk-thread",
-    name: "KTK Bag-Closing Thread",
+    name: "KTK High Quality Bag-Closing Thread",
     category: "Thread",
     eyebrow: "Bag-closing consumable",
     bestFor: "Reliable bag closure across common sewing systems",
-    summary: "KTK thread in six visible color options for bag-closing operations, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
+    summary: "High Quality, Food Grade KTK thread in six colors and separate 200 g and 1 kg sizes, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
     longDescription:
-      "The supplied thread set shows six KTK color options: orange, blue, red, green, white, and yellow. KTK Thread is presented as a compatible bag-closing consumable; confirm denier, cone format, and sewing-line requirements with the sales team.",
+      "KTK High Quality, Food Grade bag-closing thread is available in white, red, yellow, green, blue, and orange. Choose between the 200 g and 1 kg formats according to your operation, then confirm the sewing-line requirement with the KTK sales team.",
     applications: ["Cement sacks", "PP woven bags", "Bag-closing machines", "Sack stitching"],
     specs: [
       { label: "Brand", value: "KTK" },
-      { label: "Visible options", value: "6 colors" },
+      { label: "Available sizes", value: "200 g · 1 kg" },
+      { label: "Quality", value: "High Quality Thread" },
+      { label: "Product standard", value: "Food Grade" },
+      { label: "Available colors", value: "White · Red · Yellow · Green · Blue · Orange" },
       { label: "Compatibility", value: "NEWLONG · YAO HAN · other closers" },
     ],
     benefits: [
-      { title: "Six color references", detail: "Choose from the supplied orange, blue, red, green, white, and yellow product photographs." },
+      { title: "Two practical sizes", detail: "Select the compact 200 g format or the larger 1 kg format for your bag-closing workflow." },
+      { title: "Six color references", detail: "Choose from white, red, yellow, green, blue, and orange for production-line identification." },
       { title: "Line-compatible direction", detail: "Suitable for inquiry across common Newlong, Yao Han, and other bag-closing machines." },
-      { title: "No unsupported origin claim", detail: "The catalog avoids labeling KTK Thread as a China import." },
     ],
-    image: "/assets/products/thread/1-1.webp",
+    image: "/assets/products/thread/ktk-multicolor.webp",
     gallery: threadGallery,
+    qualityAttributes: ["High Quality Thread", "Food Grade"],
+    variants: [
+      { name: "200 g", description: "Compact thread format for bag-closing operations.", attributes: ["KTK", "High Quality", "Food Grade"] },
+      { name: "1 kg", description: "Larger thread format for production-line use.", attributes: ["KTK", "High Quality", "Food Grade"] },
+    ],
+    colorOptions: ktkThreadColors,
     featured: true,
+  },
+  {
+    slug: "newlong-thread",
+    name: "NEWLONG Bag-Closing Thread",
+    category: "Thread",
+    eyebrow: "Japan brand thread",
+    brand: "NEWLONG",
+    bestFor: "Bag-closing systems requiring NEWLONG thread",
+    summary: "High Quality, Food Grade NEWLONG thread from Japan, compatible with NEWLONG, YAO HAN, and other bag-closing machines.",
+    longDescription:
+      "NEWLONG Thread is a Japan-brand High Quality, Food Grade bag-closing thread. It is presented separately from KTK Thread so buyers can clearly identify the brand and compare the available color range before requesting a quotation.",
+    applications: ["Cement sacks", "PP woven bags", "Bag-closing machines", "Sack stitching"],
+    specs: [
+      { label: "Brand", value: "NEWLONG" },
+      { label: "Origin", value: "Japan" },
+      { label: "Quality", value: "High Quality Thread" },
+      { label: "Product standard", value: "Food Grade" },
+      { label: "Available colors", value: "White · Red · Yellow · Green · Blue · Orange · Pink" },
+      { label: "Compatibility", value: "NEWLONG · YAO HAN · other closers" },
+    ],
+    benefits: [
+      { title: "Japan brand", detail: "NEWLONG Thread is identified separately with its confirmed Japan origin." },
+      { title: "High Quality & Food Grade", detail: "The two requested product attributes are presented clearly for buyer review." },
+      { title: "Seven color options", detail: "Available colors are shown as white, red, yellow, green, blue, orange, and pink." },
+    ],
+    image: null,
+    qualityAttributes: ["High Quality Thread", "Food Grade", "Japan"],
+    colorOptions: [...ktkThreadColors, { name: "Pink", hex: "#D94C8A" }],
+    featured: false,
   },
   {
     slug: "newlong-bag-closing-machinery",
@@ -399,8 +497,15 @@ export const PRODUCTS: Product[] = [
       { title: "Unit bearing reference", detail: "The supplied image set includes sealed unit-bearing formats for equipment applications." },
       { title: "Application-led selection", detail: "Use the inquiry path to confirm the correct bearing unit for your shaft and environment." },
     ],
-    image: "/assets/products/bearings/tr/spherical-roller.webp",
-    gallery: trGallery,
+    image: "/assets/products/bearings/tr/omega-unit-bearing.webp",
+    gallery: [
+      media(
+        "/assets/products/bearings/tr/omega-unit-bearing.webp",
+        "Blue Omega-shaped TR mounted unit bearing",
+        "Omega-shaped mounted unit bearing",
+      ),
+      ...trGallery,
+    ],
     featured: true,
   },
 ];

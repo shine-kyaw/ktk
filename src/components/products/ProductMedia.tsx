@@ -13,7 +13,7 @@ export function ProductMedia({ image, alt }: { image: string | null; alt: string
           alt={alt}
           fill
           sizes="(min-width: 1024px) 62vw, 100vw"
-          className="object-cover"
+          className="object-contain p-5 sm:p-8"
           priority
         />
       </div>
@@ -27,7 +27,7 @@ export function ProductMedia({ image, alt }: { image: string | null; alt: string
         <path d="M22 30h20M22 38h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </svg>
       <span className="mono mt-5 text-[0.6rem] uppercase tracking-[0.2em] text-ash">
-        Product photography coming via CMS
+        Official product image pending
       </span>
     </div>
   );

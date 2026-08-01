@@ -107,13 +107,23 @@ export async function getProducts(): Promise<Product[]> {
   return PRODUCTS.map((local) => {
     const saved = remoteBySlug.get(local.slug);
     if (!saved) return local;
+    const savedApplications = saved.applications ?? [];
+    const applications = Array.from(new Set([...local.applications, ...savedApplications]));
+    const localSpecLabels = new Set(local.specs.map((spec) => spec.label));
+    const specs = [
+      ...local.specs,
+      ...(saved.specs ?? []).filter((spec) => !localSpecLabels.has(spec.label)),
+    ];
     return {
       ...local,
       ...saved,
       image: local.image ?? saved.image ?? null,
       gallery: local.gallery?.length ? local.gallery : saved.gallery ?? [],
-      applications: saved.applications?.length ? saved.applications : local.applications,
-      specs: saved.specs?.length ? saved.specs : local.specs,
+      applications,
+      specs,
+      qualityAttributes: local.qualityAttributes,
+      variants: local.variants,
+      colorOptions: local.colorOptions,
     };
   });
 }

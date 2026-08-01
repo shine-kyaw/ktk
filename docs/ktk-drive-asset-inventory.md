@@ -39,3 +39,21 @@ The supplied `banner.zip` file was visible in the shared folder, but its direct 
 - KTK Thread is separate from Fillers and is shown with six supplied color options. It is not labeled as a China import.
 - NEWLONG and YAO HAN are separate machinery products with supplied model galleries, spare-parts/service language, and a one-year service warranty.
 - HCH and TR are separate bearing products with the supplied bearing document’s product/application direction reflected without inventing dimensions or series numbers.
+
+## August 2026 product correction set
+
+The five supplied Drive links were re-downloaded and inspected. Four now resolve to broader KTK media archives (`event`, `factory`, `commercial`, and `activity`) rather than product-photo files. The fifth resolves to a five-image product archive. Those five usable product images are mapped as follows:
+
+| Source file | Verified subject | Website mapping |
+| --- | --- | --- |
+| `7.png` | Multicolored KTK thread group | KTK Thread hero and gallery |
+| `212.png` | Master Chef Dinurado rice bag | Plain & Printed PP Woven Bag gallery |
+| `17.png` | Myo Hla Sugar, green | Laminated PP Woven Bag gallery |
+| `9.png` | Kujaku fertilizer bag | BOPP Laminated Bag gallery |
+| `1.png` | Blue Omega-shaped mounted bearing | TR Bearings hero and gallery |
+
+The requested CP 924 image was already present as `public/assets/products/pp-woven/lamination/7.webp` and is now the Laminated PP Woven Bag hero image.
+
+No separate NEWLONG Thread photograph was present in the supplied archives. The verified NEWLONG product facts, colors, Japan origin, High Quality, and Food Grade attributes are included in the catalog with an intentional official-image-pending state; no KTK-branded photograph was misassigned to NEWLONG.
+
+Product count changed from 10 to 11 with the addition of `NEWLONG Bag-Closing Thread` as a distinct product record and route.
