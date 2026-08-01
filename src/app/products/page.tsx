@@ -26,7 +26,10 @@ function ProductCard({ product }: { product: Product }) {
             className="object-contain p-3 transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-ash">Image coming soon</div>
+          <div className="weave blueprint flex h-full flex-col items-center justify-center px-8 text-center">
+            <span className="mono text-[0.58rem] uppercase tracking-[0.18em] text-red">{product.brand ?? product.name}</span>
+            <span className="mt-3 text-sm leading-relaxed text-ash">Official product image pending</span>
+          </div>
         )}
         <span className="absolute left-3 top-3 bg-ink/80 px-2.5 py-1 mono text-[0.54rem] uppercase tracking-[0.16em] text-white">
           {product.category}
@@ -34,6 +37,15 @@ function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-1 flex-col px-2 pb-2 pt-5">
         <h3 className="display text-xl leading-tight text-bone transition-colors group-hover:text-red">{product.name}</h3>
+        {product.qualityAttributes?.length ? (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {product.qualityAttributes.map((attribute) => (
+              <span key={attribute} className="mono border border-seam px-2 py-1 text-[0.5rem] uppercase tracking-[0.12em] text-bone-dim">
+                {attribute}
+              </span>
+            ))}
+          </div>
+        ) : null}
         {product.bestFor && <p className="mono mt-3 text-[0.58rem] uppercase tracking-[0.14em] text-red">{product.bestFor}</p>}
         <p className="mt-3 flex-1 text-sm leading-relaxed text-bone-dim">{product.summary}</p>
         <div className="mt-5 flex items-center justify-between border-t border-seam pt-4">

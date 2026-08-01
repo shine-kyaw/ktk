@@ -1,20 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { PRODUCTS } from "@/data/products";
 
 /**
  * Inquiry form, UI complete; submission currently opens a pre-filled email.
  * Swaps to a POST /api/inquiry route once a backend/CRM target is chosen.
  */
-export function InquiryForm() {
+export function InquiryForm({ initialProduct = "" }: { initialProduct?: string }) {
   const [sent, setSent] = useState(false);
+  const productOptions = PRODUCTS.flatMap((product) => [
+    product.name,
+    ...(product.variants?.map((variant) => `${product.name} — ${variant.name}`) ?? []),
+  ]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const subject = encodeURIComponent(`Website inquiry, ${data.get("company") || data.get("name")}`);
+    const product = data.get("product") || "General product inquiry";
+    const subject = encodeURIComponent(`${product} — website inquiry`);
     const body = encodeURIComponent(
-      `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nPhone: ${data.get("phone")}\n\n${data.get("message")}`,
+      `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nEmail: ${data.get("email")}\nPhone: ${data.get("phone")}\nProduct: ${product}\n\n${data.get("message")}`,
     );
     window.location.href = `mailto:sales@ktk.com.mm?subject=${subject}&body=${body}`;
     setSent(true);
@@ -29,12 +35,22 @@ export function InquiryForm() {
         <input name="name" required placeholder="Your name" aria-label="Your name" className={field} />
         <input name="company" placeholder="Company" aria-label="Company" className={field} />
       </div>
-      <input name="phone" placeholder="Phone" aria-label="Phone" className={field} />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <input name="email" type="email" required placeholder="Email" aria-label="Email" className={field} />
+        <input name="phone" placeholder="Phone" aria-label="Phone" className={field} />
+      </div>
+      <label className="grid gap-2">
+        <span className="mono text-[0.58rem] uppercase tracking-[0.16em] text-ash">Product</span>
+        <select name="product" defaultValue={initialProduct} aria-label="Product" className={field}>
+          <option value="">General product inquiry</option>
+          {productOptions.map((product) => <option key={product} value={product}>{product}</option>)}
+        </select>
+      </label>
       <textarea
         name="message"
         required
         rows={6}
-        placeholder="Tell us what you need, product, quantity, timeline…"
+        placeholder="Tell us the quantity, required color or size, application, and timeline…"
         aria-label="Message"
         className={field}
       />

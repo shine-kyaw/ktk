@@ -55,7 +55,8 @@ export default async function ProductDetailPage({
               <div className="mt-6 flex flex-wrap gap-2">
                 {product.brand && <span className="data-chip">{product.brand}</span>}
                 {product.model && <span className="data-chip">{product.model}</span>}
-                <span className="data-chip">Official product imagery</span>
+                {product.qualityAttributes?.map((attribute) => <span key={attribute} className="data-chip">{attribute}</span>)}
+                <span className="data-chip">{product.image ? "Official product imagery" : "Official image pending"}</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
@@ -114,6 +115,66 @@ export default async function ProductDetailPage({
           )}
         </div>
       )}
+
+      {product.variants?.length ? (
+        <div className="container-x mt-20">
+          <Reveal>
+            <p className="eyebrow">Available sizes</p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {product.variants.map((variant, index) => (
+                <div key={variant.name} className="group border border-seam bg-iron p-7 transition-colors hover:border-red hover:bg-coal">
+                  <div className="flex items-start justify-between gap-6">
+                    <div>
+                      <p className="mono text-[0.58rem] uppercase tracking-[0.18em] text-red">Thread format 0{index + 1}</p>
+                      <h2 className="display mt-3 text-4xl text-bone">{variant.name}</h2>
+                    </div>
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-seam text-red transition-colors group-hover:border-red">↗</span>
+                  </div>
+                  <p className="mt-5 max-w-lg text-sm leading-relaxed text-bone-dim">{variant.description}</p>
+                  {variant.attributes?.length ? (
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {variant.attributes.map((attribute) => <span key={attribute} className="data-chip">{attribute}</span>)}
+                    </div>
+                  ) : null}
+                  <Link
+                    href={`/contact?type=product&product=${encodeURIComponent(`${product.name} — ${variant.name}`)}`}
+                    className="mono mt-7 inline-flex text-[0.62rem] uppercase tracking-[0.16em] text-red hover:text-bone"
+                  >
+                    Enquire about {variant.name} →
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      ) : null}
+
+      {product.colorOptions?.length ? (
+        <div className="container-x mt-20">
+          <Reveal className="border-y border-seam py-8">
+            <div className="grid gap-7 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
+              <div>
+                <p className="eyebrow">Available colors</p>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-bone-dim">
+                  Confirm the required color and availability with KTK when requesting a quotation.
+                </p>
+              </div>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                {product.colorOptions.map((color) => (
+                  <li key={color.name} className="flex items-center gap-3 border border-seam bg-iron px-4 py-3">
+                    <span
+                      className="h-5 w-5 shrink-0 rounded-full border border-white/20 shadow-[0_0_0_1px_rgba(0,0,0,0.22)]"
+                      style={{ backgroundColor: color.hex }}
+                      aria-hidden="true"
+                    />
+                    <span className="mono text-[0.6rem] uppercase tracking-[0.14em] text-bone">{color.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      ) : null}
 
       {benefits.length > 0 && (
         <div className="container-x mt-20">

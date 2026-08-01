@@ -327,13 +327,20 @@ function useSackGeometry() {
   }, []);
 }
 
-// z of the front surface at planar (px,py) — the print plane conforms to the bulge
+// z of the front surface at planar (px,py). Match the same rounded-square
+// profile used by the sack body so the KTK artwork never intersects the bag
+// near its outer letters while the form settles and rotates.
 function frontConformZ(px: number, py: number) {
   const b = py / (BAG_H / 2);
   const wfac = widthAt(b);
   const dfac = depthAt(b);
   const ratio = Math.max(-0.94, Math.min(0.94, px / ((BAG_W / 2) * wfac)));
-  return (BAG_D / 2) * dfac * Math.sqrt(Math.max(0, 1 - ratio * ratio));
+  const superellipse = 0.58;
+  const roundedDepth = Math.pow(
+    Math.max(0, 1 - Math.pow(Math.abs(ratio), 2 / superellipse)),
+    superellipse / 2,
+  );
+  return (BAG_D / 2) * dfac * roundedDepth;
 }
 
 function useFrontGeometry() {
@@ -341,7 +348,7 @@ function useFrontGeometry() {
     const geo = new THREE.PlaneGeometry(1.2, 1.58, 40, 48);
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
-      pos.setZ(i, frontConformZ(pos.getX(i), pos.getY(i)) + 0.008);
+      pos.setZ(i, frontConformZ(pos.getX(i), pos.getY(i)) + 0.012);
     }
     geo.computeVertexNormals();
     return geo;
