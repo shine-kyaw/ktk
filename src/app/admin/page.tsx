@@ -1,16 +1,7 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { isCmsConfigured, isAdminConfigured } from "@/lib/supabase";
-
-const SECTIONS: { name: string; desc: string }[] = [
-  { name: "Products", desc: "Catalog items, specs, applications, images, featured flag" },
-  { name: "Product categories", desc: "The five category cards and their copy" },
-  { name: "Services", desc: "Service offerings and bullet points" },
-  { name: "Careers", desc: "Job openings, responsibilities, requirements" },
-  { name: "News / Blog", desc: "Articles, excerpts, and body copy" },
-  { name: "Activities", desc: "CSR, events, exhibitions, training" },
-  { name: "Bag anatomy", desc: "Inside-the-bag layers and technical notes" },
-  { name: "Company & stats", desc: "Company facts, stats, milestones, partners" },
-];
+import { ADMIN_SECTIONS } from "@/lib/admin-content";
 
 export default async function AdminDashboard() {
   await requireAdmin();
@@ -23,8 +14,8 @@ export default async function AdminDashboard() {
       <p className="eyebrow">Dashboard</p>
       <h1 className="display mt-4 text-4xl text-bone">Content</h1>
       <p className="mt-3 max-w-xl text-sm leading-relaxed text-ash">
-        Edit the content that powers ktk-umber.vercel.app. Changes save to the database and
-        appear on the live site.
+        Manage the product catalog, company content, newsroom, activities, leadership, and
+        publication-controlled documents. Drafts remain private until an administrator publishes them.
       </p>
 
       {/* connection status */}
@@ -52,18 +43,18 @@ export default async function AdminDashboard() {
 
       {/* sections */}
       <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
-        {SECTIONS.map((s) => (
-          <div key={s.name} className="bg-coal p-6">
-            <h2 className="display text-lg text-bone">{s.name}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-ash">{s.desc}</p>
+        {ADMIN_SECTIONS.map((section) => (
+          <Link key={section.slug} href={`/admin/content/${section.slug}`} className="group bg-coal p-6 transition-colors hover:bg-iron">
+            <h2 className="display text-lg text-bone group-hover:text-red">{section.label}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-ash">{section.description}</p>
             <span
               className={`mono mt-5 inline-block text-[0.62rem] uppercase tracking-[0.16em] ${
-                dbReady ? "text-red" : "text-ash/60"
+                writeReady ? "text-red" : "text-ash/60"
               }`}
             >
-              {dbReady ? "Ready to edit" : "Waiting for database"}
+              {writeReady ? "Open editor →" : "Waiting for database"}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

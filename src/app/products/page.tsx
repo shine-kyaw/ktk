@@ -8,6 +8,7 @@ import type { Product } from "@/data/products";
 export const metadata: Metadata = {
   title: "Products",
   description: "KTK cement sacks, PP woven bags, fillers, thread, machinery, and bearings.",
+  alternates: { canonical: "/products" },
 };
 
 function ProductCard({ product }: { product: Product }) {

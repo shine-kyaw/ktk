@@ -11,9 +11,9 @@ const BagScene = dynamic(() => import("./hero/BagScene"), {
   loading: () => <div className="h-full w-full" />,
 });
 
-const DESKTOP_DURATION = 10.8;
-const MOBILE_DURATION = 7.2;
-const FINAL_REVEAL_AT = 0.86;
+const DESKTOP_DURATION = 7.2;
+const MOBILE_DURATION = 5;
+const FINAL_REVEAL_AT = 0.76;
 
 type NetworkInformation = {
   saveData?: boolean;

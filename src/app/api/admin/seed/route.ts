@@ -11,9 +11,6 @@ import { adminClient, isAdminConfigured } from "@/lib/supabase";
 
 import { PRODUCTS, CATEGORY_META } from "@/data/products";
 import { SERVICES } from "@/data/services";
-import { JOBS, RECRUITMENT_PROCESS } from "@/data/careers";
-import { NEWS, ACTIVITIES } from "@/data/blog";
-import { BAG_ANATOMY } from "@/data/anatomy";
 import {
   COMPANY,
   STATS,
@@ -23,6 +20,7 @@ import {
   INDUSTRIES,
   PARTNERS,
 } from "@/content/company";
+import { SITE_VISIBILITY } from "@/content/site";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +32,7 @@ export async function POST(req: Request) {
   if (!secret) {
     return NextResponse.json({ error: "SEED_SECRET is not set on the server." }, { status: 500 });
   }
-  const provided = req.headers.get("x-seed-secret") ?? new URL(req.url).searchParams.get("secret");
+  const provided = req.headers.get("x-seed-secret");
   if (provided !== secret) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
@@ -55,6 +53,7 @@ export async function POST(req: Request) {
       name: c.name,
       tagline: c.tagline,
       blurb: c.blurb,
+      status: "published",
       sort_order: i,
     }));
     await up(db, "product_categories", categories, "slug");
@@ -66,10 +65,25 @@ export async function POST(req: Request) {
       name: p.name,
       category: p.category,
       summary: p.summary,
+      eyebrow: p.eyebrow ?? null,
+      long_description: p.longDescription ?? null,
+      best_for: p.bestFor ?? null,
+      unique_value: p.uniqueValue ?? null,
+      printing: p.printing ?? null,
       specs: p.specs,
       applications: p.applications,
+      benefits: p.benefits ?? [],
+      gallery: p.gallery ?? [],
+      model: p.model ?? null,
+      brand: p.brand ?? null,
+      quality_attributes: p.qualityAttributes ?? [],
+      variants: p.variants ?? [],
+      color_options: p.colorOptions ?? [],
+      material_layers: p.materialLayers ?? [],
+      brochure_url: p.brochureUrl ?? null,
       image: p.image ?? null,
       featured: p.featured ?? false,
+      status: "published",
       sort_order: i,
     }));
     await up(db, "products", products, "slug");
@@ -81,80 +95,22 @@ export async function POST(req: Request) {
       name: s.name,
       summary: s.summary,
       points: s.points,
+      status: "published",
       sort_order: i,
     }));
     await up(db, "services", services, "slug");
     counts.services = services.length;
 
-    // jobs
-    const jobs = JOBS.map((j, i) => ({
-      slug: j.slug,
-      title: j.title,
-      department: j.department,
-      location: j.location,
-      type: j.type,
-      summary: j.summary,
-      responsibilities: j.responsibilities,
-      requirements: j.requirements,
-      sort_order: i,
-    }));
-    await up(db, "jobs", jobs, "slug");
-    counts.jobs = jobs.length;
-
-    // news
-    const news = NEWS.map((n, i) => ({
-      slug: n.slug,
-      date: n.date,
-      category: n.category,
-      title: n.title,
-      excerpt: n.excerpt,
-      body: n.body,
-      image: null,
-      sort_order: i,
-    }));
-    await up(db, "news", news, "slug");
-    counts.news = news.length;
-
-    // activities
-    const activities = ACTIVITIES.map((a, i) => ({
-      slug: a.slug,
-      category: a.category,
-      title: a.title,
-      date: a.date,
-      detail: a.detail,
-      image: null,
-      sort_order: i,
-    }));
-    await up(db, "activities", activities, "slug");
-    counts.activities = activities.length;
-
-    // bag anatomy layers
-    const layers = BAG_ANATOMY.layers.map((l, i) => ({
-      slug: l.id,
-      name: l.name,
-      tag: l.tag,
-      description: l.description,
-      note: l.note,
-      variant: l.variant,
-      image: l.image ?? null,
-      callout: l.callout ?? "right",
-      sort_order: l.order ?? i,
-    }));
-    await up(db, "bag_layers", layers, "slug");
-    counts.bag_layers = layers.length;
-
     // singletons
-    const { layers: _omit, ...anatomyMeta } = BAG_ANATOMY;
     const singletons = [
-      { key: "company", data: COMPANY },
-      { key: "stats", data: STATS },
-      { key: "proof", data: PROOF },
-      { key: "milestones", data: MILESTONES },
-      { key: "values", data: VALUES },
-      { key: "industries", data: INDUSTRIES },
-      { key: "partners", data: PARTNERS },
-      { key: "recruitment", data: RECRUITMENT_PROCESS },
-      { key: "anatomy_meta", data: anatomyMeta },
+      { key: "company", data: COMPANY, status: "published" },
+      { key: "stats", data: STATS, status: "published" },
+      { key: "proof", data: PROOF, status: "published" },
+      { key: "milestones", data: MILESTONES, status: "published" },
+      { key: "values", data: VALUES, status: "published" },
+      { key: "industries", data: INDUSTRIES, status: "published" },
+      { key: "partners", data: PARTNERS, status: "published" },
+      { key: "site_visibility", data: SITE_VISIBILITY, status: "published" },
     ];
     await up(db, "singletons", singletons, "key");
     counts.singletons = singletons.length;

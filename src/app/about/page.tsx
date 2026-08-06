@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
-import { getStats, getMilestones, getValues, getPartners, getCompany } from "@/lib/cms";
+import { getStats, getMilestones, getValues, getPartners, getCompany, getManagement, getCertificates } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Company" };
-
-const TEAM = [
-  { role: "Managing Director", name: "To be published" },
-  { role: "Head of Production", name: "To be published" },
-  { role: "Head of Sales & Distribution", name: "To be published" },
-  { role: "Head of Quality", name: "To be published" },
-];
+export const metadata: Metadata = { title: "Company", alternates: { canonical: "/about" } };
 
 export default async function AboutPage() {
-  const [stats, milestones, values, partners, company] = await Promise.all([
+  const [stats, milestones, values, partners, company, management, certificates] = await Promise.all([
     getStats(),
     getMilestones(),
     getValues(),
     getPartners(),
     getCompany(),
+    getManagement(),
+    getCertificates(),
   ]);
 
   return (
@@ -95,46 +91,50 @@ export default async function AboutPage() {
         </div>
       </Reveal>
 
-      {/* Management team */}
-      <Reveal id="team" className="mt-20">
-        <h2 className="eyebrow">Management team</h2>
-        <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-4">
-          {TEAM.map((t) => (
-            <div key={t.role} className="bg-iron p-7">
-              <div className="weave grain relative aspect-square border border-seam bg-coal" />
-              <h3 className="mt-5 text-base font-semibold text-bone">{t.name}</h3>
-              <p className="mono mt-1 text-[0.64rem] uppercase tracking-[0.16em] text-ash">{t.role}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-          Profiles & organization chart, being prepared with the KTK team.
-        </p>
-      </Reveal>
+      {management.length > 0 ? (
+        <Reveal id="team" className="mt-20">
+          <h2 className="eyebrow">Management team</h2>
+          <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-4">
+            {management.map((person) => (
+              <article key={person.id} className="bg-iron p-6">
+                {person.image ? (
+                  <div className="relative aspect-square overflow-hidden border border-seam bg-coal">
+                    <Image src={person.image} alt={person.name} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
+                  </div>
+                ) : null}
+                <h3 className="mt-5 text-base font-semibold text-bone">{person.name}</h3>
+                <p className="mono mt-1 text-[0.64rem] uppercase tracking-[0.14em] text-red">{person.title}</p>
+                {person.bio ? <p className="mt-4 text-sm leading-relaxed text-ash">{person.bio}</p> : null}
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      ) : null}
 
-      {/* Offices & certifications */}
-      <div className="mt-20 grid gap-px bg-seam lg:grid-cols-2">
+      {certificates.length > 0 ? (
+        <Reveal className="mt-20">
+          <h2 className="eyebrow">Certificates & authorizations</h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {certificates.map((certificate) => (
+              <article key={certificate.id} className="border border-seam bg-iron p-6">
+                <p className="mono text-[0.58rem] uppercase tracking-[0.14em] text-red">{certificate.issuer || "Official document"}</p>
+                <h3 className="display mt-3 text-xl text-bone">{certificate.title}</h3>
+                {certificate.scope ? <p className="mt-3 text-sm leading-relaxed text-ash">{certificate.scope}</p> : null}
+                {certificate.document_url ? <a href={certificate.document_url} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">View document →</a> : null}
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      ) : null}
+
+      {/* Office */}
+      <div className="mt-20 border border-seam">
         <Reveal className="bg-iron">
           <div className="h-full p-8">
             <h2 className="eyebrow">Head office & plant</h2>
             <p className="mt-5 text-sm font-semibold text-bone">San Kaung factory · Yangon</p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-bone-dim">
               {company.hq.line1}, {company.hq.line2}
-            </p>
-            <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.14em] text-ash">
-              Branch & dealer network, to be published.
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delay={0.08} className="bg-iron">
-          <div className="h-full p-8">
-            <h2 className="eyebrow">Certifications & quality</h2>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-bone-dim">
-              Production runs to specification on European STARLINGER technology using virgin
-              food-grade SABIC resin, with a 100% quality-assurance pledge and lot-level
-              inspection. Distributed brands carry their own credentials, HCH bearings are
-              ISO/TS 16949 certified by TÜV; YAO HAN machinery is CE / ISO9002. KTK&apos;s own
-              certifications are being compiled for publication.
             </p>
           </div>
         </Reveal>

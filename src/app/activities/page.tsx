@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { getActivities } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Activities" };
+export const metadata: Metadata = { title: "Activities", alternates: { canonical: "/activities" } };
 
 const CATS = ["CSR", "Events", "Exhibitions", "Training"] as const;
 
 export default async function ActivitiesPage() {
   const activities = await getActivities();
+  if (activities.length === 0) notFound();
 
   return (
     <div className="container-x pb-28 pt-40">
@@ -36,11 +39,8 @@ export default async function ActivitiesPage() {
               {items.map((a) => (
                 <Reveal key={a.slug} className="bg-coal">
                   <article className="group h-full p-7 transition-colors hover:bg-iron">
-                    {/* Gallery tile placeholder, receives photo albums via CMS */}
-                    <div className="weave grain relative flex aspect-[16/7] items-end overflow-hidden border border-seam bg-iron p-4">
-                      <span className="mono text-[0.6rem] uppercase tracking-[0.18em] text-ash">
-                        Photo album, coming via CMS
-                      </span>
+                    <div className="relative aspect-[16/9] overflow-hidden border border-seam bg-iron">
+                      {a.image ? <Image src={a.image} alt={a.title} fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" /> : null}
                     </div>
                     <p className="mono mt-5 text-[0.64rem] uppercase tracking-[0.18em] text-red">
                       {a.date}

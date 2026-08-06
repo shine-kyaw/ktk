@@ -163,7 +163,6 @@ const hchGallery = [
   media("/assets/products/bearings/hch/slideshow-1.webp", "HCH bearing product photography"),
   media("/assets/products/bearings/hch/slideshow-2.webp", "HCH bearing product photography"),
   media("/assets/products/bearings/hch/slideshow-3.webp", "HCH bearing product photography"),
-  media("/assets/products/bearings/hch/slideshow-4.webp", "HCH bearing product photography"),
   media("/assets/products/bearings/hch/slideshow-5.webp", "HCH bearing product photography"),
 ];
 
@@ -175,7 +174,6 @@ const trGallery = [
   media("/assets/products/bearings/tr/slideshow-3.webp", "TR bearing product photography"),
   media("/assets/products/bearings/tr/slideshow-4.webp", "TR bearing product photography"),
   media("/assets/products/bearings/tr/slideshow-5.webp", "TR bearing product photography"),
-  media("/assets/products/bearings/tr/slideshow-6.webp", "TR bearing product photography"),
 ];
 
 export const PRODUCTS: Product[] = [

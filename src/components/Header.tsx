@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { SiteVisibility } from "@/content/site";
 
 type NavItem = {
   label: string;
@@ -20,7 +21,6 @@ const NAV: NavItem[] = [
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Company history", href: "/about#history" },
       { label: "Partners", href: "/about#partners" },
-      { label: "Leadership", href: "/about#team" },
     ],
   },
   { label: "Services", href: "/services" },
@@ -37,9 +37,6 @@ const NAV: NavItem[] = [
       { label: "All products", href: "/products" },
     ],
   },
-  { label: "Careers", href: "/careers" },
-  { label: "Activities", href: "/activities" },
-  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -51,8 +48,15 @@ function Chevron() {
   );
 }
 
-export function Header() {
+export function Header({ visibility }: { visibility: SiteVisibility }) {
   const pathname = usePathname();
+  const contact = NAV[NAV.length - 1]!;
+  const nav = [
+    ...NAV.slice(0, -1),
+    ...(visibility.activities ? [{ label: "Activities", href: "/activities" }] : []),
+    ...(visibility.news ? [{ label: "News", href: "/blog" }] : []),
+    contact,
+  ];
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false); // mobile drawer
   const [openSection, setOpenSection] = useState<string | null>(null); // mobile accordion
@@ -63,6 +67,20 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeAll();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   const closeAll = () => {
     setOpen(false);
@@ -91,7 +109,7 @@ export function Header() {
 
         {/* Desktop nav with dropdowns */}
         <nav className="hidden items-center gap-1 lg:flex">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const active = pathname.startsWith(item.href) && item.href !== "/";
             if (!item.children) {
               return (
@@ -135,16 +153,18 @@ export function Header() {
             );
           })}
           <Link
-            href="/contact"
+            href="/contact?type=product"
             className="press mono ml-2 border border-red px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red hover:text-bone"
           >
-            Become a dealer
+            Product inquiry
           </Link>
         </nav>
 
         {/* Mobile toggle */}
         <button
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
           onClick={() => setOpen((o) => !o)}
           className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
         >
@@ -155,13 +175,15 @@ export function Header() {
 
       {/* Mobile drawer with accordions */}
       {open && (
-        <nav className="max-h-[80vh] overflow-y-auto border-t border-seam bg-coal lg:hidden">
+        <nav id="mobile-navigation" className="max-h-[80vh] overflow-y-auto border-t border-seam bg-coal lg:hidden">
           <div className="container-x flex flex-col py-3">
-            {NAV.map((item) =>
+            {nav.map((item) =>
               item.children ? (
                 <div key={item.href} className="border-b border-seam">
                   <button
                     onClick={() => setOpenSection((s) => (s === item.label ? null : item.label))}
+                    aria-expanded={openSection === item.label}
+                    aria-controls={`mobile-section-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                     className="mono flex w-full items-center justify-between py-4 text-[0.75rem] uppercase tracking-[0.16em] text-bone-dim"
                   >
                     {item.label}
@@ -170,7 +192,7 @@ export function Header() {
                     </span>
                   </button>
                   {openSection === item.label && (
-                    <div className="pb-3">
+                    <div id={`mobile-section-${item.label.toLowerCase().replace(/\s+/g, "-")}`} className="pb-3">
                       {item.children.map((c) => (
                         <Link
                           key={c.href}
@@ -196,11 +218,11 @@ export function Header() {
               ),
             )}
             <Link
-              href="/contact"
+              href="/contact?type=product"
               onClick={closeAll}
               className="press mono mt-4 border border-red px-4 py-3 text-center text-[0.75rem] uppercase tracking-[0.16em] text-red"
             >
-              Become a dealer
+              Product inquiry
             </Link>
           </div>
         </nav>

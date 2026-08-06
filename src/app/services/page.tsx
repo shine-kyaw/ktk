@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { getServices } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Services" };
+export const metadata: Metadata = { title: "Services", alternates: { canonical: "/services" } };
 
 export default async function ServicesPage() {
   const services = await getServices();

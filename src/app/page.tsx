@@ -1,23 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { AssembledBagHero } from "@/components/home/AssembledBagHero";
-import { ProductQuality } from "@/components/home/ProductQuality";
-import { ProductAnatomyScroll } from "@/components/home/ProductAnatomyScroll";
-import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { Reveal } from "@/components/Reveal";
 import {
   getProofPoints,
   getFeaturedProducts,
-  getBagAnatomy,
-  getQualityPillars,
-  getProcessSteps,
   getWhyPoints,
-  getNews,
-  getActivities,
   getIndustries,
   getPartners,
   getCompany,
 } from "@/lib/cms";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 function ProductVisual({ product }: { product: { name: string; image?: string | null; category: string } }) {
   return (
@@ -39,16 +34,11 @@ function ProductVisual({ product }: { product: { name: string; image?: string | 
 }
 
 export default async function HomePage() {
-  const [proof, featured, anatomy, quality, process, why, news, activities, industries, partners, company] =
+  const [proof, featured, why, industries, partners, company] =
     await Promise.all([
       getProofPoints(),
       getFeaturedProducts(6),
-      getBagAnatomy(),
-      getQualityPillars(),
-      getProcessSteps(),
       getWhyPoints(),
-      getNews(),
-      getActivities(),
       getIndustries(),
       getPartners(),
       getCompany(),
@@ -108,12 +98,6 @@ export default async function HomePage() {
           </Reveal>
         </div>
       </section>
-
-      {/* 3a, Product quality pillars */}
-      <ProductQuality pillars={quality} />
-
-      {/* 3b, Product anatomy — the dark teardown, evidence for the pillars */}
-      <ProductAnatomyScroll data={anatomy} />
 
       {/* 4, Featured products */}
       <section className="border-t border-seam bg-coal">
@@ -224,9 +208,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5, Manufacturing process timeline (dark cinematic) */}
-      <ProcessTimeline steps={process.slice(0, 4)} />
-
       {/* 6, Why choose KTK */}
       <section className="border-t border-seam bg-mist">
         <div className="container-x py-24 lg:py-28">
@@ -256,102 +237,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7, Latest news & activities */}
-      <section className="border-t border-seam bg-coal">
-        <div className="container-x grid gap-16 py-24 lg:grid-cols-2 lg:gap-20 lg:py-28">
-          <Reveal>
-            <div className="flex items-end justify-between gap-5 border-b border-seam pb-5">
-              <div>
-                <p className="eyebrow">Company updates</p>
-                <h2 className="display mt-3 text-[1.75rem] text-bone sm:text-3xl">Latest news</h2>
-              </div>
-              <Link href="/blog" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
-                Newsroom →
-              </Link>
-            </div>
-            <div className="divide-y divide-seam border-b border-seam">
-              {news.slice(0, 3).map((n) => (
-                <Link key={n.slug} href={`/blog/${n.slug}`} className="group block py-6">
-                  <span className="mono text-[0.62rem] text-red">{n.date}</span>
-                  <h3 className="mt-2 font-semibold leading-snug text-bone transition-colors group-hover:text-red">
-                    {n.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div className="flex items-end justify-between gap-5 border-b border-seam pb-5">
-              <div>
-                <p className="eyebrow">Beyond production</p>
-                <h2 className="display mt-3 text-[1.75rem] text-bone sm:text-3xl">Activities</h2>
-              </div>
-              <Link href="/activities" className="mono text-[0.68rem] uppercase tracking-[0.18em] text-red hover:text-bone">
-                All activities →
-              </Link>
-            </div>
-            <div className="divide-y divide-seam border-b border-seam">
-              {activities.slice(0, 3).map((a) => (
-                <Link key={a.slug} href="/activities" className="group block py-6">
-                  <span className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">
-                    {a.category}
-                  </span>
-                  <h3 className="mt-2 font-semibold leading-snug text-bone transition-colors group-hover:text-red">
-                    {a.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 8, Two-lane inquiry CTA (product + dealer) */}
+      {/* 7, Product inquiry CTA */}
       <section className="border-t border-seam">
-        <div className="container-x grid gap-px bg-seam py-14 md:grid-cols-2 lg:py-20">
-          {/* Lane A — Product inquiry (light) */}
+        <div className="container-x py-14 lg:py-20">
           <Reveal className="bg-coal">
-            <div className="weave flex h-full flex-col justify-between p-10 lg:p-14">
+            <div className="grid gap-10 border border-seam p-10 lg:grid-cols-[1fr_auto] lg:items-end lg:p-14">
               <div>
                 <p className="eyebrow">Product inquiry</p>
-                <h2 className="display mt-4 max-w-sm text-3xl text-bone sm:text-4xl">
+                <h2 className="display mt-4 max-w-2xl text-3xl text-bone sm:text-4xl">
                   Need bags, specs, or a quote?
                 </h2>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-ash">
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ash">
                   Tell us your product, capacity, and volume. Our team will match the right bag and
                   filling-line spec.
                 </p>
               </div>
               <Link
                 href="/contact?type=product"
-                className="press mono mt-10 inline-block bg-red px-8 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
+                className="press mono inline-flex bg-red px-8 py-4 text-center text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
               >
                 Request a product quote
-              </Link>
-            </div>
-          </Reveal>
-
-          {/* Lane B — Dealer / distributor inquiry (blue, cinematic) */}
-          <Reveal delay={0.1} className="bg-inst">
-            <div className="relative flex h-full flex-col justify-between overflow-hidden p-10 lg:p-14">
-              <div className="blueprint-light absolute inset-0 opacity-40" />
-              <div className="relative">
-                <p className="mono text-[0.68rem] uppercase tracking-[0.22em] text-white/70">
-                  Dealer & distributor inquiry
-                </p>
-                <h2 className="display mt-4 max-w-sm text-3xl text-white sm:text-4xl">
-                  Stock KTK. Build with us.
-                </h2>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/80">
-                  We are expanding our dealer network across Myanmar. Talk to us about pricing,
-                  territories, and supply programs.
-                </p>
-              </div>
-              <Link
-                href="/contact?type=dealer"
-                className="press mono relative mt-10 inline-block bg-white px-8 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-red hover:text-white"
-              >
-                Become a partner
               </Link>
             </div>
           </Reveal>
