@@ -1,18 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { PRODUCTS } from "@/data/products";
 
 /**
  * Inquiry form, UI complete; submission currently opens a pre-filled email.
  * Swaps to a POST /api/inquiry route once a backend/CRM target is chosen.
  */
-export function InquiryForm({ initialProduct = "" }: { initialProduct?: string }) {
+export function InquiryForm({ initialProduct = "", productOptions, salesEmail }: { initialProduct?: string; productOptions: string[]; salesEmail: string }) {
   const [sent, setSent] = useState(false);
-  const productOptions = PRODUCTS.flatMap((product) => [
-    product.name,
-    ...(product.variants?.map((variant) => `${product.name} — ${variant.name}`) ?? []),
-  ]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,7 +17,7 @@ export function InquiryForm({ initialProduct = "" }: { initialProduct?: string }
     const body = encodeURIComponent(
       `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nEmail: ${data.get("email")}\nPhone: ${data.get("phone")}\nProduct: ${product}\n\n${data.get("message")}`,
     );
-    window.location.href = `mailto:sales@ktk.com.mm?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${salesEmail}?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -63,8 +58,8 @@ export function InquiryForm({ initialProduct = "" }: { initialProduct?: string }
       {sent && (
         <p className="mono text-[0.68rem] uppercase tracking-[0.14em] text-red">
           Your email app should open with the message ready, or write us directly at{" "}
-          <a href="mailto:sales@ktk.com.mm" className="underline underline-offset-4">
-            sales@ktk.com.mm
+          <a href={`mailto:${salesEmail}`} className="underline underline-offset-4">
+            {salesEmail}
           </a>
         </p>
       )}

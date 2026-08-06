@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
@@ -17,7 +18,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getNewsPost(slug);
-  return post ? { title: post.title, description: post.excerpt } : { title: "News" };
+  return post
+    ? {
+        title: post.title,
+        description: post.excerpt,
+        alternates: { canonical: `/blog/${post.slug}` },
+        openGraph: {
+          title: post.title,
+          description: post.excerpt,
+          url: `/blog/${post.slug}`,
+          images: post.image ? [{ url: post.image, alt: post.title }] : undefined,
+        },
+      }
+    : { title: "News" };
 }
 
 export default async function NewsDetailPage({
@@ -46,6 +59,12 @@ export default async function NewsDetailPage({
         </p>
         <h1 className="display mt-5 max-w-4xl text-4xl text-bone sm:text-6xl">{post.title}</h1>
       </Reveal>
+
+      {post.image ? (
+        <Reveal delay={0.05} className="relative mt-10 aspect-[16/7] max-w-5xl overflow-hidden border border-seam">
+          <Image src={post.image} alt={post.title} fill priority sizes="(min-width: 1024px) 80vw, 100vw" className="object-cover" />
+        </Reveal>
+      ) : null}
 
       <Reveal delay={0.08} className="mt-12 max-w-2xl">
         {post.body.map((para) => (

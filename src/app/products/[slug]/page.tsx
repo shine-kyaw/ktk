@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { ProductMedia } from "@/components/products/ProductMedia";
 import { ProductGallery } from "@/components/products/ProductGallery";
-import { getProduct, getProductSlugs, getRelatedProducts } from "@/lib/cms";
+import { getCompany, getProduct, getProductSlugs, getRelatedProducts } from "@/lib/cms";
+import { getSiteUrl } from "@/lib/site";
 
 export async function generateStaticParams() {
   const slugs = await getProductSlugs();
@@ -22,6 +23,15 @@ export async function generateMetadata({
   return {
     title: product ? product.name : "Product",
     description: product?.summary,
+    alternates: product ? { canonical: `/products/${product.slug}` } : undefined,
+    openGraph: product
+      ? {
+          title: product.name,
+          description: product.summary,
+          url: `/products/${product.slug}`,
+          images: product.image ? [{ url: product.image, alt: product.name }] : undefined,
+        }
+      : undefined,
   };
 }
 
@@ -33,12 +43,29 @@ export default async function ProductDetailPage({
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
-  const related = await getRelatedProducts(slug);
+  const [related, company] = await Promise.all([getRelatedProducts(slug), getCompany()]);
+  const salesEmail = company.emails[0];
   const benefits = product.benefits ?? [];
   const gallery = product.gallery ?? [];
+  const productUrl = new URL(`/products/${product.slug}`, getSiteUrl()).toString();
 
   return (
     <div className="pb-28 pt-32 sm:pt-40">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.name,
+            description: product.summary,
+            category: product.category,
+            brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
+            image: product.image ? [new URL(product.image, getSiteUrl()).toString()] : undefined,
+            url: productUrl,
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="container-x">
         <Reveal>
           <Link
@@ -72,6 +99,16 @@ export default async function ProductDetailPage({
               >
                 View specifications
               </a>
+              {product.brochureUrl ? (
+                <a
+                  href={product.brochureUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="press mono border border-seam bg-iron px-6 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-bone hover:border-red"
+                >
+                  Download brochure
+                </a>
+              ) : null}
             </div>
           </div>
         </Reveal>
@@ -249,9 +286,9 @@ export default async function ProductDetailPage({
         </div>
         <div className="border border-seam bg-coal p-8">
           <p className="eyebrow">Direct contact</p>
-          <h2 className="display mt-4 text-3xl text-bone">sales@ktk.com.mm</h2>
+          <h2 className="display mt-4 break-all text-3xl text-bone">{salesEmail}</h2>
           <p className="mt-4 max-w-lg text-sm leading-relaxed text-bone-dim">For product availability, exact specifications, and quotation requests.</p>
-          <a href="mailto:sales@ktk.com.mm" className="mono mt-7 inline-flex border border-seam px-6 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-bone hover:border-red hover:text-red">
+          <a href={`mailto:${salesEmail}`} className="mono mt-7 inline-flex border border-seam px-6 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-bone hover:border-red hover:text-red">
             Email sales
           </a>
         </div>

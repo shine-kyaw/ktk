@@ -1,17 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { SiteVisibility } from "@/content/site";
+import type { COMPANY } from "@/content/company";
 
 const LINKS: [string, string][] = [
   ["/about", "Company"],
   ["/services", "Services"],
   ["/products", "Products"],
-  ["/careers", "Careers"],
-  ["/activities", "Activities"],
-  ["/blog", "Blog"],
   ["/contact", "Contact"],
 ];
 
-export function Footer() {
+export function Footer({ visibility, company }: { visibility: SiteVisibility; company: typeof COMPANY }) {
+  const contact = LINKS[LINKS.length - 1]!;
+  const links: [string, string][] = [
+    ...LINKS.slice(0, -1),
+    ...(visibility.activities ? [["/activities", "Activities"] as [string, string]] : []),
+    ...(visibility.news ? [["/blog", "News"] as [string, string]] : []),
+    contact,
+  ];
   return (
     <footer className="border-t border-seam bg-coal">
       <div className="container-x flex flex-wrap items-center justify-between gap-6 py-9">
@@ -28,7 +34,7 @@ export function Footer() {
         </Link>
 
         <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          {LINKS.map(([href, label]) => (
+          {links.map(([href, label]) => (
             <Link
               key={href}
               href={href}
@@ -46,10 +52,10 @@ export function Footer() {
             © {new Date().getFullYear()} Kaung Thu Kha Group Co., Ltd.
           </p>
           <div className="mono text-[0.6rem] uppercase tracking-[0.14em] text-ash">
-            <a href="mailto:sales@ktk.com.mm" className="transition-colors hover:text-red">
-              sales@ktk.com.mm
+            <a href={`mailto:${company.emails[0]}`} className="transition-colors hover:text-red">
+              {company.emails[0]}
             </a>{" "}
-            · (959) 264 817 108
+            · {company.phones[0]}
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ import { readClient } from "@/lib/supabase";
 
 import { PRODUCTS, CATEGORY_META, type Product, type ProductCategory } from "@/data/products";
 import { SERVICES, type Service } from "@/data/services";
-import { JOBS, RECRUITMENT_PROCESS, type Job } from "@/data/careers";
+import { RECRUITMENT_PROCESS, type Job } from "@/data/careers";
 import { NEWS, ACTIVITIES, type NewsPost, type Activity } from "@/data/blog";
 import { BAG_ANATOMY, type BagAnatomy, type BagLayer } from "@/data/anatomy";
 import {
@@ -31,6 +31,7 @@ import {
   PROCESS_STEPS,
   WHY_POINTS,
 } from "@/content/company";
+import { SITE_VISIBILITY, type SiteVisibility } from "@/content/site";
 
 export type { Product, ProductCategory, Service, Job, NewsPost, Activity, BagAnatomy, BagLayer };
 
@@ -94,38 +95,67 @@ export async function getProcessSteps() {
 export async function getWhyPoints() {
   return (await fetchSingleton<typeof WHY_POINTS>("why_points")) ?? WHY_POINTS;
 }
+export async function getSiteVisibility(): Promise<SiteVisibility> {
+  return (await fetchSingleton<SiteVisibility>("site_visibility")) ?? SITE_VISIBILITY;
+}
 
 // ── Products ────────────────────────────────────────────────────────────────
-export async function getProducts(): Promise<Product[]> {
-  const remote = await fetchCollection<Product>("products");
-  if (!remote || remote.length === 0) return PRODUCTS;
+type ProductDbRow = {
+  slug: string;
+  name: string;
+  category: ProductCategory;
+  eyebrow?: string | null;
+  summary?: string | null;
+  long_description?: string | null;
+  best_for?: string | null;
+  unique_value?: string | null;
+  printing?: string | null;
+  applications?: Product["applications"] | null;
+  specs?: Product["specs"] | null;
+  benefits?: Product["benefits"] | null;
+  image?: string | null;
+  gallery?: Product["gallery"] | null;
+  featured?: boolean | null;
+  model?: string | null;
+  brand?: string | null;
+  quality_attributes?: Product["qualityAttributes"] | null;
+  variants?: Product["variants"] | null;
+  color_options?: Product["colorOptions"] | null;
+  material_layers?: Product["materialLayers"] | null;
+  brochure_url?: string | null;
+};
 
-  // Keep verified local product media/content available even when an older CMS
-  // row is still present. The CMS can override copy later, but it must not
-  // silently replace the official Drive imagery with an empty or stale field.
-  const remoteBySlug = new Map(remote.map((product) => [product.slug, product]));
-  return PRODUCTS.map((local) => {
-    const saved = remoteBySlug.get(local.slug);
-    if (!saved) return local;
-    const savedApplications = saved.applications ?? [];
-    const applications = Array.from(new Set([...local.applications, ...savedApplications]));
-    const localSpecLabels = new Set(local.specs.map((spec) => spec.label));
-    const specs = [
-      ...local.specs,
-      ...(saved.specs ?? []).filter((spec) => !localSpecLabels.has(spec.label)),
-    ];
-    return {
-      ...local,
-      ...saved,
-      image: local.image ?? saved.image ?? null,
-      gallery: local.gallery?.length ? local.gallery : saved.gallery ?? [],
-      applications,
-      specs,
-      qualityAttributes: local.qualityAttributes,
-      variants: local.variants,
-      colorOptions: local.colorOptions,
-    };
-  });
+function fromProductRow(row: ProductDbRow): Product {
+  return {
+    slug: row.slug,
+    name: row.name,
+    category: row.category,
+    eyebrow: row.eyebrow ?? undefined,
+    summary: row.summary ?? "",
+    longDescription: row.long_description ?? undefined,
+    bestFor: row.best_for ?? undefined,
+    uniqueValue: row.unique_value ?? undefined,
+    printing: row.printing ?? undefined,
+    applications: row.applications ?? [],
+    specs: row.specs ?? [],
+    benefits: row.benefits ?? [],
+    image: row.image ?? null,
+    gallery: row.gallery ?? [],
+    featured: row.featured ?? false,
+    model: row.model ?? undefined,
+    brand: row.brand ?? undefined,
+    qualityAttributes: row.quality_attributes ?? [],
+    variants: row.variants ?? [],
+    colorOptions: row.color_options ?? [],
+    materialLayers: row.material_layers ?? [],
+    brochureUrl: row.brochure_url ?? null,
+  };
+}
+
+export async function getProducts(): Promise<Product[]> {
+  const remote = await fetchCollection<ProductDbRow>("products");
+  if (!remote || remote.length === 0) return PRODUCTS;
+  return remote.map(fromProductRow);
 }
 export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
   const all = await getProducts();
@@ -142,8 +172,7 @@ export async function getProductSlugs(): Promise<string[]> {
 export async function getProductCategories() {
   const remote = await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories");
   if (!remote || remote.length === 0) return CATEGORY_META;
-  const remoteByName = new Map(remote.map((category) => [category.name, category]));
-  return CATEGORY_META.map((local) => ({ ...local, ...remoteByName.get(local.name) }));
+  return remote;
 }
 export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
   const all = await getProducts();
@@ -159,7 +188,9 @@ export async function getServices(): Promise<Service[]> {
 
 // ── Careers ───────────────────────────────────────────────────────────────
 export async function getJobs(): Promise<Job[]> {
-  return (await fetchCollection<Job>("jobs")) ?? JOBS;
+  const remote = await fetchCollection<Job & { status?: string }>("jobs");
+  if (remote) return remote.filter((job) => job.status === "published");
+  return [];
 }
 export async function getJob(slug: string): Promise<Job | null> {
   const all = await getJobs();
@@ -177,7 +208,9 @@ export async function getRecruitmentProcess() {
 
 // ── News & activities ─────────────────────────────────────────────────────
 export async function getNews(): Promise<NewsPost[]> {
-  return (await fetchCollection<NewsPost>("news")) ?? NEWS;
+  const remote = await fetchCollection<NewsPost & { status?: string }>("news");
+  if (remote) return remote.filter((post) => post.status === "published");
+  return NEWS;
 }
 export async function getNewsPost(slug: string): Promise<NewsPost | null> {
   const all = await getNews();
@@ -188,7 +221,39 @@ export async function getNewsSlugs(): Promise<string[]> {
   return all.map((n) => n.slug);
 }
 export async function getActivities(): Promise<Activity[]> {
-  return (await fetchCollection<Activity>("activities")) ?? ACTIVITIES;
+  const remote = await fetchCollection<Activity & { status?: string }>("activities");
+  if (remote) return remote.filter((activity) => activity.status === "published");
+  return ACTIVITIES;
+}
+
+export type ManagementProfile = {
+  id: string;
+  name: string;
+  title: string;
+  bio?: string | null;
+  image?: string | null;
+};
+
+export type Certificate = {
+  id: string;
+  title: string;
+  issuer?: string | null;
+  reference_number?: string | null;
+  scope?: string | null;
+  issued_on?: string | null;
+  expires_on?: string | null;
+  image?: string | null;
+  document_url?: string | null;
+  permission_confirmed?: boolean;
+};
+
+export async function getManagement(): Promise<ManagementProfile[]> {
+  return (await fetchCollection<ManagementProfile>("management")) ?? [];
+}
+
+export async function getCertificates(): Promise<Certificate[]> {
+  const records = (await fetchCollection<Certificate>("certificates")) ?? [];
+  return records.filter((record) => record.permission_confirmed);
 }
 
 // ── Product anatomy (material breakdown) ────────────────────────────────────
