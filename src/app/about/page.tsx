@@ -37,6 +37,26 @@ export default async function AboutPage() {
         </p>
       </Reveal>
 
+      <Reveal delay={0.08} className="mt-14">
+        <div className="grid gap-4 lg:grid-cols-[1.45fr_0.55fr]">
+          <div className="relative min-h-[360px] overflow-hidden border border-seam bg-[#f2f1eb] sm:min-h-[480px]">
+            <Image src="/assets/cement/cement-bag-double-rhinos-first.webp" alt="KTK cement sack portfolio" fill priority sizes="(min-width: 1024px) 70vw, 100vw" className="object-cover" />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 to-transparent p-8 pt-28">
+              <p className="eyebrow text-white">Manufacturing & distribution</p>
+              <p className="display mt-3 max-w-2xl text-3xl text-white">Built around the industries that move Myanmar.</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
+            <div className="relative min-h-[170px] overflow-hidden border border-seam bg-[#f2f1eb]">
+              <Image src="/assets/products/machinery/newlong/ks16.webp" alt="NEWLONG bag-closing machinery supplied by KTK" fill sizes="(min-width: 1024px) 30vw, 50vw" className="object-contain p-5" />
+            </div>
+            <div className="relative min-h-[170px] overflow-hidden border border-seam bg-[#f2f1eb]">
+              <Image src="/assets/products/bearings/hch/deep-groove.webp" alt="HCH bearings distributed by KTK" fill sizes="(min-width: 1024px) 30vw, 50vw" className="object-contain p-5" />
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
       <Reveal delay={0.1} className="mt-16">
         <div className="grid grid-cols-2 gap-10 border-y border-seam py-12 sm:grid-cols-4">
           {stats.map((s) => (
