@@ -22,11 +22,10 @@ export default async function AdminRecordPage({ params }: { params: Promise<{ se
   }
 
   return (
-    <main className="container-x max-w-4xl py-12">
-      <Link href={`/admin/content/${config.slug}`} className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash hover:text-red">← {config.label}</Link>
-      <p className="eyebrow mt-8">{id === "new" ? "Create content" : "Edit content"}</p>
-      <h1 className="display mt-4 text-4xl text-bone">{id === "new" ? `New ${config.label}` : String(record?.[config.titleField] || "Edit record")}</h1>
-      <div className="mt-10"><AdminRecordForm section={config} record={record} /></div>
+    <main className="admin-content">
+      <Link href={`/admin/content/${config.slug}`} className="admin-breadcrumb">{config.label} <span>/</span> {id === "new" ? "New" : "Edit"}</Link>
+      <div className="admin-page-head"><div><h1>{id === "new" ? `New ${config.label}` : String(record?.[config.titleField] || "Edit record")}</h1><p>{id === "new" ? "Create a new entry and choose when it should be published." : "Update the content below. Changes are applied when you save."}</p></div></div>
+      <AdminRecordForm section={config} record={record} />
     </main>
   );
 }

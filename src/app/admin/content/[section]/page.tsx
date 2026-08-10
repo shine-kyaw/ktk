@@ -14,12 +14,10 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
   if (!config) notFound();
 
   return (
-    <main className="container-x py-12">
-      <Link href="/admin" className="mono text-[0.64rem] uppercase tracking-[0.14em] text-ash hover:text-red">← Dashboard</Link>
-      <p className="eyebrow mt-8">Content section</p>
-      <h1 className="display mt-4 text-4xl text-bone">{config.label}</h1>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ash">{config.description}</p>
-      <div className="mt-10">
+    <main className="admin-content">
+      <Link href="/admin" className="admin-breadcrumb">Overview <span>/</span> {config.label}</Link>
+      <div className="admin-page-head"><div><h1>{config.label}</h1><p>{config.description}</p></div></div>
+      <div>
         {config.slug === "media-library" && isAdminConfigured() ? <AdminMediaUploader /> : null}
         <AdminCollectionList section={config} enabled={isAdminConfigured()} />
       </div>
