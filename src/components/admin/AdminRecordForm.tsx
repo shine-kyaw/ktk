@@ -61,8 +61,8 @@ export function AdminRecordForm({
   }
 
   return (
-    <form onSubmit={save} className="grid gap-6">
-      {section.fields.map((field) => (
+    <form onSubmit={save} className="admin-form">
+      <div className="admin-card admin-form-main">{section.fields.filter((field) => field.key !== "status").map((field) => (
         <AdminInput
           key={field.key}
           field={field}
@@ -70,37 +70,27 @@ export function AdminRecordForm({
           disabled={!isNew && field.key === section.idField}
           onChange={(value) => setValues((current) => ({ ...current, [field.key]: value }))}
         />
-      ))}
-
-      {error ? <p className="border border-red/40 bg-red/5 p-4 text-sm text-red">{error}</p> : null}
-      <div className="flex flex-wrap items-center gap-3 border-t border-seam pt-6">
-        <button disabled={busy} className="press mono bg-red px-6 py-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white disabled:opacity-50">
-          {busy ? "Saving…" : "Save and return to list"}
-        </button>
-        <button type="button" onClick={() => router.back()} className="press mono border border-seam px-6 py-3.5 text-[0.68rem] uppercase tracking-[0.14em] text-bone">
-          Cancel
-        </button>
-        {!isNew ? (
-          <button type="button" onClick={archive} disabled={busy} className="mono ml-auto px-4 py-3 text-[0.64rem] uppercase tracking-[0.14em] text-ash hover:text-red">
-            Archive record
-          </button>
-        ) : null}
-      </div>
+      ))}</div>
+      <aside className="admin-card admin-form-side"><h3>Publish settings</h3>
+        {section.fields.filter((field) => field.key === "status").map((field) => <AdminInput key={field.key} field={field} value={values[field.key]} onChange={(value) => setValues((current) => ({...current,[field.key]:value}))} />)}
+        {error ? <p className="admin-error" style={{marginTop:14}}>{error}</p> : null}
+        <div className="admin-form-actions" style={{marginTop:18}}><button disabled={busy} className="admin-primary">{busy ? "Saving…" : "Save changes"}</button><button type="button" onClick={() => router.back()} className="admin-secondary">Cancel</button>{!isNew ? <button type="button" onClick={archive} disabled={busy} className="admin-danger">Archive record</button> : null}</div>
+      </aside>
     </form>
   );
 }
 
 function AdminInput({ field, value, disabled, onChange }: { field: AdminField; value: unknown; disabled?: boolean; onChange: (value: unknown) => void }) {
-  const base = "mt-2 w-full border border-seam bg-iron px-4 py-3 text-sm text-bone outline-none focus:border-red disabled:opacity-50";
+  const base = "";
   const stringValue = value === undefined || value === null ? "" : String(value);
 
   return (
-    <label className="block">
-      <span className="mono text-[0.62rem] uppercase tracking-[0.14em] text-bone-dim">{field.label}{field.required ? " *" : ""}</span>
+    <label className="admin-field">
+      <span>{field.label}{field.required ? " *" : ""}</span>
       {field.type === "boolean" ? (
-        <span className="mt-3 flex items-center gap-3">
+        <span style={{display:"flex",alignItems:"center",gap:10}}>
           <input type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} className="h-5 w-5 accent-red" />
-          <span className="text-sm text-ash">Enabled</span>
+          <span>Enabled</span>
         </span>
       ) : field.type === "select" ? (
         <select disabled={disabled} value={stringValue} onChange={(event) => onChange(event.target.value)} className={base}>
@@ -112,7 +102,7 @@ function AdminInput({ field, value, disabled, onChange }: { field: AdminField; v
       ) : (
         <input disabled={disabled} type={field.type === "number" ? "number" : field.type === "date" ? "date" : "text"} value={stringValue} onChange={(event) => onChange(field.type === "number" ? Number(event.target.value) : event.target.value)} className={base} />
       )}
-      {field.help ? <span className="mt-2 block text-xs leading-relaxed text-ash">{field.help}</span> : null}
+      {field.help ? <small>{field.help}</small> : null}
     </label>
   );
 }
