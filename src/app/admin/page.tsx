@@ -10,16 +10,15 @@ export default async function AdminDashboard() {
   const writeReady = isAdminConfigured();
 
   return (
-    <div className="container-x py-14">
-      <p className="eyebrow">Dashboard</p>
-      <h1 className="display mt-4 text-4xl text-bone">Content</h1>
-      <p className="mt-3 max-w-xl text-sm leading-relaxed text-ash">
-        Manage the product catalog, company content, newsroom, activities, leadership, and
-        publication-controlled documents. Drafts remain private until an administrator publishes them.
-      </p>
-
-      {/* connection status */}
-      <div className="mt-8 flex flex-wrap gap-3">
+    <main className="admin-content">
+      <div className="admin-page-head"><div><h1>Good day, KTK</h1><p>Manage the website, keep product information current, and publish approved company updates.</p></div></div>
+      <div className="admin-stat-grid">
+        <div className="admin-card admin-stat"><span>Content areas</span><strong>{ADMIN_SECTIONS.length}</strong><small>Products, pages and media</small></div>
+        <div className="admin-card admin-stat"><span>Product catalogue</span><strong>11</strong><small>Current public catalogue</small></div>
+        <div className="admin-card admin-stat"><span>Website status</span><strong style={{fontSize:18,marginTop:15}}>Online</strong><small>Production website available</small></div>
+        <div className="admin-card admin-stat"><span>Publishing</span><strong style={{fontSize:18,marginTop:15}}>{writeReady ? "Ready" : "Setup needed"}</strong><small>Database write access</small></div>
+      </div>
+      <div className="admin-status-row">
         <StatusPill
           ok={dbReady}
           label={dbReady ? "Database connected" : "Database not connected"}
@@ -31,7 +30,7 @@ export default async function AdminDashboard() {
       </div>
 
       {!dbReady && (
-        <div className="mt-6 max-w-2xl border border-seam bg-iron p-5 text-sm leading-relaxed text-bone-dim">
+        <div className="admin-card admin-setup" style={{marginTop:16}}>
           The site is currently serving its built-in seed content. To switch to the database, add{" "}
           <code className="mono text-bone">NEXT_PUBLIC_SUPABASE_URL</code>,{" "}
           <code className="mono text-bone">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>, and{" "}
@@ -41,35 +40,21 @@ export default async function AdminDashboard() {
         </div>
       )}
 
-      {/* sections */}
-      <div className="mt-12 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+      <div className="admin-section-grid">
         {ADMIN_SECTIONS.map((section) => (
-          <Link key={section.slug} href={`/admin/content/${section.slug}`} className="group bg-coal p-6 transition-colors hover:bg-iron">
-            <h2 className="display text-lg text-bone group-hover:text-red">{section.label}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-ash">{section.description}</p>
-            <span
-              className={`mono mt-5 inline-block text-[0.62rem] uppercase tracking-[0.16em] ${
-                writeReady ? "text-red" : "text-ash/60"
-              }`}
-            >
+          <Link key={section.slug} href={`/admin/content/${section.slug}`} className="admin-card admin-section-card">
+            <span>→</span><h2>{section.label}</h2><p>{section.description}</p><small>
               {writeReady ? "Open editor →" : "Waiting for database"}
-            </span>
+            </small>
           </Link>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
 
 function StatusPill({ ok, label }: { ok: boolean; label: string }) {
   return (
-    <span
-      className={`mono inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[0.62rem] uppercase tracking-[0.16em] ${
-        ok ? "border-red/40 text-bone" : "border-seam text-ash"
-      }`}
-    >
-      <span className={`h-1.5 w-1.5 rounded-full ${ok ? "bg-red" : "bg-ash"}`} />
-      {label}
-    </span>
+    <span className={`admin-pill ${ok ? "" : "off"}`}>{label}</span>
   );
 }
