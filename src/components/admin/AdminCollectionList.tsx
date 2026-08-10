@@ -34,28 +34,28 @@ export function AdminCollectionList({ section, enabled }: { section: AdminSectio
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <input
+      <div className="admin-card admin-toolbar">
+        <div className="admin-search"><input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search this section"
-          className="min-w-[16rem] flex-1 border border-seam bg-iron px-4 py-3 text-sm text-bone outline-none focus:border-red"
-        />
+        /></div>
         {section.slug !== "media-library" ? (
           <Link
             href={`/admin/content/${section.slug}/new`}
-            className="press mono bg-red px-5 py-3 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white"
+            className="admin-primary"
           >
-            Add content
+            + Add new
           </Link>
         ) : null}
       </div>
 
-      {loading ? <p className="mt-8 text-sm text-ash">Loading content…</p> : null}
-      {error ? <p className="mt-8 border border-red/40 p-4 text-sm text-red">{error}</p> : null}
+      {loading ? <div className="admin-card admin-empty">Loading content…</div> : null}
+      {error ? <p className="admin-error" style={{marginTop:14}}>{error}</p> : null}
 
       {!loading && !error ? (
-        <div className="mt-8 divide-y divide-seam border-y border-seam">
+        <div className="admin-card admin-list">
+          <div className="admin-list-head"><span>Title</span><span>Identifier</span><span>Status</span><span>Action</span></div>
           {visible.map((record) => {
             const id = String(record[section.idField]);
             const title = String(record[section.titleField] || id);
@@ -64,20 +64,20 @@ export function AdminCollectionList({ section, enabled }: { section: AdminSectio
               <Link
                 key={id}
                 href={`/admin/content/${section.slug}/${encodeURIComponent(id)}`}
-                className="group grid gap-3 py-5 transition-colors hover:bg-iron sm:grid-cols-[1fr_auto_auto] sm:items-center sm:px-4"
+                className="admin-list-row"
               >
                 <div>
-                  <p className="font-semibold text-bone group-hover:text-red">{title}</p>
-                  <p className="mono mt-1 text-[0.58rem] uppercase tracking-[0.12em] text-ash">{id}</p>
+                  <p className="admin-record-title">{title}</p>
                 </div>
-                <span className={`mono rounded-full border px-3 py-1 text-[0.56rem] uppercase tracking-[0.12em] ${status === "published" ? "border-emerald-500/50 text-emerald-300" : status === "archived" ? "border-seam text-ash" : "border-amber-500/50 text-amber-300"}`}>
+                <span className="admin-record-id">{id}</span>
+                <span className={`admin-badge ${status}`}>
                   {status}
                 </span>
-                <span className="mono text-[0.62rem] uppercase tracking-[0.14em] text-red">Edit →</span>
+                <span className="admin-edit">Edit →</span>
               </Link>
             );
           })}
-          {visible.length === 0 ? <p className="py-10 text-center text-sm text-ash">No records found.</p> : null}
+          {visible.length === 0 ? <p className="admin-empty">No records found.</p> : null}
         </div>
       ) : null}
     </div>
@@ -86,7 +86,7 @@ export function AdminCollectionList({ section, enabled }: { section: AdminSectio
 
 function SetupNotice() {
   return (
-    <div className="border border-seam bg-iron p-6 text-sm leading-relaxed text-bone-dim">
+    <div className="admin-card admin-setup">
       Editing is disabled until the KTK-owned Supabase database and server-side write key are configured. The public website continues to use its verified local content in the meantime.
     </div>
   );
