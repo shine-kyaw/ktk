@@ -26,16 +26,13 @@ export function AdminMediaUploader() {
   }
 
   return (
-    <form onSubmit={upload} className="mb-8 grid gap-4 border border-seam bg-iron p-6 sm:grid-cols-2">
-      <div className="sm:col-span-2">
-        <p className="eyebrow">Upload approved media</p>
-        <p className="mt-2 text-sm text-ash">Images up to 12 MB or PDF documents up to 20 MB. Files are drafts until published.</p>
+    <form onSubmit={upload} className="admin-card admin-upload">
+      <div>
+        <h3>Upload approved media</h3>
+        <p>Images up to 12 MB or PDF documents up to 20 MB. Files are drafts until published.</p>
       </div>
-      <input name="file" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" className="border border-seam bg-coal px-4 py-3 text-sm text-bone file:mr-4 file:border-0 file:bg-red file:px-3 file:py-2 file:text-white" />
-      <input name="alt_text" placeholder="Alternative text" className="border border-seam bg-coal px-4 py-3 text-sm text-bone outline-none focus:border-red" />
-      <input name="caption" placeholder="Caption or source note" className="border border-seam bg-coal px-4 py-3 text-sm text-bone outline-none focus:border-red sm:col-span-2" />
-      <button disabled={busy} className="press mono bg-red px-5 py-3 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white disabled:opacity-50">{busy ? "Uploading…" : "Upload file"}</button>
-      {message ? <p className="self-center text-sm text-ash">{message}</p> : null}
+      <div className="admin-upload-grid"><input name="file" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" /><input name="alt_text" placeholder="Alternative text" /><input name="caption" placeholder="Caption or source note" /><button disabled={busy} className="admin-primary">{busy ? "Uploading…" : "Upload file"}</button></div>
+      {message ? <p>{message}</p> : null}
     </form>
   );
 }
