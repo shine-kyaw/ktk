@@ -22,7 +22,7 @@ export const COMPANY = {
     line1: "No. (178), Twin Thin Taik U Htun Nyo Street",
     line2: "Zone (2), Hlaing Thar Yar Township, Yangon, Myanmar",
   },
-  phones: ["(959) 264 817 108", "(959) 264 817 109"],
+  phones: ["(+959) 264 817 108", "(959) 264 817 109"],
   emails: ["sales@ktk.com.mm"],
   facebook: "https://www.facebook.com/",
 } as const;
