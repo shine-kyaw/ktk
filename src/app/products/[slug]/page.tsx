@@ -263,9 +263,21 @@ export default async function ProductDetailPage({
       {product.resources?.length ? (
         <div className="container-x mt-16">
           <Reveal className="border border-seam bg-iron p-7">
-            <p className="eyebrow">Technical documents</p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {product.resources.map((resource) => <a key={resource.url} href={resource.url} target="_blank" rel="noreferrer" className="mono border border-seam px-4 py-3 text-[0.62rem] uppercase tracking-[0.13em] text-bone hover:border-red hover:text-red">{resource.label} ↗</a>)}
+            <p className="eyebrow">{product.category === "Thread" ? "Certificates & thread documents" : "Technical documents"}</p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {product.resources.map((resource) => (
+                <a key={resource.url} href={resource.url} target="_blank" rel="noreferrer" className="group overflow-hidden border border-seam bg-coal transition hover:border-red">
+                  {resource.preview ? (
+                    <div className="relative aspect-[16/9] overflow-hidden border-b border-seam bg-white">
+                      <Image src={resource.preview} alt={`${resource.label} preview`} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-contain p-3 transition duration-500 group-hover:scale-[1.02]" />
+                    </div>
+                  ) : null}
+                  <div className="p-5">
+                    <span className="mono text-[0.62rem] uppercase tracking-[0.13em] text-bone group-hover:text-red">{resource.label} ↗</span>
+                    {resource.detail ? <p className="mt-3 text-sm leading-relaxed text-bone-dim">{resource.detail}</p> : null}
+                  </div>
+                </a>
+              ))}
             </div>
           </Reveal>
         </div>
