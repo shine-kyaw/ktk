@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { SiteVisibility } from "@/content/site";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type NavItem = {
   label: string;
@@ -24,7 +25,6 @@ const NAV: NavItem[] = [
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Company history", href: "/about#history" },
       { label: "Partners", href: "/about#partners" },
-      { label: "မြန်မာဘာသာ", href: "/about#myanmar" },
     ],
   },
   { label: "Services", href: "/services" },
@@ -54,6 +54,7 @@ function Chevron() {
 
 export function Header({ visibility }: { visibility: SiteVisibility }) {
   const pathname = usePathname();
+  const { locale, setLocale } = useLanguage();
   const contact = NAV[NAV.length - 1]!;
   const nav = [
     ...NAV.slice(0, -1),
@@ -162,6 +163,10 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
           >
             Product inquiry
           </Link>
+          <div className="ml-2 flex items-center border border-seam bg-coal/60 p-0.5" data-no-translate>
+            <button onClick={() => setLocale("en")} aria-pressed={locale === "en"} className={`mono px-2 py-1.5 text-[0.58rem] uppercase tracking-[0.12em] transition-colors ${locale === "en" ? "bg-red text-white" : "text-ash hover:text-bone"}`}>EN</button>
+            <button onClick={() => setLocale("my")} aria-pressed={locale === "my"} className={`px-2 py-1.5 text-[0.68rem] transition-colors ${locale === "my" ? "bg-red text-white" : "text-ash hover:text-bone"}`}>မြန်မာ</button>
+          </div>
         </nav>
 
         {/* Mobile toggle */}
@@ -228,6 +233,10 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
             >
               Product inquiry
             </Link>
+            <div className="mt-3 grid grid-cols-2 border border-seam p-1" data-no-translate>
+              <button onClick={() => setLocale("en")} className={`mono py-2 text-[0.68rem] ${locale === "en" ? "bg-red text-white" : "text-ash"}`}>English</button>
+              <button onClick={() => setLocale("my")} className={`py-2 text-sm ${locale === "my" ? "bg-red text-white" : "text-ash"}`}>မြန်မာ</button>
+            </div>
           </div>
         </nav>
       )}

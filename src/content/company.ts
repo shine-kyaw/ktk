@@ -102,6 +102,14 @@ export const LEADERSHIP_PORTRAITS = [
   "/assets/company/leadership/leadership-05.webp",
 ] as const;
 
+export const LEADERSHIP_PROFILES = [
+  { name: "San Nyein", image: LEADERSHIP_PORTRAITS[0] },
+  { name: "Khin Maung Myat", image: LEADERSHIP_PORTRAITS[1] },
+  { name: "Swe Zar Lwin", image: LEADERSHIP_PORTRAITS[2] },
+  { name: "Soe Myat Thu", image: LEADERSHIP_PORTRAITS[3] },
+  { name: "Zar Ni Lin", image: LEADERSHIP_PORTRAITS[4] },
+] as const;
+
 export const TEAM_PORTRAITS = [
   "/assets/company/team/staff-01.webp",
   "/assets/company/team/staff-02.webp",
@@ -111,9 +119,6 @@ export const TEAM_PORTRAITS = [
   "/assets/company/team/staff-06.webp",
 ] as const;
 
-// These names came from the named director contact-card files. The source archive
-// does not identify which numbered portrait belongs to which person, so the public
-// page deliberately keeps the directory separate from the portrait grid.
 export const LEADERSHIP_DIRECTORY = [
   "Khin Maung Myat",
   "San Nyein",

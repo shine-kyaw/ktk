@@ -5,6 +5,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import type { SiteVisibility } from "@/content/site";
 import type { COMPANY } from "@/content/company";
+import { LanguageProvider } from "@/components/LanguageProvider";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 /**
  * Wraps the public site chrome. The /admin area has its own layout, so the
@@ -18,10 +20,11 @@ export function SiteFrame({ children, visibility, company }: { children: React.R
   if (isAdmin) return <>{children}</>;
 
   return (
-    <>
+    <LanguageProvider>
+      <ScrollProgress />
       <Header visibility={visibility} />
       <main>{children}</main>
       <Footer visibility={visibility} company={company} />
-    </>
+    </LanguageProvider>
   );
 }

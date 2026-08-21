@@ -3,12 +3,11 @@ import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import {
-  BURMESE_PROFILE,
   COMPANY_PROFILE,
-  LEADERSHIP_DIRECTORY,
-  LEADERSHIP_PORTRAITS,
+  LEADERSHIP_PROFILES,
   TEAM_PORTRAITS,
 } from "@/content/company";
+import { AboutScrollStory } from "@/components/about/AboutScrollStory";
 import {
   getCertificates,
   getCompany,
@@ -61,10 +60,7 @@ export default async function AboutPage() {
 
       <Reveal delay={0.1} className="mt-16"><div className="grid grid-cols-2 gap-10 border-y border-seam py-12 sm:grid-cols-4">{stats.map((s) => <Stat key={s.label} value={s.value} label={s.label} suffix={s.suffix} isYear={s.isYear} />)}</div></Reveal>
 
-      <Reveal className="mt-20">
-        <p className="eyebrow">Business activities</p>
-        <div className="mt-8 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-5">{COMPANY_PROFILE.businessActivities.map((activity) => <div key={activity} className="bg-iron p-6"><p className="display text-xl text-bone">{activity}</p></div>)}</div>
-      </Reveal>
+      <AboutScrollStory />
 
       <Reveal className="mt-20">
         <p className="eyebrow">Products & services</p><h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Industrial supply and packaging solutions</h2>
@@ -77,15 +73,14 @@ export default async function AboutPage() {
       <Reveal id="group-companies" className="mt-20 scroll-mt-28">
         <p className="eyebrow">Group structure</p><h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Our group companies</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {COMPANY_PROFILE.groupCompanies.map((member, index) => <article key={member.name} className="border border-seam bg-iron p-7"><p className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">Company {String(index + 1).padStart(2, "0")}</p><h3 className="display mt-3 text-2xl text-bone">{member.name}</h3><p className="mt-4 text-sm leading-relaxed text-ash">{member.focus}</p>{member.website ? <a href={member.website} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">Visit company website ↗</a> : null}</article>)}
+          {COMPANY_PROFILE.groupCompanies.map((member, index) => <article key={member.name} className="group border border-seam bg-iron p-7 transition duration-300 hover:-translate-y-1 hover:border-red hover:bg-coal hover:shadow-lift"><p className="mono text-[0.62rem] uppercase tracking-[0.16em] text-red">Company {String(index + 1).padStart(2, "0")}</p><h3 className="display mt-3 text-2xl text-bone transition-colors group-hover:text-red">{member.name}</h3><p className="mt-4 text-sm leading-relaxed text-ash">{member.focus}</p>{member.website ? <a href={member.website} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">Visit company website ↗</a> : null}</article>)}
         </div>
       </Reveal>
 
       <section id="leadership" className="mt-20 scroll-mt-28">
         <Reveal><p className="eyebrow">Leadership</p><h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Directors & management</h2></Reveal>
         {management.length > 0 ? <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{management.map((person, i) => <Reveal key={person.id} delay={(i % 4) * 0.05}><article className="h-full border border-seam bg-iron p-5">{person.image ? <div className="relative aspect-[4/5] overflow-hidden bg-coal"><Image src={person.image} alt={person.name} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" /></div> : null}<h3 className="mt-5 text-base font-semibold text-bone">{person.name}</h3><p className="mono mt-1 text-[0.64rem] uppercase tracking-[0.14em] text-red">{person.title}</p>{person.bio ? <p className="mt-4 text-sm leading-relaxed text-ash">{person.bio}</p> : null}</article></Reveal>)}</div> : <>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{LEADERSHIP_PORTRAITS.map((portrait, index) => <Reveal key={portrait} delay={(index % 5) * 0.04}><div className="relative aspect-[4/5] overflow-hidden border border-seam bg-iron"><Image src={portrait} alt={`KTK leadership portrait ${index + 1}`} fill sizes="(min-width: 1024px) 20vw, 50vw" className="object-cover" /></div></Reveal>)}</div>
-          <div className="mt-8 border border-seam bg-iron p-7"><p className="mono text-[0.62rem] uppercase tracking-[0.15em] text-red">Director directory</p><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">{LEADERSHIP_DIRECTORY.map((name) => <p key={name} className="text-sm font-semibold text-bone">{name}</p>)}</div><p className="mt-5 max-w-3xl text-xs leading-relaxed text-ash">The supplied archive did not identify which numbered portrait belongs to each named contact card, so names are shown separately to avoid an incorrect photo-to-name assignment.</p></div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{LEADERSHIP_PROFILES.map((person, index) => <Reveal key={person.name} delay={(index % 5) * 0.04}><article className="group relative aspect-[4/5] overflow-hidden border border-seam bg-iron"><Image src={person.image} alt={`${person.name}, KTK director`} fill sizes="(min-width: 1024px) 20vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" /><div className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black via-black/70 to-transparent p-5 pt-20 transition duration-300 group-hover:translate-y-0"><p className="mono text-[0.58rem] uppercase tracking-[0.15em] text-red">Director</p><h3 className="mt-2 text-base font-semibold text-white">{person.name}</h3></div></article></Reveal>)}</div>
         </>}
       </section>
 
@@ -109,16 +104,6 @@ export default async function AboutPage() {
       <Reveal id="certificates" className="mt-20 scroll-mt-28">
         <p className="eyebrow">Certificates & authorizations</p><h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Supplied official records</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2">{certificates.map((certificate) => <article key={certificate.id} className="grid gap-6 border border-seam bg-iron p-6 sm:grid-cols-[9rem_1fr]">{certificate.image ? <div className="relative aspect-[3/4] overflow-hidden border border-seam bg-white"><Image src={certificate.image} alt={`${certificate.title} document preview`} fill sizes="144px" className="object-contain" /></div> : null}<div><p className="mono text-[0.58rem] uppercase tracking-[0.14em] text-red">{certificate.issuer || "Official document"}</p><h3 className="display mt-3 text-xl text-bone">{certificate.title}</h3>{certificate.scope ? <p className="mt-3 text-sm leading-relaxed text-ash">{certificate.scope}</p> : null}<dl className="mt-4 space-y-1 text-xs text-bone-dim">{certificate.issued_on ? <div><dt className="inline text-ash">Issued: </dt><dd className="inline">{displayDate(certificate.issued_on)}</dd></div> : null}{certificate.expires_on ? <div><dt className="inline text-ash">Expiry stated: </dt><dd className="inline">{displayDate(certificate.expires_on)}</dd></div> : null}</dl>{certificate.document_url ? <a href={certificate.document_url} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">View supplied document →</a> : null}</div></article>)}</div>
-      </Reveal>
-
-      <Reveal id="myanmar" className="mt-20 scroll-mt-28 border border-seam bg-iron p-8 sm:p-10">
-        <p className="eyebrow">မြန်မာဘာသာ</p><h2 className="mt-5 text-3xl font-semibold leading-relaxed text-bone">{BURMESE_PROFILE.title}</h2>
-        <div className="mt-7 max-w-4xl space-y-5 text-base leading-loose text-bone-dim">{BURMESE_PROFILE.summary.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
-        <div className="mt-8 grid gap-8 md:grid-cols-2"><div><p className="font-semibold text-bone">တည်ထောင်သည့်နှစ်</p><p className="mt-3 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.established}</p></div><div><p className="font-semibold text-bone">ရုံးချုပ်လိပ်စာ</p><p className="mt-3 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.address}</p></div></div>
-        <div className="mt-8 grid gap-8 md:grid-cols-2"><div><p className="font-semibold text-bone">အဓိကလုပ်ငန်းများ</p><ul className="mt-4 space-y-2 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.activities.map((activity) => <li key={activity}>• {activity}</li>)}</ul></div><div><p className="font-semibold text-bone">အဓိကတန်ဖိုးများ</p><ul className="mt-4 space-y-2 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.values.map((value) => <li key={value}>• {value}</li>)}</ul></div></div>
-        <div className="mt-10 border-t border-seam pt-8"><p className="text-xl font-semibold text-bone">ထုတ်ကုန်များနှင့် ဝန်ဆောင်မှုများ</p><p className="mt-4 max-w-4xl text-sm leading-loose text-ash">{BURMESE_PROFILE.productsIntro}</p><div className="mt-6 grid gap-8 md:grid-cols-2"><div><p className="font-semibold text-bone">စက်မှုသုံးအစိတ်အပိုင်းများနှင့် စက်ပစ္စည်းများ</p><ul className="mt-4 space-y-2 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.industrialProducts.map((item) => <li key={item}>• {item}</li>)}</ul></div><div><p className="font-semibold text-bone">ထုပ်ပိုးမှုဆိုင်ရာထုတ်ကုန်များ</p><ul className="mt-4 space-y-2 text-sm leading-relaxed text-ash">{BURMESE_PROFILE.packagingProducts.map((item) => <li key={item}>• {item}</li>)}</ul></div></div></div>
-        <div className="mt-10 border-t border-seam pt-8"><p className="text-xl font-semibold text-bone">အုပ်စုဝင်ကုမ္ပဏီများ</p><p className="mt-4 max-w-4xl text-sm leading-loose text-ash">{BURMESE_PROFILE.companiesIntro}</p><div className="mt-6 grid gap-4 md:grid-cols-2">{BURMESE_PROFILE.companies.map((member) => <div key={member.name} className="border border-seam bg-coal p-5"><p className="font-semibold text-bone">{member.name}</p><p className="mt-3 text-sm leading-loose text-ash">{member.focus}</p></div>)}</div></div>
-        <div className="mt-10 grid gap-8 border-t border-seam pt-8 md:grid-cols-2"><div><p className="font-semibold text-bone">ကျွန်ုပ်တို့ကို ရွေးချယ်သင့်သည့် အကြောင်းရင်းများ</p><ul className="mt-4 space-y-2 text-sm leading-loose text-ash">{BURMESE_PROFILE.reasons.map((reason) => <li key={reason}>• {reason}</li>)}</ul></div><div><p className="font-semibold text-bone">ဝန်ဆောင်မှုပေးလျက်ရှိသော လုပ်ငန်းကဏ္ဍများ</p><ul className="mt-4 space-y-2 text-sm leading-loose text-ash">{BURMESE_PROFILE.industries.map((industry) => <li key={industry}>• {industry}</li>)}</ul></div></div>
       </Reveal>
 
       <Reveal className="mt-20 border border-seam bg-iron p-8"><p className="eyebrow">Head office</p><p className="mt-5 text-sm font-semibold text-bone">{company.legalName}</p><p className="mt-2 max-w-2xl text-sm leading-relaxed text-bone-dim">{company.hq.line1}, {company.hq.line2}</p><a href={company.mapsUrl} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">Open map ↗</a></Reveal>
