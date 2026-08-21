@@ -30,6 +30,8 @@ export type ProductColor = {
 export type ProductResource = {
   label: string;
   url: string;
+  preview?: string;
+  detail?: string;
 };
 
 export type Product = {
@@ -126,11 +128,11 @@ const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], l
 const threadGallery = [
   media(
     "/assets/products/thread/ktk-multicolor.webp",
-    "KTK High Quality Food Grade bag-closing thread in multiple colors",
-    "KTK multicolor thread range",
+    "Six supplied bag-closing thread spools in orange, yellow, red, green, pink, and blue",
+    "Updated supplied thread range",
   ),
   ...["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
-    media(`/assets/products/thread/${file}.webp`, `KTK thread color option ${index + 1}`, ["Orange", "Blue", "Red", "Green", "White", "Yellow"][index]),
+    media(`/assets/products/thread/${file}.webp`, `Individual bag-closing thread spool in ${["orange", "yellow", "red", "green", "pink", "blue"][index]}`, ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index]),
   ),
 ];
 
@@ -410,6 +412,20 @@ export const PRODUCTS: Product[] = [
       { name: "1 kg", description: "Larger thread format for production-line use.", attributes: ["KTK", "High Quality", "Food Grade"] },
     ],
     colorOptions: ktkThreadColors,
+    resources: [
+      {
+        label: "Sewing Thread Specification",
+        url: "/assets/products/thread/certificates/sewing-thread-specification.pdf",
+        preview: "/assets/products/thread/certificates/sewing-thread-specification.webp",
+        detail: "Supplied polyester thread construction, strength, elongation, twist, roll length, weight, and color record.",
+      },
+      {
+        label: "NEWLONG Authorization Record",
+        url: "/assets/company/certificates/newlong-authorization.webp",
+        preview: "/assets/company/certificates/newlong-authorization.webp",
+        detail: "Supplied NEWLONG Industrial Co., Ltd. zone-agent authorization record for KTK Co., Ltd.",
+      },
+    ],
     featured: true,
   },
   {
@@ -448,6 +464,20 @@ export const PRODUCTS: Product[] = [
       { name: "200 g", description: "Approximately 1,040 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
       { name: "1 kg", description: "Approximately 5,200 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
       { name: "2 kg", description: "Approximately 10,400 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
+    ],
+    resources: [
+      {
+        label: "Sewing Thread Specification",
+        url: "/assets/products/thread/certificates/sewing-thread-specification.pdf",
+        preview: "/assets/products/thread/certificates/sewing-thread-specification.webp",
+        detail: "The supplied thread document covering 100% polyester construction and all stated performance values.",
+      },
+      {
+        label: "NEWLONG Authorization Record",
+        url: "/assets/company/certificates/newlong-authorization.webp",
+        preview: "/assets/company/certificates/newlong-authorization.webp",
+        detail: "The supplied NEWLONG authorization record naming KTK Co., Ltd.",
+      },
     ],
     colorOptions: [...ktkThreadColors, { name: "Pink", hex: "#D94C8A" }],
     featured: false,

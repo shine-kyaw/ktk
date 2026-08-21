@@ -1,59 +1,49 @@
-# KTK Drive Asset Inventory
+# KTK Drive asset inventory
 
-Source folder: `https://drive.google.com/drive/folders/1hdinjiJ41U1gKNw-TlbaX13mLY7W_Gvf`
+Source: `https://drive.google.com/drive/folders/1hdinjiJ41U1gKNw-TlbaX13mLY7W_Gvf`
 
-All publicly downloadable image assets in the folder were reviewed and added as optimized WebP files under `public/assets/products/`. The two cement EPS artworks were rendered to JPEG for web use. The original archives were not committed to the site repository.
+Reviewed: 20 August 2026
 
-## Product imagery
+## Integrated media
 
-| Drive group | Source files | Website mapping |
-| --- | --- | --- |
-| BOPP | `18.png`, `0144.png`, `0153.png`, `0203.png`, `211.png` | `BOPP Laminated Bag` gallery |
-| GENERAL | `143.png`, `207.png`, `208.png`, `209.png`, `210.png` | `Plain & Printed PP Woven Bag` gallery |
-| LAMINATION | `6.png`, `7.png`, `0157.png`, `0162.png`, `0188.png` | `Laminated PP Woven Bag` gallery |
-| FILLER | `FILLER-BAG.png`, `FILLER.png` | `Calcium-Carbonate Filler` gallery |
-| NEWLONG | `ds-6ac.png`, `ds-9c.png`, `KS16.jpg`, `np-3II.png`, `np-7.png` | `NEWLONG Bag-Closing Machinery` gallery |
-| YAOHAN | `FACC-N980AC.png`, `FN600A.png`, `N 600 A.png`, `N320A.png`, `N600AC.png`, `N620A.png`, `N980A.png`, `N980AW.png`, `U700C.png` | `YAO HAN Bag-Closing Machinery` gallery |
-| THREAD | `1 (1).png` through `1 (6).png` | `KTK Bag-Closing Thread` gallery and six color captions |
-| HCH | `Deep Groove Ball Bearing.jpg`, `Tapered Roller Bearing.jpg`, `for slideshow/1.jpg` through `5.jpg` | `HCH Bearings` gallery |
-| TR | `Spherical roller Bearing.jpg`, `Unit Bearing.jpg`, `for slideshow/1.jpg` through `6.jpg` | `TR Bearings` gallery |
+| Drive group | Integrated website assets |
+| --- | --- |
+| BOPP | Six product images in the BOPP Laminated Bag gallery. |
+| GENERAL | Six product images in the Plain & Printed PP Woven Bag gallery. |
+| LAMINATION | Six product images in the Laminated PP Woven Bag gallery. |
+| CEMENT | Supplied cement and AD*STAR artwork rendered for web and shown in the cement product gallery. |
+| FILLER | Bag and material imagery plus the complete technical PDF. |
+| NEWLONG Thread | Six color photographs in the separate NEWLONG Thread gallery. |
+| KTK Thread | Multicolor hero plus six color-option images. |
+| NEWLONG machinery | KS-16, DS-6AC, DS-9C, NP-3II, and NP-7 images. |
+| YAO HAN machinery | Nine supplied machine photographs. |
+| HCH | Deep-groove, tapered-roller, and supplied slideshow photographs, excluding duplicate slideshow 4. |
+| TR | Spherical-roller, unit-bearing, Omega unit, and supplied slideshow photographs, excluding duplicate slideshow 6. |
+| Director archive | Five leadership portraits under `public/assets/company/leadership/` and six Sales & Marketing portraits under `public/assets/company/team/`. |
+| Certificates | Four document previews plus the supplied TR PDF. |
+| Factory | Building exterior plus five production-floor images. |
+| Activities | Three earlier activity images plus 25 curated photographs from all meaningful sets in the 100-file `Activity.zip`; one team-dinner video; complete source link. |
+| Events | Seven event photographs plus the complete supplied NOVOTEL event film. |
+| Commercial videos | Three original Drive videos embedded and linked on the Activities page. |
 
-## Cement archive
+## Integrated source documents
 
-`CEMENT.zip` was downloaded and reviewed. It contains:
+- `KTK.docx` — publication requirements and exclusions.
+- `KTK Company Profile (update).docx` — approved English and Burmese group profiles.
+- `KTK infomation.docx` — contact/address/social/map/team details.
+- `Plain & P.xlsx`, `lamination.xlsx`, `BOPP.xlsx` — PP product specifications.
+- Cement technical document — construction and ordering specifications.
+- NEWLONG Thread PDF — material and performance specifications.
+- NEWLONG and YAO HAN machinery documents — model specifications.
+- HCH and TR bearing documents/catalogues — formats, series, and reference links.
+- Filler Masterbatch PDF — grades, properties, dosage, and applications.
+- Four certificate/authorization records — displayed with their exact stated dates.
 
-- `CEMENT BAG.eps` → `public/assets/cement/cement-bag.jpg`
-- `AD STAR CEMENT BAG.eps` → `public/assets/cement/ad-star-cement-bag.jpg`
+## Asset-handling decisions
 
-These appear in the Products landing feature and the AD*STAR product detail page.
-
-## Banner archive status
-
-The supplied `banner.zip` file was visible in the shared folder, but its direct file page and download endpoint returned a Drive 404 during implementation. No banner was silently substituted or guessed. The site uses the available cement artwork as a restrained product feature until a working banner file is provided.
-
-## Product facts incorporated
-
-- PP Woven Bags are separated into Standard / Plain & Printed, Laminated, and BOPP Laminated.
-- The PP introduction uses European STARLINGER lines, 100% Virgin SABIC Resin, 0% recycled material, and 100% odor-free.
-- Standard, Laminated, and BOPP cards show their separate best-for, printing, capacity, and application information.
-- KTK Thread is separate from Fillers and is shown with six supplied color options. It is not labeled as a China import.
-- NEWLONG and YAO HAN are separate machinery products with supplied model galleries, spare-parts/service language, and a one-year service warranty.
-- HCH and TR are separate bearing products with the supplied bearing document’s product/application direction reflected without inventing dimensions or series numbers.
-
-## August 2026 product correction set
-
-The five supplied Drive links were re-downloaded and inspected. Four now resolve to broader KTK media archives (`event`, `factory`, `commercial`, and `activity`) rather than product-photo files. The fifth resolves to a five-image product archive. Those five usable product images are mapped as follows:
-
-| Source file | Verified subject | Website mapping |
-| --- | --- | --- |
-| `7.png` | Multicolored KTK thread group | KTK Thread hero and gallery |
-| `212.png` | Master Chef Dinurado rice bag | Plain & Printed PP Woven Bag gallery |
-| `17.png` | Myo Hla Sugar, green | Laminated PP Woven Bag gallery |
-| `9.png` | Kujaku fertilizer bag | BOPP Laminated Bag gallery |
-| `1.png` | Blue Omega-shaped mounted bearing | TR Bearings hero and gallery |
-
-The requested CP 924 image was already present as `public/assets/products/pp-woven/lamination/7.webp` and is now the Laminated PP Woven Bag hero image.
-
-No separate NEWLONG Thread photograph was present in the supplied archives. The verified NEWLONG product facts, colors, Japan origin, High Quality, and Food Grade attributes are included in the catalog with an intentional official-image-pending state; no KTK-branded photograph was misassigned to NEWLONG.
-
-Product count changed from 10 to 11 with the addition of `NEWLONG Bag-Closing Thread` as a distinct product record and route.
+- Product and company imagery was optimized to WebP; source archives were not committed.
+- No portrait name was guessed from file order.
+- Event names and locations use only visible/source-supported wording; dates are shown only when visible in the supplied material or established by the source-file timestamp.
+- All 100 `Activity.zip` files were visually reviewed; near-identical vaccination frames were represented through a concise gallery and the full archive remains linked.
+- No unverified production sequence was inferred from factory photographs.
+- `banner.zip` was not placed because the source set does not provide campaign labels, copy, destinations, or publication approval for its contents.

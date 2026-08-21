@@ -170,7 +170,17 @@ function fromProductRow(row: ProductDbRow): Product {
 export async function getProducts(): Promise<Product[]> {
   const remote = await fetchCollection<ProductDbRow>("products");
   if (!remote?.length) return PRODUCTS;
-  return remote.map(fromProductRow);
+  return remote.map((row) => {
+    const product = fromProductRow(row);
+    const supplied = PRODUCTS.find((item) => item.slug === product.slug);
+    // Keep newly supplied public documents available when an older CMS seed has
+    // an empty resources array. Editors can still replace it with any non-empty
+    // CMS resource list.
+    if (!product.resources?.length && supplied?.resources?.length) {
+      product.resources = supplied.resources;
+    }
+    return product;
+  });
 }
 export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
   const all = await getProducts();
