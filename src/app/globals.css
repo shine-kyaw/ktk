@@ -23,10 +23,13 @@
     text-wrap: initial;
   }
   /* Burmese glyphs carry stacked diacritics and no uppercase form, so the Latin
-     display scale reads oversized and eats the viewport. Pull large headings
-     back to hold the same visual rank in less space. */
+     display treatment reads oversized and eats the viewport. The bulk comes from
+     `tracking-mega` + uppercase, both already neutralised above — so only the
+     leading needs adjusting here.
+     Do NOT set font-size with em/% on these: those resolve against the PARENT,
+     not the element's own Tailwind step, which collapses every responsive
+     heading (text-4xl … text-7xl) to one tiny inherited size. */
   html[data-locale="my"] .display[data-mm-text] {
-    font-size: 0.82em;
     line-height: 1.35;
   }
   /* The tiny tracked-out uppercase label treatment (down to ~9px) is illegible
