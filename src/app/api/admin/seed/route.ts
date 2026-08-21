@@ -11,6 +11,7 @@ import { adminClient, isAdminConfigured } from "@/lib/supabase";
 
 import { PRODUCTS, CATEGORY_META } from "@/data/products";
 import { SERVICES } from "@/data/services";
+import { ACTIVITIES } from "@/data/blog";
 import {
   COMPANY,
   STATS,
@@ -19,6 +20,9 @@ import {
   VALUES,
   INDUSTRIES,
   PARTNERS,
+  COMPANY_PROFILE,
+  BURMESE_PROFILE,
+  CERTIFICATES,
 } from "@/content/company";
 import { SITE_VISIBILITY } from "@/content/site";
 
@@ -81,6 +85,7 @@ export async function POST(req: Request) {
       color_options: p.colorOptions ?? [],
       material_layers: p.materialLayers ?? [],
       brochure_url: p.brochureUrl ?? null,
+      resources: p.resources ?? [],
       image: p.image ?? null,
       featured: p.featured ?? false,
       status: "published",
@@ -95,11 +100,40 @@ export async function POST(req: Request) {
       name: s.name,
       summary: s.summary,
       points: s.points,
+      image: s.image ?? null,
       status: "published",
       sort_order: i,
     }));
     await up(db, "services", services, "slug");
     counts.services = services.length;
+
+    // supplied company activities
+    const activities = ACTIVITIES.map((activity, i) => ({
+      slug: activity.slug,
+      category: activity.category,
+      title: activity.title,
+      date: activity.date,
+      detail: activity.detail,
+      image: activity.image ?? null,
+      gallery: activity.gallery ?? [],
+      video_url: activity.videoUrl ?? null,
+      video_poster: activity.videoPoster ?? null,
+      external_video_url: activity.externalVideoUrl ?? null,
+      source_url: activity.sourceUrl ?? null,
+      status: "published",
+      sort_order: i,
+    }));
+    await up(db, "activities", activities, "slug");
+    counts.activities = activities.length;
+
+    // supplied certificates and authorization records
+    const certificates = CERTIFICATES.map((certificate, i) => ({
+      ...certificate,
+      status: "published",
+      sort_order: i,
+    }));
+    await up(db, "certificates", certificates, "id");
+    counts.certificates = certificates.length;
 
     // singletons
     const singletons = [
@@ -110,6 +144,8 @@ export async function POST(req: Request) {
       { key: "values", data: VALUES, status: "published" },
       { key: "industries", data: INDUSTRIES, status: "published" },
       { key: "partners", data: PARTNERS, status: "published" },
+      { key: "company_profile", data: COMPANY_PROFILE, status: "published" },
+      { key: "burmese_profile", data: BURMESE_PROFILE, status: "published" },
       { key: "site_visibility", data: SITE_VISIBILITY, status: "published" },
     ];
     await up(db, "singletons", singletons, "key");

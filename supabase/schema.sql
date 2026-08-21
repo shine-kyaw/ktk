@@ -136,6 +136,13 @@ alter table products add column if not exists variants jsonb not null default '[
 alter table products add column if not exists color_options jsonb not null default '[]';
 alter table products add column if not exists material_layers jsonb not null default '[]';
 alter table products add column if not exists brochure_url text;
+alter table products add column if not exists resources jsonb not null default '[]';
+alter table services add column if not exists image text;
+alter table activities add column if not exists gallery jsonb not null default '[]';
+alter table activities add column if not exists video_url text;
+alter table activities add column if not exists video_poster text;
+alter table activities add column if not exists external_video_url text;
+alter table activities add column if not exists source_url text;
 
 do $$
 declare t text;

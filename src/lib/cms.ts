@@ -12,7 +12,8 @@
 //   POST /api/admin/seed   (guarded by SEED_SECRET)
 // ─────────────────────────────────────────────────────────────────────────
 
-import { readClient } from "@/lib/supabase";
+import { unstable_noStore as noStore } from "next/cache";
+import { cmsReadClient } from "@/lib/supabase";
 
 import { PRODUCTS, CATEGORY_META, type Product, type ProductCategory } from "@/data/products";
 import { SERVICES, type Service } from "@/data/services";
@@ -30,6 +31,7 @@ import {
   QUALITY_PILLARS,
   PROCESS_STEPS,
   WHY_POINTS,
+  CERTIFICATES,
 } from "@/content/company";
 import { SITE_VISIBILITY, type SiteVisibility } from "@/content/site";
 
@@ -42,9 +44,14 @@ export const CMS_REVALIDATE_SECONDS = 300;
 
 /** Read a whole collection ordered by sort_order. Returns null to signal fallback. */
 async function fetchCollection<T>(tableName: string): Promise<T[] | null> {
-  const db = readClient();
+  noStore();
+  const db = cmsReadClient();
   if (!db) return null;
-  const { data, error } = await db.from(tableName).select("*").order("sort_order", { ascending: true });
+  const { data, error } = await db
+    .from(tableName)
+    .select("*")
+    .eq("status", "published")
+    .order("sort_order", { ascending: true });
   if (error) {
     console.error(`[cms] ${tableName}:`, error.message);
     return null;
@@ -54,9 +61,15 @@ async function fetchCollection<T>(tableName: string): Promise<T[] | null> {
 
 /** Read a single JSON singleton by key. Returns null to signal fallback. */
 async function fetchSingleton<T>(key: string): Promise<T | null> {
-  const db = readClient();
+  noStore();
+  const db = cmsReadClient();
   if (!db) return null;
-  const { data, error } = await db.from("singletons").select("data").eq("key", key).maybeSingle();
+  const { data, error } = await db
+    .from("singletons")
+    .select("data")
+    .eq("key", key)
+    .eq("status", "published")
+    .maybeSingle();
   if (error || !data) {
     if (error) console.error(`[cms] singleton ${key}:`, error.message);
     return null;
@@ -123,6 +136,7 @@ type ProductDbRow = {
   color_options?: Product["colorOptions"] | null;
   material_layers?: Product["materialLayers"] | null;
   brochure_url?: string | null;
+  resources?: Product["resources"] | null;
 };
 
 function fromProductRow(row: ProductDbRow): Product {
@@ -149,12 +163,13 @@ function fromProductRow(row: ProductDbRow): Product {
     colorOptions: row.color_options ?? [],
     materialLayers: row.material_layers ?? [],
     brochureUrl: row.brochure_url ?? null,
+    resources: row.resources ?? [],
   };
 }
 
 export async function getProducts(): Promise<Product[]> {
   const remote = await fetchCollection<ProductDbRow>("products");
-  if (!remote || remote.length === 0) return PRODUCTS;
+  if (!remote?.length) return PRODUCTS;
   return remote.map(fromProductRow);
 }
 export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
@@ -171,7 +186,7 @@ export async function getProductSlugs(): Promise<string[]> {
 }
 export async function getProductCategories() {
   const remote = await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories");
-  if (!remote || remote.length === 0) return CATEGORY_META;
+  if (!remote?.length) return CATEGORY_META;
   return remote;
 }
 export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
@@ -183,7 +198,8 @@ export async function getRelatedProducts(slug: string, limit = 3): Promise<Produ
 
 // ── Services ──────────────────────────────────────────────────────────────
 export async function getServices(): Promise<Service[]> {
-  return (await fetchCollection<Service>("services")) ?? SERVICES;
+  const remote = await fetchCollection<Service>("services");
+  return remote?.length ? remote : SERVICES;
 }
 
 // ── Careers ───────────────────────────────────────────────────────────────
@@ -221,8 +237,9 @@ export async function getNewsSlugs(): Promise<string[]> {
   return all.map((n) => n.slug);
 }
 export async function getActivities(): Promise<Activity[]> {
-  const remote = await fetchCollection<Activity & { status?: string }>("activities");
-  if (remote) return remote.filter((activity) => activity.status === "published");
+  type ActivityRow = Omit<Activity, "videoUrl" | "videoPoster" | "externalVideoUrl" | "sourceUrl"> & { status?: string; video_url?: string | null; video_poster?: string | null; external_video_url?: string | null; source_url?: string | null };
+  const remote = await fetchCollection<ActivityRow>("activities");
+  if (remote?.length) return remote.filter((activity) => activity.status === "published").map((activity) => ({ ...activity, videoUrl: activity.video_url ?? null, videoPoster: activity.video_poster ?? null, externalVideoUrl: activity.external_video_url ?? null, sourceUrl: activity.source_url ?? null }));
   return ACTIVITIES;
 }
 
@@ -252,7 +269,8 @@ export async function getManagement(): Promise<ManagementProfile[]> {
 }
 
 export async function getCertificates(): Promise<Certificate[]> {
-  const records = (await fetchCollection<Certificate>("certificates")) ?? [];
+  const remote = await fetchCollection<Certificate>("certificates");
+  const records: readonly Certificate[] = remote?.length ? remote : CERTIFICATES;
   return records.filter((record) => record.permission_confirmed);
 }
 

@@ -54,7 +54,7 @@ export default async function ServicesPage() {
                 {s.name}
               </h2>
               <div className="relative aspect-square overflow-hidden border border-seam bg-[#f2f1eb]">
-                <Image src={serviceImages[i % serviceImages.length]} alt={`${s.name} at KTK`} fill sizes="9rem" className="object-contain p-3 transition-transform duration-700 group-hover:scale-105" />
+                <Image src={s.image || serviceImages[i % serviceImages.length]} alt={`${s.name} at KTK`} fill sizes="9rem" className="object-contain p-3 transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div>
                 <p className="max-w-xl text-sm leading-relaxed text-ash">{s.summary}</p>

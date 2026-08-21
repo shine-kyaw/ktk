@@ -27,6 +27,11 @@ export type ProductColor = {
   hex: string;
 };
 
+export type ProductResource = {
+  label: string;
+  url: string;
+};
+
 export type Product = {
   slug: string;
   name: string;
@@ -50,6 +55,7 @@ export type Product = {
   colorOptions?: ProductColor[];
   materialLayers?: ProductMaterialLayer[];
   brochureUrl?: string | null;
+  resources?: ProductResource[];
 };
 
 export type ProductCategory =
@@ -128,6 +134,14 @@ const threadGallery = [
   ),
 ];
 
+const newlongThreadGallery = ["1", "2", "3", "4", "5", "6"].map((file, index) =>
+  media(
+    `/assets/products/thread/newlong/${file}.webp`,
+    `NEWLONG polyester bag-closing thread color ${index + 1}`,
+    ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index],
+  ),
+);
+
 const ktkThreadColors = [
   { name: "White", hex: "#F4F2EA" },
   { name: "Red", hex: "#C7282D" },
@@ -187,10 +201,16 @@ export const PRODUCTS: Product[] = [
       "The supplied AD*STAR artwork shows a structured woven valve sack format designed for automated filling and clean stacking. KTK can support artwork-led packaging discussions around dimensions, print, capacity, and filling-line requirements.",
     applications: ["Cement", "Powdered materials", "Automated filling lines"],
     specs: [
-      { label: "Format", value: "Woven valve sack" },
-      { label: "Artwork source", value: "Custom Printing Available (Provide your artwork in .ai, .pdf or .zip formats)" },
-      { label: "Source archive", value: "CEMENT.zip" },
-      { label: "Shown capacities", value: "20 kg · 50 kg" },
+      { label: "Construction", value: "Single or double layer PP woven cement bag" },
+      { label: "Material", value: "100% virgin PP · optional inner kraft paper" },
+      { label: "Capacity", value: "20–50 kg" },
+      { label: "Width", value: "355–500 mm" },
+      { label: "Length", value: "390–610 mm" },
+      { label: "Opening / bottom", value: "Valve or open mouth · sewn bottom or easy-open finish" },
+      { label: "Printing", value: "Flexo or BOPP · 1–6 colors" },
+      { label: "Filling lines", value: "Automatic and semi-automatic" },
+      { label: "MOQ / lead time", value: "20,000 bags · approximately 30 days" },
+      { label: "Tests stated", value: "Drop · tensile · air-perforation" },
     ],
     benefits: [
       { title: "Automation-ready direction", detail: "A block-bottom valve format suited to high-throughput filling conversations." },
@@ -220,13 +240,18 @@ export const PRODUCTS: Product[] = [
     summary: "The standard breathable option for agricultural and food-related bulk packaging, available plain or printed.",
     longDescription:
       "Standard PP woven bags are built for dependable bulk handling where breathable woven fabric is the right fit. The supplied general product set shows rice, food, and agricultural packaging examples; final size, construction, and print artwork are confirmed per order.",
-    applications: ["Agricultural products", "Flour", "Local rice", "Export rice", "Beans"],
+    applications: ["Export rice", "Local rice", "Livestock feed", "Fertilizer", "Export beans", "Flour"],
     specs: [
-      { label: "Capacity", value: "5 kg – 50 kg" },
-      { label: "Material", value: "100% Virgin SABIC Resin" },
-      { label: "Recycled content", value: "0%" },
-      { label: "Odor", value: "100% odor-free" },
-      { label: "Printing", value: "Flexo · up to 6 colors" },
+      { label: "GSM", value: "Customizable" },
+      { label: "Plain size range", value: "Width 25–132 cm · length 33–284 cm" },
+      { label: "Printed size range", value: "Width 25–81 cm · length 30–127 cm" },
+      { label: "Printing", value: "Flexo · up to 6 colors on one side" },
+      { label: "Top finish", value: "Heat cut · cold cut · hemmed" },
+      { label: "Bottom finish", value: "Single or double folded and stitched" },
+      { label: "Options", value: "Side gusset · PE liner" },
+      { label: "MOQ / lead time", value: "10,000 bags · 14–21 working days" },
+      { label: "Packing", value: "500 or 1,000 pieces per compressed bale, depending on size" },
+      { label: "Quality records", value: "SABIC food-grade certificate · internal tensile report" },
     ],
     benefits: [
       { title: "Breathable construction", detail: "Woven fabric supports airflow for dry goods and agricultural contents." },
@@ -255,13 +280,17 @@ export const PRODUCTS: Product[] = [
     summary: "A protective woven format for fertilizer, feed, chemicals, and fine powders that need an added film layer.",
     longDescription:
       "Laminated PP woven bags feature an extrusion-coated protective layer over the woven substrate to seal the weave and form an effective moisture barrier. The supplied lamination set shows feed, pet food, and fine-product packaging examples; barrier performance and final structure are customized to suit your product and filling environment.",
-    applications: ["Fertilizer", "Animal feed", "Chemicals", "Fine powders"],
+    applications: ["Livestock feed", "Sugar", "Milled rice", "Fine chemicals", "Flour", "Cement"],
     specs: [
-      { label: "Capacity", value: "5 kg – 50 kg" },
-      { label: "Material", value: "100% Virgin SABIC Resin" },
-      { label: "Recycled content", value: "0%" },
-      { label: "Odor", value: "100% odor-free" },
-      { label: "Structure", value: "Woven PP + protective film" },
+      { label: "GSM", value: "Customizable" },
+      { label: "Lamination", value: "Single or double-side PE / PP extrusion lamination" },
+      { label: "Size range", value: "Width 25–114 cm · length 30–132 cm" },
+      { label: "Barrier", value: "High moisture barrier · dust-proof coating" },
+      { label: "Printing", value: "Flexo · up to 6 colors on one side" },
+      { label: "Top finish", value: "Valve · hemmed · easy-open" },
+      { label: "Bottom finish", value: "Block bottom or stitched" },
+      { label: "MOQ / lead time", value: "10,000 bags · 18–26 working days" },
+      { label: "Packing", value: "500 or 1,000 pieces per compressed bale" },
     ],
     benefits: [
       { title: "Added barrier layer", detail: "Designed to provide stronger protection against humidity, dust, and surface contamination." },
@@ -290,13 +319,16 @@ export const PRODUCTS: Product[] = [
     summary: "The premium retail-facing option for rice, pet food, aquafeed, and consumer products where the pack is part of the brand experience.",
     longDescription:
       "BOPP laminated bags combine a high-strength PP woven base with an outer reverse-printed film layer, delivering premium photo-quality graphics alongside superior moisture and puncture resistance. The supplied BOPP set shows colorful retail and food packaging examples; finish, artwork, and dimensions are custom-tailored around your intended shelf presentation.",
-    applications: ["Premium retail rice", "Pet food", "Aquafeed", "Consumer products", "Fertilizer"],
+    applications: ["Premium retail rice", "Pet food", "Specialty fertilizer", "Livestock feed", "Seed"],
     specs: [
-      { label: "Capacity", value: "5 kg – 25 kg" },
-      { label: "Structure", value: "3-layer BOPP laminate" },
-      { label: "Printing", value: "HD gravure" },
-      { label: "Finish", value: "Glossy or Matt" },
-      { label: "Protection", value: "Scratch-resistant · water-resistant" },
+      { label: "Layer structure", value: "Customizable" },
+      { label: "Finish", value: "Glossy · matte · metallic / holographic" },
+      { label: "Printing", value: "Reverse rotogravure · up to 13 colors on both sides" },
+      { label: "Sizing", value: "Custom size; confirm final width and length with KTK" },
+      { label: "Options", value: "Handle punch · side-gusset printing · ultrasonic or sewn hemming · EZ-open seam" },
+      { label: "Protection stated", value: "Waterproof and puncture-resistant construction" },
+      { label: "MOQ / lead time", value: "15,000 bags · 30–45 working days" },
+      { label: "Packing", value: "500–1,000 pieces per compressed bale" },
     ],
     benefits: [
       { title: "Retail-first presentation", detail: "Photo-realistic gravure printing is designed for high-impact shelf branding." },
@@ -319,14 +351,22 @@ export const PRODUCTS: Product[] = [
     name: "Calcium-Carbonate Filler",
     category: "Fillers",
     eyebrow: "Material input",
-    summary: "Filler masterbatch and color options for woven sacks, film, extrusion coating, and molding applications.",
+    summary: "PE, PP, transparent, and thermoforming calcium-carbonate filler masterbatch grades for film, raffia, molding, and sheet applications.",
     longDescription:
-      "The supplied FILLER images show both the finished KTK bag and the granular material. Use this product to start a specification discussion around base resin, loading, color, and the process where the filler will run.",
-    applications: ["Woven sacks", "Blown film", "Extrusion coating", "Injection molding", "Blow molding"],
+      "The supplied technical sheet covers PE filler for film and bottles, PP filler for woven bags, raffia, molding and nonwoven, transparent filler for clarity-sensitive packaging, and thermoforming filler for PS or PP sheet. Select the grade and dosage against the polymer, process temperature, and target finish.",
+    applications: ["Blown and agricultural film", "PP woven bags and raffia tape", "Injection molding", "HDPE bottles", "Nonwoven", "Thermoforming sheet"],
     specs: [
-      { label: "Format", value: "Filler / color masterbatch" },
-      { label: "Source", value: "Vietnam limestone" },
-      { label: "Use", value: "Film · extrusion · molding" },
+      { label: "PE grade", value: "LDPE / LLDPE / HDPE carrier · 75–82% CaCO₃" },
+      { label: "PP grade", value: "PP homopolymer carrier · 75–85% CaCO₃" },
+      { label: "Transparent grade", value: "PE / PP carrier · sodium sulphate / fine CaCO₃" },
+      { label: "Thermoforming grade", value: "PS / PP carrier · 70–80% mineral content" },
+      { label: "Whiteness", value: "≥96–98%" },
+      { label: "Particle size", value: "PE 1.5–2.5 µm · PP 1.8–2.8 µm" },
+      { label: "MFI", value: "PE 2–5 g/10 min · PP 5–15 g/10 min" },
+      { label: "Density", value: "PE 1.60–1.85 · PP 1.65–1.90 g/cm³" },
+      { label: "Moisture", value: "<0.15%" },
+      { label: "Processing temperature", value: "PE 160–240°C · PP 180–280°C" },
+      { label: "Typical dosage", value: "PE film 10–35% · PP woven / raffia 15–40% · injection 10–45% · blow molding 5–20%" },
     ],
     benefits: [
       { title: "Process-aware supply", detail: "Discuss the grade around your production process and target finish." },
@@ -335,6 +375,8 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/products/filler/filler-bag.webp",
     gallery: [media("/assets/products/filler/filler-bag.webp", "KTK filler bag"), media("/assets/products/filler/filler.webp", "Color calcium-carbonate filler material")],
+    brochureUrl: "/assets/company/documents/caco3-filler-masterbatch.pdf",
+    resources: [{ label: "CaCO₃ Filler Masterbatch technical sheet", url: "/assets/company/documents/caco3-filler-masterbatch.pdf" }],
     featured: true,
   },
   {
@@ -384,6 +426,11 @@ export const PRODUCTS: Product[] = [
     specs: [
       { label: "Brand", value: "NEWLONG" },
       { label: "Origin", value: "Japan" },
+      { label: "Material / construction", value: "100% polyester · 20/1 × 6" },
+      { label: "Strength", value: "7 ± 1 kg" },
+      { label: "Elongation", value: "20 ± 5%" },
+      { label: "Twist", value: "6.90 ± 0.03 TPI" },
+      { label: "Roll formats", value: "1 kg / 5,200 m · 2 kg / 10,400 m · 200 g / 1,040 m" },
       { label: "Quality", value: "High Quality Thread" },
       { label: "Product standard", value: "Food Grade" },
       { label: "Available colors", value: "White · Red · Yellow · Green · Blue · Orange · Pink" },
@@ -394,8 +441,14 @@ export const PRODUCTS: Product[] = [
       { title: "High Quality & Food Grade", detail: "The two requested product attributes are presented clearly for buyer review." },
       { title: "Seven color options", detail: "Available colors are shown as white, red, yellow, green, blue, orange, and pink." },
     ],
-    image: null,
+    image: "/assets/products/thread/newlong/1.webp",
+    gallery: newlongThreadGallery,
     qualityAttributes: ["High Quality Thread", "Food Grade", "Japan"],
+    variants: [
+      { name: "200 g", description: "Approximately 1,040 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
+      { name: "1 kg", description: "Approximately 5,200 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
+      { name: "2 kg", description: "Approximately 10,400 metres per roll.", attributes: ["100% polyester", "20/1 × 6"] },
+    ],
     colorOptions: [...ktkThreadColors, { name: "Pink", hex: "#D94C8A" }],
     featured: false,
   },
@@ -411,9 +464,14 @@ export const PRODUCTS: Product[] = [
     applications: ["Cement filling lines", "PP woven bag closing", "Packing stations", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Japan" },
-      { label: "Models shown", value: "5 supplied references" },
+      { label: "NP-7A", value: "5–8 sec/bag · 8.5 mm stitch · #25 needle · 5.3 kg · 60 W single phase" },
+      { label: "NP-3II", value: "Double-chain stitch · 1,350 ± 150 rpm · automatic cutter · pump lubrication" },
+      { label: "DS-6AC", value: "1,400 rpm · 7–10.5 mm stitch · single needle · air cutter" },
+      { label: "DS-6WAC", value: "2,000 rpm · two needles · semi-automatic lubrication" },
+      { label: "DS-9C", value: "2,700 rpm · fully automatic lubrication · DR-H30 #26 needle" },
+      { label: "KS-16 conveyor system", value: "7.5 kW · 3,000 × 1,090 × 2,052 mm · approximately 760 kg · DS-7A sewing head" },
       { label: "Support", value: "Parts · maintenance · repair" },
-      { label: "Service", value: "1-year service warranty" },
+      { label: "Materials supported", value: "Kraft paper · cotton · hessian · jute · PP / PE woven" },
     ],
     benefits: [
       { title: "Portable and conveyor formats", detail: "The gallery includes NP, DS, and KS16 references for different operating setups." },
@@ -422,7 +480,13 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/products/machinery/newlong/ks16.webp",
     gallery: newlongGallery,
-    model: "KS16 · DS-6AC · DS-9C · NP-3II · NP-7",
+    model: "KS-16 · DS-6AC · DS-6WAC · DS-9C · NP-3II · NP-7A",
+    variants: [
+      { name: "NP-7A", description: "Portable single-needle closer; two-thread version also available.", attributes: ["5–8 sec/bag", "8.5 mm stitch", "60 W"] },
+      { name: "NP-3II", description: "Portable double-chain-stitch closer with automatic cutter.", attributes: ["1,350 ± 150 rpm", "Pump lubrication"] },
+      { name: "DS series", description: "DS-6AC, DS-6WAC, and DS-9C industrial sewing heads.", attributes: ["1,400–2,700 rpm", "Single and two-needle options"] },
+      { name: "KS-16", description: "Conveyor bag-closing system for heat sealing and sewing.", attributes: ["7.5 kW", "DS-7A head"] },
+    ],
     featured: true,
   },
   {
@@ -437,9 +501,15 @@ export const PRODUCTS: Product[] = [
     applications: ["Bag closing", "Cement and woven sacks", "Conveyor packing lines", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Taiwan" },
-      { label: "Models shown", value: "9 supplied references" },
+      { label: "N600A", value: "1 thread · 250–350 bags/hour · 7.2 mm stitch · DN×1 #25" },
+      { label: "N620A", value: "2 thread · 250–350 bags/hour · 7.2 mm stitch · FD-5 #25" },
+      { label: "N600AC", value: "1 thread · 1,500 rpm · 7.2 mm stitch · DN×1 #25" },
+      { label: "N320A", value: "2 thread · 1,350 rpm · 8.5 mm stitch · DN×1 #25" },
+      { label: "FN602A", value: "2 thread · 1,500 rpm · 7.2 mm stitch · DN×1 #25" },
+      { label: "U700C", value: "2 thread · 1,800 rpm · 6.5–11 mm stitch · 11 mm presser lift" },
+      { label: "N980AW", value: "2,500 rpm · up to 8 mm material · 2 needle / 4 thread · plain closing" },
+      { label: "FAC-N980AC", value: "500–600 bags/hour · 7–11 mm stitch · pneumatic thread and tape cutting · 3-phase 220/380 V" },
       { label: "Support", value: "Spare parts · maintenance · repair" },
-      { label: "Service", value: "1-year service warranty" },
     ],
     benefits: [
       { title: "A broad supplied set", detail: "The gallery covers FACC-N980AC, FN600A, N-series, and U700C references." },
@@ -448,7 +518,14 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/products/machinery/yaohan/facc-n980ac.webp",
     gallery: yaohanGallery,
-    model: "FACC-N980AC · FN600A · N320A · N600A · N980A · others",
+    model: "FAC-N980AC · FN602A · N320A · N600A · N600AC · N620A · N980AW · U700C",
+    variants: [
+      { name: "Portable N-series", description: "N600A, N620A, N600AC, and N320A portable bag closers.", attributes: ["1 or 2 thread", "Mechanical cutter options"] },
+      { name: "FN602A", description: "Two-thread industrial bag closer.", attributes: ["1,500 rpm", "7.2 mm stitch"] },
+      { name: "U700C", description: "Two-thread bag-closing head with adjustable stitch length.", attributes: ["1,800 rpm", "6.5–11 mm"] },
+      { name: "N980AW", description: "High-speed, two-needle, four-thread plain-closing head.", attributes: ["2,500 rpm", "Up to 8 mm material"] },
+      { name: "FAC-N980AC", description: "Height-adjustable conveyor closer with pneumatic thread and tape cutting.", attributes: ["500–600 bags/hour", "3-phase"] },
+    ],
     featured: true,
   },
   {
@@ -463,8 +540,11 @@ export const PRODUCTS: Product[] = [
     applications: ["Industrial equipment", "High-speed applications", "Radial and axial loads", "Maintenance stock"],
     specs: [
       { label: "Brand", value: "HCH" },
-      { label: "Formats shown", value: "Deep groove · tapered roller" },
-      { label: "Distribution", value: "Authorized Myanmar distributor" },
+      { label: "Formats", value: "Deep-groove ball · tapered roller" },
+      { label: "Seal options", value: "Open · 2RS · ZZ" },
+      { label: "Deep-groove series", value: "16 · 60 · 62 · 63 · 68 · 69 · inch · 88" },
+      { label: "Tapered-roller series", value: "302 · 303 · 320 · 322 · JL · L · LM" },
+      { label: "Authorization record", value: "Supplied sole-distributor certificate: 1 Mar 2025–28 Feb 2026" },
     ],
     benefits: [
       { title: "Two core formats", detail: "The supplied gallery separates deep-groove and tapered roller bearing references." },
@@ -473,6 +553,8 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/products/bearings/hch/deep-groove.webp",
     gallery: hchGallery,
+    brochureUrl: "https://drive.google.com/file/d/1nfws3cRo-Vkou0fwoKagxRqphWfcYPlB/view?usp=drivesdk",
+    resources: [{ label: "HCH bearing specifications", url: "https://drive.google.com/file/d/1nfws3cRo-Vkou0fwoKagxRqphWfcYPlB/view?usp=drivesdk" }],
     featured: true,
   },
   {
@@ -487,8 +569,11 @@ export const PRODUCTS: Product[] = [
     applications: ["Ventilation", "Agriculture", "Logistics", "Construction", "Engineering", "Minerals"],
     specs: [
       { label: "Brand", value: "TR" },
-      { label: "Formats shown", value: "Spherical roller · unit bearing" },
-      { label: "Product range", value: "2000+ items stated in supplied brief" },
+      { label: "Formats", value: "Spherical roller · mounted unit bearing" },
+      { label: "Spherical-roller series", value: "222 · 223" },
+      { label: "Mounted-unit families", value: "UCF · UCFL · UCT · UCFC · UCP · UKP · UKFC · UKT · UKF" },
+      { label: "Insert-bearing series", value: "UC / UK 2 and 3 series" },
+      { label: "Authorization record", value: "Supplied appointment states validity begins 18 Oct 2026" },
     ],
     benefits: [
       { title: "Spherical roller reference", detail: "Supports rotation with low friction and accommodates angular misalignment in the described format." },
@@ -503,6 +588,12 @@ export const PRODUCTS: Product[] = [
         "Omega-shaped mounted unit bearing",
       ),
       ...trGallery,
+    ],
+    brochureUrl: "https://drive.google.com/file/d/1Bd1Azo0kBMIRpLT9Fx-rWg6tWKCiopFe/view?usp=drivesdk",
+    resources: [
+      { label: "TR bearing specifications", url: "https://drive.google.com/file/d/1Bd1Azo0kBMIRpLT9Fx-rWg6tWKCiopFe/view?usp=drivesdk" },
+      { label: "TR Ball Bearing Units catalogue", url: "https://drive.google.com/file/d/1jaI-b5UrS2tW2axT1f5auq2UuebrhUII/view?usp=drivesdk" },
+      { label: "TR Spherical Roller Bearing catalogue", url: "https://drive.google.com/file/d/1o1A-rDPuvHJA7kx2NkvKaUibyGYepUU_/view?usp=drivesdk" },
     ],
     featured: true,
   },

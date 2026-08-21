@@ -20,7 +20,7 @@ export default async function ContactPage({
   ]);
   const fullAddress = `${company.hq.line1}, ${company.hq.line2}`;
   const mapsQuery = encodeURIComponent(`${company.legalName}, ${fullAddress}`);
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+  const mapsUrl = company.mapsUrl;
   const mapsEmbedUrl = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
 
   return (
@@ -34,9 +34,9 @@ export default async function ContactPage({
 
       <Reveal delay={0.06} className="mt-12">
         <div className="relative min-h-[260px] overflow-hidden border border-seam sm:min-h-[340px]">
-          <Image
-            src="/assets/cement/cement-bag-double-rhinos-first.webp"
-            alt="KTK industrial packaging range"
+            <Image
+            src="/assets/company/factory/factory-exterior.webp"
+            alt="Kaung Thu Kha Group head office and manufacturing building"
             fill
             priority
             sizes="100vw"
@@ -58,27 +58,50 @@ export default async function ContactPage({
 
         <Reveal delay={0.1}>
           <div className="border border-seam p-8">
-            <h2 className="eyebrow">Head office & factory</h2>
+            <h2 className="eyebrow">Head office</h2>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-bone-dim">
               {company.hq.line1}, {company.hq.line2}
             </p>
             <div className="mt-6 space-y-2">
-              {company.phones.map((phone) => <p key={phone} className="mono text-sm text-bone">{phone}</p>)}
+              {company.phones.map((phone) => <a key={phone} href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="mono block text-sm text-bone transition-colors hover:text-red">{phone}</a>)}
               {company.emails.map((email) => (
                 <a key={email} href={`mailto:${email}`} className="mono block text-sm text-bone transition-colors hover:text-red">
                   {email}
                 </a>
               ))}
             </div>
+            <dl className="mt-7 space-y-4 border-t border-seam pt-6 text-sm">
+              <div><dt className="mono text-[0.62rem] uppercase tracking-[0.14em] text-red">Office hours</dt><dd className="mt-1 leading-relaxed text-bone-dim">{company.officeHours}</dd></div>
+              <div><dt className="mono text-[0.62rem] uppercase tracking-[0.14em] text-red">Viber</dt><dd className="mt-1"><a href={`viber://chat?number=${encodeURIComponent(company.viber.replace(/\s/g, ""))}`} className="text-bone hover:text-red">{company.viber}</a></dd></div>
+              <div><dt className="mono text-[0.62rem] uppercase tracking-[0.14em] text-red">Response time</dt><dd className="mt-1 leading-relaxed text-bone-dim">Email: {company.responseTimes.email}<br />Phone / Viber: {company.responseTimes.phone}</dd></div>
+            </dl>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a href={company.facebook} target="_blank" rel="noreferrer" className="mono border border-seam px-4 py-2 text-[0.62rem] uppercase tracking-[0.14em] text-bone hover:border-red hover:text-red">Facebook ↗</a>
+              <a href={company.mapsUrl} target="_blank" rel="noreferrer" className="mono border border-seam px-4 py-2 text-[0.62rem] uppercase tracking-[0.14em] text-bone hover:border-red hover:text-red">Google Maps ↗</a>
+            </div>
           </div>
         </Reveal>
       </div>
 
       <Reveal className="mt-20">
+        <p className="eyebrow">Sales contacts</p>
+        <h2 className="display mt-3 text-3xl text-bone sm:text-5xl">Talk to the KTK team</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {company.contacts.map((contact) => (
+            <article key={contact.phone} className="border border-seam bg-iron p-6">
+              <h3 className="text-base font-semibold text-bone">{contact.name}</h3>
+              <p className="mono mt-2 text-[0.62rem] uppercase tracking-[0.14em] text-red">{contact.title}</p>
+              <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="mono mt-5 block text-sm text-bone hover:text-red">{contact.phone}</a>
+            </article>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal className="mt-20">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
           <div>
             <p className="eyebrow">Find KTK</p>
-            <h2 className="display mt-3 text-3xl text-bone sm:text-5xl">Head office & factory</h2>
+            <h2 className="display mt-3 text-3xl text-bone sm:text-5xl">Head office</h2>
           </div>
           <a
             href={mapsUrl}

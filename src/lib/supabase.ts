@@ -37,6 +37,17 @@ export function readClient(): SupabaseClient | null {
   return _read;
 }
 
+/**
+ * Server-only CMS reader. Prefer the service connection already required by
+ * the admin so a working editor can never be disconnected from the public
+ * site merely because the optional anon key is missing or misconfigured.
+ * Callers must still apply `status = published` to every public query.
+ */
+export function cmsReadClient(): SupabaseClient | null {
+  if (URL && SERVICE) return adminClient();
+  return readClient();
+}
+
 let _admin: SupabaseClient | null = null;
 /** Privileged client for writes/uploads. Throws if not configured. */
 export function adminClient(): SupabaseClient {

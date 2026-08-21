@@ -4,6 +4,7 @@ export type Service = {
   name: string;
   summary: string;
   points: string[];
+  image?: string | null;
 };
 
 export const SERVICES: Service[] = [

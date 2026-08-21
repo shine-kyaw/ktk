@@ -18,9 +18,13 @@ const NAV: NavItem[] = [
     href: "/about",
     children: [
       { label: "Overview", href: "/about" },
+      { label: "Leadership", href: "/about#leadership" },
+      { label: "Group companies", href: "/about#group-companies" },
+      { label: "Certificates", href: "/about#certificates" },
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Company history", href: "/about#history" },
       { label: "Partners", href: "/about#partners" },
+      { label: "မြန်မာဘာသာ", href: "/about#myanmar" },
     ],
   },
   { label: "Services", href: "/services" },
