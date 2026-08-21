@@ -128,8 +128,8 @@ const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], l
 const threadGallery = [
   media(
     "/assets/products/thread/ktk-multicolor.webp",
-    "Six supplied bag-closing thread spools in orange, yellow, red, green, pink, and blue",
-    "Updated supplied thread range",
+    "KTK High Quality Thread campaign showing bag-closing machinery and multiple KTK thread spools",
+    "KTK Strong Thread, Stronger Performance campaign",
   ),
   ...["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
     media(`/assets/products/thread/${file}.webp`, `Individual bag-closing thread spool in ${["orange", "yellow", "red", "green", "pink", "blue"][index]}`, ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index]),
