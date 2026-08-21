@@ -18,17 +18,34 @@ function translated(value: string, locale: Locale) {
 }
 
 function translateTree(root: ParentNode, locale: Locale) {
+  // Two passes: first work out which parents end up holding real Burmese
+  // replacements, then mutate text + the font-scoping attribute together.
+  // A parent only gets the Myanmar font when it actually holds translated
+  // text — otherwise English copy that has no dictionary entry (most
+  // long-form content) would render in Noto Sans Myanmar instead of Archivo.
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes: Text[] = [];
+  const parentsNeedingMyanmarFont = new Set<Element>();
   let node = walker.nextNode();
   while (node) {
     const text = node as Text;
     const parent = text.parentElement;
     if (parent && !parent.closest("script, style, code, [data-no-translate]")) {
       if (!originalText.has(text)) originalText.set(text, text.data);
-      text.data = translated(originalText.get(text) ?? text.data, locale);
+      const original = originalText.get(text) ?? text.data;
+      const next = translated(original, locale);
+      textNodes.push(text);
+      if (locale === "my" && next !== original) parentsNeedingMyanmarFont.add(parent);
     }
     node = walker.nextNode();
   }
+  textNodes.forEach((text) => {
+    const parent = text.parentElement;
+    if (!parent) return;
+    text.data = translated(originalText.get(text) ?? text.data, locale);
+    if (parentsNeedingMyanmarFont.has(parent)) parent.setAttribute("data-mm-text", "true");
+    else parent.removeAttribute("data-mm-text");
+  });
 
   const elements = root instanceof Element ? [root, ...root.querySelectorAll("[aria-label], [placeholder], [title]")] : [...root.querySelectorAll("[aria-label], [placeholder], [title]")];
   elements.forEach((element) => {

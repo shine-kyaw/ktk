@@ -53,10 +53,12 @@ export default function ManufacturingPage() {
                 ["Industrial packaging", "Cement sacks and PP woven formats built around the product, artwork, and filling environment."],
                 ["Production equipment", "The supplied archive documents circular weaving and bag-conversion equipment in KTK's established operation."],
                 ["Specification support", "The KTK team confirms material, size, print, finish, order, and compatibility details before production."],
-              ].map(([title, detail]) => (
-                <div key={title} className="bg-iron p-8">
-                  <h2 className="display text-2xl text-bone">{title}</h2>
+              ].map(([title, detail], index) => (
+                <div key={title} className="group relative bg-iron p-8 transition duration-300 hover:-translate-y-1 hover:bg-coal hover:shadow-lift">
+                  <p className="mono text-[0.62rem] text-red">{String(index + 1).padStart(2, "0")}</p>
+                  <h2 className="display mt-3 text-2xl text-bone transition-colors group-hover:text-red">{title}</h2>
                   <p className="mt-4 text-sm leading-relaxed text-ash">{detail}</p>
+                  <span className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-red transition-transform duration-300 group-hover:scale-x-100" />
                 </div>
               ))}
             </div>
@@ -75,9 +77,9 @@ export default function ManufacturingPage() {
                 ["factory-5.webp", "Bag production and conversion equipment"],
                 ["factory-exterior.webp", "San Kaung manufacturing building exterior"],
               ].map(([file, caption]) => (
-                <figure key={file} className="border border-seam bg-iron p-3">
-                  <div className="relative aspect-[4/3] overflow-hidden bg-[#f2f1eb]"><Image src={`/assets/company/factory/${file}`} alt={caption} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover" /></div>
-                  <figcaption className="mono px-2 pb-1 pt-4 text-[0.62rem] uppercase tracking-[0.12em] text-bone-dim">{caption}</figcaption>
+                <figure key={file} className="group border border-seam bg-iron p-3 transition-colors duration-300 hover:border-red">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[#f2f1eb]"><Image src={`/assets/company/factory/${file}`} alt={caption} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" /></div>
+                  <figcaption className="mono px-2 pb-1 pt-4 text-[0.62rem] uppercase tracking-[0.12em] text-bone-dim transition-colors group-hover:text-bone">{caption}</figcaption>
                 </figure>
               ))}
             </div>
