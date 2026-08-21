@@ -5,5 +5,5 @@ export type SiteVisibility = {
 
 export const SITE_VISIBILITY: SiteVisibility = {
   news: false,
-  activities: false,
+  activities: true,
 };

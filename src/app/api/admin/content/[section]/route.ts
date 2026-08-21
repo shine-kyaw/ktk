@@ -34,6 +34,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ sec
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     await audit("create", config.table, String(data[config.idField]), null, data);
     for (const path of config.revalidate) revalidatePath(path);
+    if (data.status === "published" && data.slug) {
+      const prefix = config.table === "products" ? "/products" : config.table === "news" ? "/blog" : config.table === "jobs" ? "/careers" : "";
+      if (prefix) revalidatePath(`${prefix}/${data.slug}`);
+    }
     return NextResponse.json({ record: data }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to create record." }, { status: 400 });

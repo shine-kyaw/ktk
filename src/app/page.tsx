@@ -59,10 +59,7 @@ export default async function HomePage() {
               The supplier behind the <span className="text-red">supply chain.</span>
             </h2>
             <p className="section-copy mt-7 text-bone-dim">
-              Founded in 2008 and manufacturing since 1991, Kaung Thu Kha grew from Myanmar&apos;s
-              authorized bearing distributor into its leading industrial-packaging maker. We run
-              European STARLINGER lines at the San Kaung factory and supply the machinery,
-              consumables, and service around every bag.
+              {company.oneLiner}
             </p>
           </Reveal>
 

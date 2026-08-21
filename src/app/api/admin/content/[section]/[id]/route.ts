@@ -27,7 +27,7 @@ export async function PUT(
     const { data, error } = await db.from(config.table).update(payload).eq(config.idField, id).select("*").single();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     await audit("update", config.table, id, before, data);
-    revalidate(config.revalidate, config.table === "products" ? String(data.slug || "") : "");
+    revalidate(config.revalidate, config.table, before, data);
     return NextResponse.json({ record: data });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to update record." }, { status: 400 });
@@ -55,13 +55,17 @@ export async function DELETE(
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   await audit("archive", config.table, id, before, data);
-  revalidate(config.revalidate, config.table === "products" ? String(data.slug || "") : "");
+  revalidate(config.revalidate, config.table, before, data);
   return NextResponse.json({ record: data });
 }
 
-function revalidate(paths: string[], productSlug: string) {
+function revalidate(paths: string[], table: string, before: Record<string, unknown>, after: Record<string, unknown>) {
   for (const path of paths) revalidatePath(path);
-  if (productSlug) revalidatePath(`/products/${productSlug}`);
+  const prefix = table === "products" ? "/products" : table === "news" ? "/blog" : table === "jobs" ? "/careers" : "";
+  if (!prefix) return;
+  for (const slug of new Set([before.slug, after.slug].filter(Boolean).map(String))) {
+    revalidatePath(`${prefix}/${slug}`);
+  }
 }
 
 async function audit(action: string, section: string, recordId: string, before: unknown, after: unknown) {

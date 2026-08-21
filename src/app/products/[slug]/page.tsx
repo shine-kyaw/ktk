@@ -106,7 +106,7 @@ export default async function ProductDetailPage({
                   rel="noreferrer"
                   className="press mono border border-seam bg-iron px-6 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-bone hover:border-red"
                 >
-                  Download brochure
+                View technical document
                 </a>
               ) : null}
             </div>
@@ -162,7 +162,7 @@ export default async function ProductDetailPage({
                 <div key={variant.name} className="group border border-seam bg-iron p-7 transition-colors hover:border-red hover:bg-coal">
                   <div className="flex items-start justify-between gap-6">
                     <div>
-                      <p className="mono text-[0.58rem] uppercase tracking-[0.18em] text-red">Thread format 0{index + 1}</p>
+                      <p className="mono text-[0.58rem] uppercase tracking-[0.18em] text-red">Product option {String(index + 1).padStart(2, "0")}</p>
                       <h2 className="display mt-3 text-4xl text-bone">{variant.name}</h2>
                     </div>
                     <span className="flex h-10 w-10 items-center justify-center rounded-full border border-seam text-red transition-colors group-hover:border-red">↗</span>
@@ -259,6 +259,17 @@ export default async function ProductDetailPage({
           </p>
         </Reveal>
       </div>
+
+      {product.resources?.length ? (
+        <div className="container-x mt-16">
+          <Reveal className="border border-seam bg-iron p-7">
+            <p className="eyebrow">Technical documents</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {product.resources.map((resource) => <a key={resource.url} href={resource.url} target="_blank" rel="noreferrer" className="mono border border-seam px-4 py-3 text-[0.62rem] uppercase tracking-[0.13em] text-bone hover:border-red hover:text-red">{resource.label} ↗</a>)}
+            </div>
+          </Reveal>
+        </div>
+      ) : null}
 
       {gallery.length > 0 && (
         <div className="container-x mt-24">
