@@ -20,6 +20,23 @@
     letter-spacing: 0;
     text-transform: none;
     line-height: 1.6;
+    text-wrap: initial;
+  }
+  /* Burmese glyphs carry stacked diacritics and no uppercase form, so the Latin
+     display scale reads oversized and eats the viewport. Pull large headings
+     back to hold the same visual rank in less space. */
+  html[data-locale="my"] .display[data-mm-text] {
+    font-size: 0.82em;
+    line-height: 1.35;
+  }
+  /* The tiny tracked-out uppercase label treatment (down to ~9px) is illegible
+     in Burmese once the tracking and capitals are dropped — give those labels a
+     readable floor instead. */
+  html[data-locale="my"] .eyebrow[data-mm-text],
+  html[data-locale="my"] .mono[data-mm-text],
+  html[data-locale="my"] .data-chip[data-mm-text] {
+    font-size: 0.8rem;
+    line-height: 1.55;
   }
   ::selection {
     @apply bg-red text-white;
