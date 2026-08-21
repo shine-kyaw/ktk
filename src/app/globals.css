@@ -11,6 +11,16 @@
   body {
     @apply bg-coal font-sans text-bone antialiased;
   }
+  html[data-locale="my"] body {
+    font-family: "Noto Sans Myanmar", var(--font-archivo), sans-serif;
+  }
+  html[data-locale="my"] .display,
+  html[data-locale="my"] .mono {
+    font-family: "Noto Sans Myanmar", var(--font-archivo), sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.45;
+  }
   ::selection {
     @apply bg-red text-white;
   }
