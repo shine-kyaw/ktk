@@ -58,7 +58,7 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-function PpComparison({ products }: { products: Product[] }) {
+function PpComparison({ products, banner }: { products: Product[]; banner?: string }) {
   const ordered = ["plain-printed-pp-woven-bag", "laminated-pp-woven-bag", "bopp-laminated-bag"]
     .map((slug) => products.find((product) => product.slug === slug))
     .filter((product): product is Product => Boolean(product));
@@ -75,6 +75,21 @@ function PpComparison({ products }: { products: Product[] }) {
             All bags are engineered on European STARLINGER production lines using <span className="text-bone">100% Virgin SABIC Resin</span> — 0% recycled material, 100% odor-free.
           </p>
         </div>
+        {/* This category renders its own hand-built section rather than going
+            through the generic category loop, so it needs the banner wired in
+            explicitly — otherwise the supplied BOPP banner has nowhere to go. */}
+        {banner ? (
+          <div className="group relative mt-7 aspect-[21/9] overflow-hidden border border-seam sm:aspect-[24/7]">
+            <Image
+              src={banner}
+              alt="KTK PP Woven Bags campaign banner"
+              fill
+              sizes="(min-width: 1280px) 1200px, 100vw"
+              loading="lazy"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+          </div>
+        ) : null}
       </Reveal>
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
         {ordered.map((product, index) => (
@@ -145,7 +160,7 @@ export default async function ProductsPage() {
           </Reveal>
         </section>
 
-        <PpComparison products={products} />
+        <PpComparison products={products} banner={categories.find((category) => category.slug === "pp-woven-bags")?.banner} />
 
         {categories.filter((category) => category.slug !== "pp-woven-bags").map((category, categoryIndex) => {
           const items = products.filter((product) => product.category === category.name);
