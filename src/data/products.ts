@@ -234,10 +234,13 @@ export const PRODUCTS: Product[] = [
       { title: "Specification-led", detail: "Confirm size, construction, and line compatibility with KTK before production." },
     ],
     image: "/assets/cement/ad-star-cement-bag.jpg",
-    // Only genuine AD*STAR woven valve sack artwork belongs here. The Rhino /
-    // Double Rhinos / Crown / Apache images previously in this gallery are
-    // customer-brand paper cement bags, not AD*STAR valve sacks — they stay on
-    // the general `cement-sacks` product where they are accurate.
+    // The AD*STAR range leads. The Rhino / Double Rhinos / Crown / Apache
+    // artwork that used to sit here unlabelled is customer cement branding KTK
+    // produces, NOT the AD*STAR valve sack range — presenting it as the latter
+    // was the inaccuracy. It stays published, captioned for what it actually
+    // is, and keeps KTK's requested Double-Rhinos-before-Rhino ordering.
+    // ("cement-sacks" is a category slug, not a product, so there is no other
+    // page for these to live on.)
     gallery: [
       media(
         "/assets/cement/ad-star-cement-bag.jpg",
@@ -245,6 +248,16 @@ export const PRODUCTS: Product[] = [
         "AD*STAR woven valve sack range",
       ),
       media("/assets/banners/cement.jpg", "AD*STAR Strong cement bag production at KTK", "AD*STAR Strong · production"),
+      media(
+        "/assets/cement/cement-bag-double-rhinos-first.webp",
+        "Customer cement brands produced by KTK, with Double Rhinos shown ahead of Rhino",
+        "Customer brands · Double Rhinos first",
+      ),
+      media(
+        "/assets/cement/cement-bag.jpg",
+        "Customer cement brand range produced by KTK including Rhino, Double Rhinos, Crown, Shan Yoma, Max and Apache",
+        "Customer cement brand range",
+      ),
     ],
     featured: true,
   },
