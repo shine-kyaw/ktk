@@ -45,23 +45,30 @@ export function ProductGallery({ items }: { items: ProductMedia[] }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [isOpen, move]);
 
+  // Product artwork is supplied with generous internal whitespace, so a dense
+  // 3-up grid rendered the actual sack very small. Short galleries get wider
+  // columns and a taller frame; only long galleries stay 3-up.
+  const columns = items.length <= 4 ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3";
+  const frame = items.length <= 2 ? "aspect-[16/11]" : items.length <= 4 ? "aspect-[4/3]" : "aspect-[4/3]";
+  const imageSizes = items.length <= 4 ? "(min-width: 640px) 48vw, 100vw" : "(min-width: 1024px) 30vw, 100vw";
+
   return (
     <>
-      <div className="mt-6 grid gap-px bg-seam sm:grid-cols-2 lg:grid-cols-3">
+      <div className={`mt-6 grid gap-px bg-seam ${columns}`}>
         {items.map((item, index) => (
           <button
             key={`${item.src}-${index}`}
             type="button"
             onClick={() => setOpen(index)}
-            className="group relative aspect-[4/3] overflow-hidden bg-[#f2f1eb] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red"
+            className={`group relative ${frame} overflow-hidden bg-[#f2f1eb] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red`}
             aria-label={`Open image ${index + 1} of ${items.length}: ${item.alt}`}
           >
             <Image
               src={item.src}
               alt={item.alt}
               fill
-              sizes="(min-width: 1024px) 30vw, 100vw"
-              className="object-contain p-4 transition-transform duration-500 group-hover:scale-[1.04]"
+              sizes={imageSizes}
+              className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-[1.06] sm:p-2"
             />
             <span className="mono absolute left-3 top-3 bg-ink/78 px-2.5 py-1 text-[0.52rem] uppercase tracking-[0.14em] text-white">
               {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
@@ -105,8 +112,8 @@ export function ProductGallery({ items }: { items: ProductMedia[] }) {
               }}
             >
               <div className="relative min-h-0 flex-1 bg-white/95">
-                <div className="relative h-[68vh] max-h-[760px] w-full">
-                  <Image src={items[open].src} alt={items[open].alt} fill sizes="95vw" className="object-contain p-3 sm:p-6" priority />
+                <div className="relative h-[74vh] max-h-[860px] w-full">
+                  <Image src={items[open].src} alt={items[open].alt} fill sizes="95vw" className="object-contain p-1 sm:p-3" priority />
                 </div>
               </div>
 

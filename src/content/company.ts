@@ -176,6 +176,34 @@ export const CERTIFICATES = [
     document_url: "/assets/company/documents/tr-certificate-2026.pdf",
     permission_confirmed: true,
   },
+  // Certificates of Analysis supplied in `KTK Thread.docx`. Values are quoted
+  // exactly as inspected; no image preview was supplied with either record.
+  {
+    id: "10000000-0000-4000-8000-000000000005",
+    title: "KTK Thread 200 g — Certificate of Analysis",
+    issuer: "Kaung Thu Kha Group Co., Ltd.",
+    reference_number: null,
+    scope:
+      "10S/3 100% polyester bag-closing thread. White, 3-ply, 260 TPM, Z/S twist direction, strength 77.9 N. 200 g gross weight (175 g thread + 25 g cone) yielding 890 m. Inspected against ISO 9001:2015.",
+    issued_on: "2026-05-05",
+    expires_on: null,
+    image: null,
+    document_url: null,
+    permission_confirmed: true,
+  },
+  {
+    id: "10000000-0000-4000-8000-000000000006",
+    title: "KTK Thread 1 kg — Certificate of Analysis",
+    issuer: "Kaung Thu Kha Group Co., Ltd.",
+    reference_number: null,
+    scope:
+      "10S/3 100% polyester bag-closing thread. White, 3-ply, 260 TPM, Z/S twist direction, strength 77.9 N. 1 kg gross weight (950 g thread + 50 g cone) yielding 4,700 m. Inspected against ISO 9001:2015.",
+    issued_on: "2026-05-05",
+    expires_on: null,
+    image: null,
+    document_url: null,
+    permission_confirmed: true,
+  },
 ] as const;
 
 export const BURMESE_PROFILE = {

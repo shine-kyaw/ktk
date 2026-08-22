@@ -24,3 +24,6 @@ npm-debug.log*
 
 # vercel
 .vercel
+
+# Local drop folder for client-supplied source files (not for publication)
+_incoming/

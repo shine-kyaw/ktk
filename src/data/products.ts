@@ -73,12 +73,21 @@ export type ProductCategoryMeta = {
   slug: string;
   tagline: string;
   blurb: string;
+  /**
+   * Official KTK campaign banner supplied in `banner.zip`. KTK supplied the
+   * artwork but not the placement labels, campaign dates, or approval status
+   * the requirements sheet asked for. File names and artwork content map
+   * one-to-one onto these categories, so they are used as category banners
+   * pending written confirmation.
+   */
+  banner?: string;
 };
 
 export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Cement Sacks",
     slug: "cement-sacks",
+    banner: "/assets/banners/cement.jpg",
     tagline: "AD*STAR-ready packaging",
     blurb:
       "Block-bottom and woven valve sacks for cement and other powdered products, with artwork and structures suited to automated filling lines.",
@@ -86,6 +95,7 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "PP Woven Bags",
     slug: "pp-woven-bags",
+    banner: "/assets/banners/bopp.jpg",
     tagline: "Three performance levels",
     blurb:
       "Plain and printed, laminated, and BOPP laminated packaging made on European STARLINGER lines from 100% Virgin SABIC Resin.",
@@ -93,6 +103,7 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Fillers",
     slug: "fillers",
+    banner: "/assets/banners/filler.jpg",
     tagline: "Color · cost · consistency",
     blurb:
       "Calcium-carbonate filler and color masterbatch for woven sacks, film, extrusion coating, and molding applications.",
@@ -100,6 +111,7 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Thread",
     slug: "thread",
+    banner: "/assets/banners/thread.jpg",
     tagline: "High quality · food grade",
     blurb:
       "High Quality, Food Grade bag-closing thread from KTK and NEWLONG, with KTK available in 200 g and 1 kg sizes and color options for production-line identification.",
@@ -107,6 +119,7 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Machinery",
     slug: "machinery",
+    banner: "/assets/banners/sewing.jpg",
     tagline: "NEWLONG · YAO HAN",
     blurb:
       "Portable, automatic, and conveyor bag-closing equipment from Japan and Taiwan, with parts, maintenance, repair, and service support.",
@@ -114,6 +127,7 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
   {
     name: "Bearings",
     slug: "bearings",
+    banner: "/assets/banners/bearing.jpg",
     tagline: "HCH · TR distribution",
     blurb:
       "HCH and TR bearing products for industrial equipment, supported by KTK’s authorized distribution and sourcing capability in Myanmar.",
@@ -220,14 +234,17 @@ export const PRODUCTS: Product[] = [
       { title: "Specification-led", detail: "Confirm size, construction, and line compatibility with KTK before production." },
     ],
     image: "/assets/cement/ad-star-cement-bag.jpg",
+    // Only genuine AD*STAR woven valve sack artwork belongs here. The Rhino /
+    // Double Rhinos / Crown / Apache images previously in this gallery are
+    // customer-brand paper cement bags, not AD*STAR valve sacks — they stay on
+    // the general `cement-sacks` product where they are accurate.
     gallery: [
       media(
-        "/assets/cement/cement-bag-double-rhinos-first.webp",
-        "Cement bag portfolio with Double Rhinos shown before Rhino",
-        "Double Rhinos first · Rhino follows",
+        "/assets/cement/ad-star-cement-bag.jpg",
+        "AD*STAR woven valve sacks in 20 kg red, yellow, and kraft formats",
+        "AD*STAR woven valve sack range",
       ),
-      media("/assets/cement/cement-bag.jpg", "Rhino and cement bag portfolio artwork", "Rhino and supplied cement range"),
-      media("/assets/cement/ad-star-cement-bag.jpg", "AD*STAR woven valve sack artwork", "AD*STAR woven valve sack"),
+      media("/assets/banners/cement.jpg", "AD*STAR Strong cement bag production at KTK", "AD*STAR Strong · production"),
     ],
     featured: true,
   },
@@ -398,6 +415,13 @@ export const PRODUCTS: Product[] = [
       { label: "Product standard", value: "Food Grade" },
       { label: "Available colors", value: "White · Red · Yellow · Green · Blue · Orange" },
       { label: "Compatibility", value: "NEWLONG · YAO HAN · other closers" },
+      // Quoted from the supplied Certificates of Analysis for KTK Thread
+      // 200 g and 1 kg, both inspected 5 May 2026.
+      { label: "Material / construction", value: "10S/3 · 100% polyester · 3-ply" },
+      { label: "Twist", value: "260 TPM · Z/S direction" },
+      { label: "Strength", value: "77.9 N" },
+      { label: "Roll formats", value: "200 g = 175 g thread + 25 g cone · 890 m / 1 kg = 950 g thread + 50 g cone · 4,700 m" },
+      { label: "Quality records", value: "Certificate of Analysis inspected against ISO 9001:2015" },
     ],
     benefits: [
       { title: "Two practical sizes", detail: "Select the compact 200 g format or the larger 1 kg format for your bag-closing workflow." },
@@ -583,8 +607,11 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/products/bearings/hch/deep-groove.webp",
     gallery: hchGallery,
-    brochureUrl: "https://drive.google.com/file/d/1nfws3cRo-Vkou0fwoKagxRqphWfcYPlB/view?usp=drivesdk",
-    resources: [{ label: "HCH bearing specifications", url: "https://drive.google.com/file/d/1nfws3cRo-Vkou0fwoKagxRqphWfcYPlB/view?usp=drivesdk" }],
+    // Served from our own origin. These were Google Drive links, which prompt a
+    // sign-in for anyone outside the KTK account — effectively broken for public
+    // visitors. The supplied PDFs are now published directly.
+    brochureUrl: "/assets/products/documents/hch-bearing-specifications.pdf",
+    resources: [{ label: "HCH bearing specifications", url: "/assets/products/documents/hch-bearing-specifications.pdf" }],
     featured: true,
   },
   {
@@ -619,11 +646,11 @@ export const PRODUCTS: Product[] = [
       ),
       ...trGallery,
     ],
-    brochureUrl: "https://drive.google.com/file/d/1Bd1Azo0kBMIRpLT9Fx-rWg6tWKCiopFe/view?usp=drivesdk",
+    brochureUrl: "/assets/products/documents/tr-bearing-specifications.pdf",
     resources: [
-      { label: "TR bearing specifications", url: "https://drive.google.com/file/d/1Bd1Azo0kBMIRpLT9Fx-rWg6tWKCiopFe/view?usp=drivesdk" },
-      { label: "TR Ball Bearing Units catalogue", url: "https://drive.google.com/file/d/1jaI-b5UrS2tW2axT1f5auq2UuebrhUII/view?usp=drivesdk" },
-      { label: "TR Spherical Roller Bearing catalogue", url: "https://drive.google.com/file/d/1o1A-rDPuvHJA7kx2NkvKaUibyGYepUU_/view?usp=drivesdk" },
+      { label: "TR bearing specifications", url: "/assets/products/documents/tr-bearing-specifications.pdf" },
+      { label: "TR Ball Bearing Units catalogue", url: "/assets/products/documents/tr-ball-bearing-units-catalogue.pdf" },
+      { label: "TR Spherical Roller Bearing catalogue", url: "/assets/products/documents/tr-spherical-roller-bearing-catalogue.pdf" },
     ],
     featured: true,
   },

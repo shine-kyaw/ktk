@@ -197,7 +197,13 @@ export async function getProductSlugs(): Promise<string[]> {
 export async function getProductCategories() {
   const remote = await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories");
   if (!remote?.length) return CATEGORY_META;
-  return remote;
+  // `banner` is a static supplied asset rather than CMS-managed copy, so CMS
+  // rows won't carry it. Merge it back by slug — a CMS value still wins if one
+  // is ever added — so editing categories can't silently drop the banners.
+  return remote.map((category) => {
+    const fallback = CATEGORY_META.find((meta) => meta.slug === category.slug);
+    return fallback?.banner ? { ...category, banner: category.banner ?? fallback.banner } : category;
+  });
 }
 export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
   const all = await getProducts();
@@ -280,7 +286,15 @@ export async function getManagement(): Promise<ManagementProfile[]> {
 
 export async function getCertificates(): Promise<Certificate[]> {
   const remote = await fetchCollection<Certificate>("certificates");
-  const records: readonly Certificate[] = remote?.length ? remote : CERTIFICATES;
+  let records: readonly Certificate[] = remote?.length ? remote : CERTIFICATES;
+  if (remote?.length) {
+    // Surface newly supplied certificates that an older CMS seed predates, the
+    // same way getProducts() backfills newly supplied documents. Existing CMS
+    // rows always win; only ids the CMS has never seen are appended.
+    const known = new Set(remote.map((record) => record.id));
+    const added = CERTIFICATES.filter((record) => !known.has(record.id));
+    if (added.length) records = [...remote, ...added];
+  }
   return records.filter((record) => record.permission_confirmed);
 }
 

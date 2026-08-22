@@ -161,6 +161,18 @@ export default async function ProductsPage() {
                   <p className="mono max-w-sm text-right text-[0.62rem] uppercase leading-relaxed tracking-[0.12em] text-red">{category.tagline}</p>
                 </div>
                 <p className="mt-5 max-w-2xl text-base leading-relaxed text-bone-dim">{category.blurb}</p>
+                {category.banner ? (
+                  <div className="group relative mt-7 aspect-[21/9] overflow-hidden border border-seam sm:aspect-[24/7]">
+                    <Image
+                      src={category.banner}
+                      alt={`KTK ${category.name} campaign banner`}
+                      fill
+                      sizes="(min-width: 1280px) 1200px, 100vw"
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                ) : null}
               </Reveal>
               <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((product, index) => (
