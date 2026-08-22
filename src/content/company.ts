@@ -102,6 +102,11 @@ export const LEADERSHIP_PORTRAITS = [
   "/assets/company/leadership/leadership-05.webp",
 ] as const;
 
+// Name-to-portrait mapping confirmed by KTK, 22 August 2026.
+// Worth recording because it is not derivable from the supplied archive: the
+// files in `Director's Photos.zip` that carry director names are QR codes, and
+// the portraits themselves are unnamed (1.jpg, 2.jpg, 3.jpg …). Do not "correct"
+// this order against filenames — they do not correspond.
 export const LEADERSHIP_PROFILES = [
   { name: "San Nyein", image: LEADERSHIP_PORTRAITS[0] },
   { name: "Khin Maung Myat", image: LEADERSHIP_PORTRAITS[1] },
