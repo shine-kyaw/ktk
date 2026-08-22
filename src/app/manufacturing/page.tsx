@@ -30,14 +30,16 @@ export default function ManufacturingPage() {
             </p>
             </div>
             <div className="grid grid-cols-2 gap-3">
+              {/* The aerial leads: it is the only supplied image that shows the
+                  scale of the operation in one frame. */}
               <div className="relative col-span-2 min-h-[300px] overflow-hidden border border-seam bg-[#f2f1eb]">
-                <Image src="/assets/company/factory/factory-exterior.webp" alt="San Kaung manufacturing building exterior" fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
+                <Image src="/assets/company/factory/site-aerial-front.jpg" alt="Aerial view of the Kaung Thu Kha Group plant in Yangon" fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
               </div>
               <div className="relative min-h-[190px] overflow-hidden border border-seam bg-[#f2f1eb]">
-                <Image src="/assets/company/factory/factory-1.webp" alt="Circular weaving equipment in the supplied KTK factory archive" fill sizes="30vw" className="object-cover" />
+                <Image src="/assets/company/factory/factory-1.webp" alt="Starlinger RX 6.1 circular weaving looms at the KTK plant" fill sizes="30vw" className="object-cover" />
               </div>
               <div className="relative min-h-[190px] overflow-hidden border border-seam bg-[#f2f1eb]">
-                <Image src="/assets/company/factory/factory-5.webp" alt="Bag production equipment in the supplied KTK factory archive" fill sizes="30vw" className="object-cover" />
+                <Image src="/assets/company/factory/warehouse-racking.jpg" alt="Racked pallet warehouse at the KTK plant" fill sizes="30vw" className="object-cover" />
               </div>
             </div>
           </Reveal>
@@ -69,13 +71,25 @@ export default function ManufacturingPage() {
             <h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Supplied production archive</h2>
             <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ash">These images are presented with descriptive captions only. KTK asked that unverified process sequencing and technical factory claims remain unpublished.</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {/* Captions describe only what is visible in each supplied photograph.
+                  Equipment is named where the machine itself carries the marking
+                  (Starlinger RX 6.1 looms, twinTAPE winders). No production
+                  sequence or capacity is inferred — KTK marked unverified factory
+                  process claims as "Don't publish". */}
               {[
-                ["factory-1.webp", "Circular weaving equipment"],
-                ["factory-2.webp", "Circular weaving line"],
-                ["factory-3.webp", "Production-floor weaving equipment"],
-                ["factory-4.webp", "Packing and materials handling area"],
-                ["factory-5.webp", "Bag production and conversion equipment"],
-                ["factory-exterior.webp", "San Kaung manufacturing building exterior"],
+                ["site-aerial-front.jpg", "Aerial view of the KTK plant, Yangon"],
+                ["site-aerial-full.jpg", "Full site from the air"],
+                ["hall-overview.jpg", "Main hall with overhead travelling crane"],
+                ["warehouse-racking.jpg", "Racked pallet warehouse"],
+                ["factory-1.webp", "Starlinger RX 6.1 circular weaving looms"],
+                ["factory-2.webp", "Loom hall and yarn creels"],
+                ["tape-winder-line.jpg", "twinTAPE winding line"],
+                ["factory-3.webp", "Woven fabric roll store"],
+                ["factory-5.webp", "Starlinger bag conversion line"],
+                ["printed-bag-conversion.jpg", "Printed bag cutting and conversion"],
+                ["factory-4.webp", "Bag finishing and bundling"],
+                ["site-aerial-top.jpg", "Plant footprint from directly above"],
+                ["factory-exterior.webp", "Head office and plant entrance"],
               ].map(([file, caption]) => (
                 <figure key={file} className="group border border-seam bg-iron p-3 transition-colors duration-300 hover:border-red">
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#f2f1eb]"><Image src={`/assets/company/factory/${file}`} alt={caption} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" /></div>
