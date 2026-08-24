@@ -262,7 +262,7 @@ export function AssembledBagHero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.65, delay: 0.16 }}
                 >
-                  Woven packaging · Myanmar · Since 1991
+                  Woven packaging · Myanmar · Since 2012
                 </motion.p>
                 <motion.h1
                   className="display mt-5 text-[clamp(3rem,7.2vw,7.5rem)] leading-[0.86]"

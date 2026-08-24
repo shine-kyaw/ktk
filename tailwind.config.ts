@@ -36,7 +36,7 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
-        display: ['"Archivo Expanded"', "var(--font-archivo)", "system-ui", "sans-serif"],
+        display: ["var(--font-archivo)", "system-ui", "sans-serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
       },
       letterSpacing: {

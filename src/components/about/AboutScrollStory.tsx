@@ -14,8 +14,8 @@ const STEPS = [
   {
     kicker: "02 · Manufacturing",
     title: "Production built for industry",
-    body: "San Kaung operations support woven packaging production with experienced teams, production equipment and specification-led quality control.",
-    image: "/assets/company/factory/factory-1.webp",
+    body: "We support woven packaging production with experienced teams, production equipment and specification-led quality control.",
+    image: "/assets/company/factory/factory-3.webp",
   },
   {
     kicker: "03 · Packaging solutions",
@@ -24,9 +24,9 @@ const STEPS = [
     image: "/assets/company/factory/factory-4.webp",
   },
   {
-    kicker: "04 · Engineering",
-    title: "Technical support beyond supply",
-    body: "The wider group connects packaging experience with electrical engineering, machinery, installation and after-sales support.",
+    kicker: "04 · Service support",
+    title: "Support beyond supply",
+    body: "The wider group connects packaging experience with machinery, installation, maintenance and after-sales support.",
     image: "/assets/company/factory/factory-5.webp",
   },
 ];

@@ -15,7 +15,7 @@ const serviceImages = [
 ];
 
 export default async function ServicesPage() {
-  const services = await getServices();
+  const services = (await getServices()).filter((service) => service.name !== "Spare Parts & Consumables");
 
   return (
     <div className="container-x pb-28 pt-40">

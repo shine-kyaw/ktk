@@ -451,6 +451,16 @@ export const PRODUCTS: Product[] = [
     colorOptions: ktkThreadColors,
     resources: [
       {
+        label: "KTK Thread 200 g — Certificate of Analysis details",
+        url: "/about#10000000-0000-4000-8000-000000000005",
+        detail: "Supplied 10S/3 polyester thread analysis for the 200 g format, inspected 5 May 2026 against ISO 9001:2015.",
+      },
+      {
+        label: "KTK Thread 1 kg — Certificate of Analysis details",
+        url: "/about#10000000-0000-4000-8000-000000000006",
+        detail: "Supplied 10S/3 polyester thread analysis for the 1 kg format, inspected 5 May 2026 against ISO 9001:2015.",
+      },
+      {
         label: "Sewing Thread Specification",
         url: "/assets/products/thread/certificates/sewing-thread-specification.pdf",
         preview: "/assets/products/thread/certificates/sewing-thread-specification.webp",

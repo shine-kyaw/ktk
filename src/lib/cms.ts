@@ -32,6 +32,7 @@ import {
   PROCESS_STEPS,
   WHY_POINTS,
   CERTIFICATES,
+  LEADERSHIP_PROFILES,
 } from "@/content/company";
 import { SITE_VISIBILITY, type SiteVisibility } from "@/content/site";
 
@@ -79,7 +80,13 @@ async function fetchSingleton<T>(key: string): Promise<T | null> {
 
 // ── Company / stats ─────────────────────────────────────────────────────────
 export async function getCompany() {
-  return (await fetchSingleton<typeof COMPANY>("company")) ?? COMPANY;
+  const remote = await fetchSingleton<typeof COMPANY>("company");
+  if (!remote) return COMPANY;
+  return {
+    ...remote,
+    oneLiner: COMPANY.oneLiner,
+    foundedManufacturing: COMPANY.foundedManufacturing,
+  };
 }
 export async function getStats() {
   return (await fetchSingleton<typeof STATS>("stats")) ?? STATS;
@@ -106,7 +113,10 @@ export async function getProcessSteps() {
   return (await fetchSingleton<typeof PROCESS_STEPS>("process_steps")) ?? PROCESS_STEPS;
 }
 export async function getWhyPoints() {
-  return (await fetchSingleton<typeof WHY_POINTS>("why_points")) ?? WHY_POINTS;
+  const remote = await fetchSingleton<typeof WHY_POINTS>("why_points");
+  if (!remote) return WHY_POINTS;
+  const approved = new Map(WHY_POINTS.map((point) => [point.title, point]));
+  return remote.map((point) => approved.get(point.title) ?? point);
 }
 export async function getSiteVisibility(): Promise<SiteVisibility> {
   return (await fetchSingleton<SiteVisibility>("site_visibility")) ?? SITE_VISIBILITY;
@@ -173,11 +183,17 @@ export async function getProducts(): Promise<Product[]> {
   return remote.map((row) => {
     const product = fromProductRow(row);
     const supplied = PRODUCTS.find((item) => item.slug === product.slug);
-    // Keep newly supplied public documents available when an older CMS seed has
-    // an empty resources array. Editors can still replace it with any non-empty
-    // CMS resource list.
-    if (!product.resources?.length && supplied?.resources?.length) {
-      product.resources = supplied.resources;
+    // Keep newly supplied public documents available when an older CMS seed
+    // predates them. Preserve CMS resources and append only missing supplied
+    // URLs, so editors can add records without silently hiding KTK's latest
+    // approved certificates.
+    if (supplied?.resources?.length) {
+      const remoteResources = product.resources ?? [];
+      const knownUrls = new Set(remoteResources.map((resource) => resource.url));
+      product.resources = [
+        ...remoteResources,
+        ...supplied.resources.filter((resource) => !knownUrls.has(resource.url)),
+      ];
     }
     return product;
   });
@@ -255,8 +271,24 @@ export async function getNewsSlugs(): Promise<string[]> {
 export async function getActivities(): Promise<Activity[]> {
   type ActivityRow = Omit<Activity, "videoUrl" | "videoPoster" | "externalVideoUrl" | "sourceUrl"> & { status?: string; video_url?: string | null; video_poster?: string | null; external_video_url?: string | null; source_url?: string | null };
   const remote = await fetchCollection<ActivityRow>("activities");
-  if (remote?.length) return remote.filter((activity) => activity.status === "published").map((activity) => ({ ...activity, videoUrl: activity.video_url ?? null, videoPoster: activity.video_poster ?? null, externalVideoUrl: activity.external_video_url ?? null, sourceUrl: activity.source_url ?? null }));
-  return ACTIVITIES;
+  if (!remote?.length) return ACTIVITIES;
+
+  const removedSlugs = new Set(["phyu-phyu-htwe-hch-commercial"]);
+  const approvedSlugs = new Set(ACTIVITIES.map((activity) => activity.slug));
+  const remoteActivities = remote
+    .filter((activity) => activity.status === "published" && !removedSlugs.has(activity.slug))
+    .map((activity) => ({
+      ...activity,
+      videoUrl: activity.video_url ?? null,
+      videoPoster: activity.video_poster ?? null,
+      externalVideoUrl: activity.external_video_url ?? null,
+      sourceUrl: activity.source_url ?? null,
+    }));
+
+  return [
+    ...ACTIVITIES,
+    ...remoteActivities.filter((activity) => !approvedSlugs.has(activity.slug)),
+  ];
 }
 
 export type ManagementProfile = {
@@ -281,7 +313,26 @@ export type Certificate = {
 };
 
 export async function getManagement(): Promise<ManagementProfile[]> {
-  return (await fetchCollection<ManagementProfile>("management")) ?? [];
+  const remote = await fetchCollection<ManagementProfile>("management");
+  if (!remote?.length) return [];
+
+  const correctedPortraits = new Map(
+    LEADERSHIP_PROFILES.map((profile) => [profile.name.toLowerCase(), profile.image]),
+  );
+  const approvedOrder = LEADERSHIP_PROFILES.map((profile) => profile.name.toLowerCase());
+
+  return remote
+    .map((person) => ({
+      ...person,
+      title: "Director",
+      image: correctedPortraits.get(person.name.toLowerCase()) ?? person.image,
+    }))
+    .sort((left, right) => {
+      const leftIndex = approvedOrder.indexOf(left.name.toLowerCase());
+      const rightIndex = approvedOrder.indexOf(right.name.toLowerCase());
+      return (leftIndex < 0 ? approvedOrder.length : leftIndex) -
+        (rightIndex < 0 ? approvedOrder.length : rightIndex);
+    });
 }
 
 export async function getCertificates(): Promise<Certificate[]> {

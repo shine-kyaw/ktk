@@ -30,13 +30,6 @@ export const SERVICES: Service[] = [
     points: ["Authorized distribution", "Installation & training", "After-sales service"],
   },
   {
-    slug: "spare-parts-consumables",
-    name: "Spare Parts & Consumables",
-    summary:
-      "Genuine machine parts, bag-closing thread, needles, and HCH / TR bearings, stocked locally for rapid replacement.",
-    points: ["Genuine parts stock", "Thread & needles", "HCH / TR bearings"],
-  },
-  {
     slug: "technical-consulting",
     name: "Technical Consulting",
     summary:

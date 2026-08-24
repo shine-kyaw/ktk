@@ -19,7 +19,7 @@
     font-family: "Noto Sans Myanmar", var(--font-archivo), sans-serif;
     letter-spacing: 0;
     text-transform: none;
-    line-height: 1.6;
+    line-height: 1.75;
     text-wrap: initial;
   }
   /* Burmese glyphs carry stacked diacritics and no uppercase form, so the Latin
@@ -30,7 +30,7 @@
      not the element's own Tailwind step, which collapses every responsive
      heading (text-4xl … text-7xl) to one tiny inherited size. */
   html[data-locale="my"] .display[data-mm-text] {
-    line-height: 1.35;
+    line-height: 1.55;
   }
   /* The tiny tracked-out uppercase label treatment (down to ~9px) is illegible
      in Burmese once the tracking and capitals are dropped — give those labels a
@@ -58,16 +58,16 @@
   }
 
   .eyebrow {
-    @apply mono text-[0.68rem] uppercase tracking-[0.22em] text-red;
+    @apply mono text-[0.76rem] uppercase tracking-[0.16em] text-red;
   }
 
   .data-chip {
-    @apply mono inline-flex border border-seam bg-coal px-3 py-2 text-[0.57rem] uppercase tracking-[0.12em] text-bone-dim;
+    @apply mono inline-flex border border-seam bg-coal px-3 py-2 text-[0.65rem] uppercase tracking-[0.1em] text-bone-dim;
   }
 
   /* Display headline treatment — wide, engineered, industrial mega-type */
   .display {
-    @apply font-display font-extrabold uppercase leading-[0.96] tracking-mega;
+    @apply font-display font-semibold leading-[1.04] tracking-[-0.01em];
     text-wrap: balance;
   }
 

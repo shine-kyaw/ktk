@@ -25,6 +25,16 @@ export type Activity = {
   sourceUrl?: string | null;
 };
 
+const suppliedPhoto = (number: number, alt: string) => ({
+  src: `/assets/company/activities/repair-2026/${String(number).padStart(2, "0")}.webp`,
+  alt,
+});
+
+const suppliedGallery = (start: number, end: number, label: string) =>
+  Array.from({ length: end - start + 1 }, (_, index) =>
+    suppliedPhoto(start + index, `${label} ${index + 1}`),
+  );
+
 export const ACTIVITIES: Activity[] = [
   {
     slug: "ktk-team-outing",
@@ -60,10 +70,7 @@ export const ACTIVITIES: Activity[] = [
     gallery: [
       { src: "/assets/company/activities/archive/02.webp", alt: "KTK company programme" },
       { src: "/assets/company/activities/archive/03.webp", alt: "KTK team dinner group photograph" },
-      { src: "/assets/company/activities/archive/04.webp", alt: "KTK group team activity" },
-      { src: "/assets/company/activities/archive/05.webp", alt: "KTK group team activity photograph" },
     ],
-    sourceUrl: "https://drive.google.com/file/d/1j7bDnG2HyvLH1vqX6UX_LP81R7-Q7TSE/view?usp=sharing",
   },
   {
     slug: "company-outing-archive",
@@ -74,12 +81,9 @@ export const ACTIVITIES: Activity[] = [
     image: "/assets/company/activities/archive/06.webp",
     gallery: [
       { src: "/assets/company/activities/archive/07.webp", alt: "KTK staff group at a company outing" },
-      { src: "/assets/company/activities/archive/08.webp", alt: "KTK staff group photograph" },
       { src: "/assets/company/activities/archive/09.webp", alt: "KTK staff at an outdoor destination" },
-      { src: "/assets/company/activities/archive/10.webp", alt: "KTK staff outdoor group photograph" },
       { src: "/assets/company/activities/archive/11.webp", alt: "KTK staff outing group" },
     ],
-    sourceUrl: "https://drive.google.com/file/d/1j7bDnG2HyvLH1vqX6UX_LP81R7-Q7TSE/view?usp=sharing",
   },
   {
     slug: "staff-health-programme-2022",
@@ -94,7 +98,6 @@ export const ACTIVITIES: Activity[] = [
       { src: "/assets/company/activities/archive/15.webp", alt: "KTK staff receiving vaccination support" },
       { src: "/assets/company/activities/archive/16.webp", alt: "KTK staff health programme" },
     ],
-    sourceUrl: "https://drive.google.com/file/d/1j7bDnG2HyvLH1vqX6UX_LP81R7-Q7TSE/view?usp=sharing",
   },
   {
     slug: "team-dinner-2019",
@@ -105,17 +108,47 @@ export const ACTIVITIES: Activity[] = [
     image: "/assets/company/activities/archive/17.webp",
     gallery: [
       { src: "/assets/company/activities/archive/18.webp", alt: "KTK team dinner group" },
-      { src: "/assets/company/activities/archive/19.webp", alt: "KTK team celebration" },
       { src: "/assets/company/activities/archive/20.webp", alt: "KTK team dinner gathering" },
-      { src: "/assets/company/activities/archive/21.webp", alt: "KTK team at a company dinner" },
       { src: "/assets/company/activities/archive/22.webp", alt: "KTK staff dinner photograph" },
-      { src: "/assets/company/activities/archive/23.webp", alt: "KTK staff celebration" },
       { src: "/assets/company/activities/archive/24.webp", alt: "KTK team dinner archive" },
-      { src: "/assets/company/activities/archive/25.webp", alt: "KTK team gathering" },
     ],
     videoUrl: "/assets/company/video/team-dinner-2019.mp4",
     videoPoster: "/assets/company/video/team-dinner-2019-poster.jpg",
-    sourceUrl: "https://drive.google.com/file/d/1j7bDnG2HyvLH1vqX6UX_LP81R7-Q7TSE/view?usp=sharing",
+  },
+  {
+    slug: "latest-company-outings",
+    category: "Events",
+    title: "Company Outings & Team Activities",
+    date: "New supplied archive",
+    detail: "The latest company-outing and team-activity photographs supplied by KTK.",
+    image: suppliedPhoto(1, "KTK company outing and team activity").src,
+    gallery: suppliedGallery(2, 10, "KTK company outing photograph"),
+  },
+  {
+    slug: "golf-community-programme",
+    category: "CSR",
+    title: "Golf & Community Programme",
+    date: "New supplied archive",
+    detail: "A newly supplied photograph from KTK's golf and community programme.",
+    image: suppliedPhoto(11, "KTK golf and community programme").src,
+  },
+  {
+    slug: "team-programmes-and-gatherings",
+    category: "Events",
+    title: "Team Programmes & Gatherings",
+    date: "New supplied archive",
+    detail: "Recent team programmes, staff gatherings, and company celebrations supplied by KTK.",
+    image: suppliedPhoto(12, "KTK team programme and gathering").src,
+    gallery: suppliedGallery(13, 21, "KTK team programme photograph"),
+  },
+  {
+    slug: "staff-meals-and-company-highlights",
+    category: "Events",
+    title: "Staff Meals & Company Highlights",
+    date: "New supplied archive",
+    detail: "New photographs of staff meals, company gatherings, and recent KTK highlights.",
+    image: suppliedPhoto(22, "KTK staff meal and company highlight").src,
+    gallery: suppliedGallery(23, 31, "KTK staff and company photograph"),
   },
   {
     slug: "staff-appreciation-event",
@@ -174,13 +207,20 @@ export const ACTIVITIES: Activity[] = [
     externalVideoUrl: "https://drive.google.com/file/d/18710yOz2_tkQAh7Nl7lyjLgPG5DfdW1E/preview",
     sourceUrl: "https://drive.google.com/file/d/18710yOz2_tkQAh7Nl7lyjLgPG5DfdW1E/view?usp=drivesdk",
   },
-  {
-    slug: "phyu-phyu-htwe-hch-commercial",
+  ...[
+    "1lkSn8tUE55CHqxl4ylYvttCjnouyfiMJ",
+    "1UhHkRGT1Bs68shihoFmpER8i3Q8AFziV",
+    "1zVWVevtfbzNnCMYAyMToK1l6_JUZqmuX",
+    "1AERnhHt52TVS7F1RL9-9vVOW7J7j-6yX",
+    "1j7jvk0RZAieLKPED5sGumWy3AMh2qYuT",
+    "1W_MJFAoI1sRF2U1eqiwRwXKtqZsxK_V2",
+  ].map((id, index): Activity => ({
+    slug: `ktk-ai-commercial-${String(index + 1).padStart(2, "0")}`,
     category: "Commercial",
-    title: "Phyu Phyu Htwe — HCH Commercial",
-    date: "Company archive",
-    detail: "The supplied HCH commercial production retained in Google Drive for viewing at its original quality.",
-    externalVideoUrl: "https://drive.google.com/file/d/1QVuS6jqrAaMR5ThUdefp7NDkMLLLKIRs/preview",
-    sourceUrl: "https://drive.google.com/file/d/1QVuS6jqrAaMR5ThUdefp7NDkMLLLKIRs/view?usp=drivesdk",
-  },
+    title: `KTK AI Commercial ${String(index + 1).padStart(2, "0")}`,
+    date: "New supplied archive",
+    detail: "A newly supplied KTK AI commercial, streamed from the original Google Drive file.",
+    externalVideoUrl: `https://drive.google.com/file/d/${id}/preview`,
+    sourceUrl: `https://drive.google.com/file/d/${id}/view`,
+  })),
 ];
