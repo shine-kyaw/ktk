@@ -70,6 +70,9 @@ export const ACTIVITIES: Activity[] = [
     gallery: [
       { src: "/assets/company/activities/archive/02.webp", alt: "KTK company programme" },
       { src: "/assets/company/activities/archive/03.webp", alt: "KTK team dinner group photograph" },
+      // Both dance photographs were dropped when the duplicates were cleared;
+      // KTK asked for one of them back (revision sheet 2, item 6 — "1 (22).jpg").
+      { src: "/assets/company/activities/archive/05.webp", alt: "Traditional dance performance at a KTK team programme" },
     ],
   },
   {
@@ -107,7 +110,7 @@ export const ACTIVITIES: Activity[] = [
     detail: "A supplied team dinner archive with group photographs and a short celebration video.",
     image: "/assets/company/activities/archive/17.webp",
     gallery: [
-      { src: "/assets/company/activities/archive/18.webp", alt: "KTK team dinner group" },
+      // 18.webp removed at KTK's request (revision sheet 2, item 7).
       { src: "/assets/company/activities/archive/20.webp", alt: "KTK team dinner gathering" },
       { src: "/assets/company/activities/archive/22.webp", alt: "KTK staff dinner photograph" },
       { src: "/assets/company/activities/archive/24.webp", alt: "KTK team dinner archive" },

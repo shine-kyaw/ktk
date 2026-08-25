@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
@@ -11,20 +12,20 @@ export const metadata: Metadata = {
   alternates: { canonical: "/products" },
 };
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, large = false }: { product: Product; large?: boolean }) {
   return (
     <Link
       href={`/products/${product.slug}`}
       className="group flex h-full flex-col border border-seam bg-coal p-4 transition-colors hover:border-red hover:bg-iron"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-iron">
+      <div className={`relative overflow-hidden bg-iron ${large ? "aspect-[5/4]" : "aspect-[4/3]"}`}>
         {product.image ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
-            sizes="(min-width: 1280px) 28vw, (min-width: 640px) 45vw, 100vw"
-            className="object-contain p-3 transition-transform duration-700 group-hover:scale-105"
+            sizes={large ? "(min-width: 1024px) 46vw, 100vw" : "(min-width: 1280px) 28vw, (min-width: 640px) 45vw, 100vw"}
+            className={`object-contain transition-transform duration-700 group-hover:scale-105 ${large ? "p-5" : "p-3"}`}
           />
         ) : (
           <div className="weave blueprint flex h-full flex-col items-center justify-center px-8 text-center">
@@ -142,9 +143,16 @@ export default async function ProductsPage() {
         </nav>
 
         <section className="mt-16 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <Reveal className="relative min-h-[360px] overflow-hidden border border-seam bg-[#f2f1eb]">
-            <Image src="/assets/cement/cement-bag.jpg" alt="Cement bag portfolio artwork from KTK asset set" fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent p-7 pt-24">
+          {/* KTK asked for this photograph to be fixed (revision sheet 2, item
+              11): `object-cover` cropped the artwork row and the full-bleed
+              caption sat on top of the bags. Contain the artwork on its own
+              light ground and put the caption underneath it instead, so every
+              bag stays visible. */}
+          <Reveal className="flex min-h-[360px] flex-col overflow-hidden border border-seam bg-[#f2f1eb]">
+            <div className="relative flex-1 min-h-[240px]">
+              <Image src="/assets/cement/cement-bag.jpg" alt="Cement bag portfolio artwork from KTK asset set" fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-contain p-4" />
+            </div>
+            <div className="border-t border-seam bg-ink/90 p-7">
               <p className="eyebrow text-white">Supplied artwork / cement</p>
               <h2 className="display mt-3 max-w-xl text-3xl text-white sm:text-4xl">Real packaging references, ready for a better specification conversation.</h2>
             </div>
@@ -160,13 +168,16 @@ export default async function ProductsPage() {
           </Reveal>
         </section>
 
-        <PpComparison products={products} banner={categories.find((category) => category.slug === "pp-woven-bags")?.banner} />
-
+        {/* KTK asked for Cement Sacks to sit above the Industrial Packaging
+            Range (revision sheet 2, item 8), so the PP comparison block is
+            rendered inline straight after the cement-sacks section rather than
+            ahead of the whole category loop. */}
         {categories.filter((category) => category.slug !== "pp-woven-bags").map((category, categoryIndex) => {
           const items = products.filter((product) => product.category === category.name);
           if (!items.length) return null;
           return (
-            <section key={category.slug} id={category.slug} className="mt-28 scroll-mt-24">
+            <Fragment key={category.slug}>
+            <section id={category.slug} className="mt-28 scroll-mt-24">
               <Reveal>
                 <div className="flex flex-wrap items-end justify-between gap-5 border-b border-seam pb-5">
                   <div>
@@ -176,8 +187,11 @@ export default async function ProductsPage() {
                   <p className="mono max-w-sm text-right text-[0.62rem] uppercase leading-relaxed tracking-[0.12em] text-red">{category.tagline}</p>
                 </div>
                 <p className="mt-5 max-w-2xl text-base leading-relaxed text-bone-dim">{category.blurb}</p>
+                {category.banner && category.bannerCaption ? (
+                  <p className="eyebrow mt-7">{category.bannerCaption}</p>
+                ) : null}
                 {category.banner ? (
-                  <div className="group relative mt-7 aspect-[21/9] overflow-hidden border border-seam sm:aspect-[24/7]">
+                  <div className={`group relative aspect-[21/9] overflow-hidden border border-seam sm:aspect-[24/7] ${category.bannerCaption ? "mt-3" : "mt-7"}`}>
                     <Image
                       src={category.banner}
                       alt={`KTK ${category.name} campaign banner`}
@@ -189,12 +203,21 @@ export default async function ProductsPage() {
                   </div>
                 ) : null}
               </Reveal>
-              <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {/* A category holding a single product used to leave its card in a
+                  narrow third of the row, which made the AD*STAR cement-sack
+                  thumbnail too small to read (revision sheet 2, item 9). Narrow
+                  the grid when there is little to lay out so each card, and so
+                  each product photograph, is rendered larger. */}
+              <div className={`mt-7 grid gap-4 ${items.length === 1 ? "sm:grid-cols-1 lg:grid-cols-2" : items.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
                 {items.map((product, index) => (
-                  <Reveal key={product.slug} delay={index * 0.05}><ProductCard product={product} /></Reveal>
+                  <Reveal key={product.slug} delay={index * 0.05}><ProductCard product={product} large={items.length === 1} /></Reveal>
                 ))}
               </div>
             </section>
+            {category.slug === "cement-sacks" ? (
+              <PpComparison products={products} banner={categories.find((c) => c.slug === "pp-woven-bags")?.banner} />
+            ) : null}
+            </Fragment>
           );
         })}
       </div>

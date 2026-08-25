@@ -81,6 +81,9 @@ export type ProductCategoryMeta = {
    * pending written confirmation.
    */
   banner?: string;
+  /** Optional line printed directly above the banner, when KTK wants the
+   *  banner's subject named in text as well as in the artwork. */
+  bannerCaption?: string;
 };
 
 export const CATEGORY_META: ProductCategoryMeta[] = [
@@ -112,9 +115,11 @@ export const CATEGORY_META: ProductCategoryMeta[] = [
     name: "Thread",
     slug: "thread",
     banner: "/assets/banners/thread.jpg",
+    // Caption printed above the campaign banner, at KTK's request (August 2026).
+    bannerCaption: "KTK Bag Closing Sewing Thread",
     tagline: "High quality · food grade",
     blurb:
-      "High Quality, Food Grade bag-closing thread from KTK and NEWLONG, with KTK available in 200 g and 1 kg sizes and color options for production-line identification.",
+      "High Quality, Food Grade bag-closing thread from KTK and NEWLONG, listed as two separate products so the brand is unambiguous. KTK thread is available in 200 g and 1 kg sizes with colour options for production-line identification.",
   },
   {
     name: "Machinery",
@@ -139,14 +144,16 @@ const media = (src: string, alt: string, caption?: string): ProductMedia => ({ s
 const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], label: string) =>
   files.map((file) => media(`/assets/products/pp-woven/${folder}/${file}.webp`, `${label} product photograph`));
 
+// KTK confirmed (August 2026) that the unbranded cone photographs previously
+// shown here are NEWLONG thread, not KTK thread — a KTK cone carries the KTK
+// logo. They have been removed from this gallery and remain on the NEWLONG
+// product below, where they belong. KTK is supplying replacement photographs of
+// its own logo-printed cones; add them to this array when they arrive.
 const threadGallery = [
   media(
     "/assets/products/thread/ktk-multicolor.webp",
-    "KTK High Quality Thread campaign showing bag-closing machinery and multiple KTK thread spools",
+    "KTK Bag Closing Sewing Thread campaign showing bag-closing machinery and multiple KTK thread spools",
     "KTK Strong Thread, Stronger Performance campaign",
-  ),
-  ...["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"].map((file, index) =>
-    media(`/assets/products/thread/${file}.webp`, `Individual bag-closing thread spool in ${["orange", "yellow", "red", "green", "pink", "blue"][index]}`, ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index]),
   ),
 ];
 
@@ -248,11 +255,10 @@ export const PRODUCTS: Product[] = [
         "AD*STAR woven valve sack range",
       ),
       media("/assets/banners/cement.jpg", "AD*STAR Strong cement bag production at KTK", "AD*STAR Strong · production"),
-      media(
-        "/assets/cement/cement-bag-double-rhinos-first.webp",
-        "Customer cement brands produced by KTK, with Double Rhinos shown ahead of Rhino",
-        "Customer brands · Double Rhinos first",
-      ),
+      // The Double-Rhinos-first variant was removed at KTK's request (revision
+      // sheet 2, item 10). KTK also asked for the remaining brand-range photo to
+      // be replaced, and for a separate photograph of each individual cement
+      // bag; neither set has been supplied yet, so this photo stands for now.
       media(
         "/assets/cement/cement-bag.jpg",
         "Customer cement brand range produced by KTK including Rhino, Double Rhinos, Crown, Shan Yoma, Max and Apache",
@@ -460,18 +466,12 @@ export const PRODUCTS: Product[] = [
         url: "/about#10000000-0000-4000-8000-000000000006",
         detail: "Supplied 10S/3 polyester thread analysis for the 1 kg format, inspected 5 May 2026 against ISO 9001:2015.",
       },
-      {
-        label: "Sewing Thread Specification",
-        url: "/assets/products/thread/certificates/sewing-thread-specification.pdf",
-        preview: "/assets/products/thread/certificates/sewing-thread-specification.webp",
-        detail: "Supplied polyester thread construction, strength, elongation, twist, roll length, weight, and color record.",
-      },
-      {
-        label: "NEWLONG Authorization Record",
-        url: "/assets/company/certificates/newlong-authorization.webp",
-        preview: "/assets/company/certificates/newlong-authorization.webp",
-        detail: "Supplied NEWLONG Industrial Co., Ltd. zone-agent authorization record for KTK Co., Ltd.",
-      },
+      // The "Sewing Thread Specification" sheet and the NEWLONG authorization
+      // record were both moved off this product in August 2026: the spec sheet's
+      // values (20/1x6, 7 +/- 1 kg, 6.90 TPI, 1,040 / 5,200 / 10,400 m, pink in
+      // the colour list) are NEWLONG's, not KTK's, and the authorization names
+      // NEWLONG. KTK thread is documented by its own two Certificates of
+      // Analysis above (10S/3, 260 TPM, 77.9 N, 890 / 4,700 m).
     ],
     featured: true,
   },

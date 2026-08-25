@@ -213,12 +213,18 @@ export async function getProductSlugs(): Promise<string[]> {
 export async function getProductCategories() {
   const remote = await fetchCollection<(typeof CATEGORY_META)[number]>("product_categories");
   if (!remote?.length) return CATEGORY_META;
-  // `banner` is a static supplied asset rather than CMS-managed copy, so CMS
-  // rows won't carry it. Merge it back by slug — a CMS value still wins if one
-  // is ever added — so editing categories can't silently drop the banners.
+  // `banner` and `bannerCaption` are static supplied assets rather than
+  // CMS-managed copy, so CMS rows won't carry them. Merge them back by slug — a
+  // CMS value still wins if one is ever added — so editing categories can't
+  // silently drop the banners or their captions.
   return remote.map((category) => {
     const fallback = CATEGORY_META.find((meta) => meta.slug === category.slug);
-    return fallback?.banner ? { ...category, banner: category.banner ?? fallback.banner } : category;
+    if (!fallback) return category;
+    return {
+      ...category,
+      banner: category.banner ?? fallback.banner,
+      bannerCaption: category.bannerCaption ?? fallback.bannerCaption,
+    };
   });
 }
 export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {

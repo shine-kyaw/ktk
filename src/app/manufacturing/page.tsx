@@ -85,7 +85,6 @@ export default function ManufacturingPage() {
                 ["factory-2.webp", "Loom hall and yarn creels"],
                 ["tape-winder-line.jpg", "twinTAPE winding line"],
                 ["factory-3.webp", "Woven fabric roll store"],
-                ["factory-5.webp", "Starlinger bag conversion line"],
                 ["printed-bag-conversion.jpg", "Printed bag cutting and conversion"],
                 ["factory-4.webp", "Bag finishing and bundling"],
                 ["site-aerial-top.jpg", "Plant footprint from directly above"],

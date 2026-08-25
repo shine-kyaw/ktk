@@ -65,11 +65,8 @@ export const COMPANY_PROFILE = {
       focus: "Manufacturing of industrial products and packaging solutions.",
       website: null,
     },
-    {
-      name: "San Kaung Bag Manufacturing Co., Ltd.",
-      focus: "Manufacturer of PP woven bags, laminated bags, BOPP bags, cement bags, and other industrial packaging products.",
-      website: null,
-    },
+    // "San Kaung Bag Manufacturing Co., Ltd." was removed from this list at
+    // KTK's request (revision sheet 2, item 3).
     {
       name: "Asia General Electric Holding Co., Ltd.",
       focus: "Engineering, manufacturing, and distribution of electrical equipment, power solutions, transformers, and switchgear panels.",
@@ -108,6 +105,15 @@ export const COMPANY_PROFILE = {
   ],
 } as const;
 
+// The About headline names the number of group companies in words. KTK has
+// revised this list twice in a month (three added, then one removed), and each
+// time the hard-coded headline had to be chased separately. Derive it instead so
+// the two can never disagree.
+const COUNT_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"] as const;
+
+export const GROUP_COMPANY_COUNT_WORD =
+  COUNT_WORDS[COMPANY_PROFILE.groupCompanies.length] ?? String(COMPANY_PROFILE.groupCompanies.length);
+
 export const LEADERSHIP_PORTRAITS = [
   "/assets/company/leadership/leadership-01.webp",
   "/assets/company/leadership/leadership-02.webp",
@@ -116,17 +122,21 @@ export const LEADERSHIP_PORTRAITS = [
   "/assets/company/leadership/leadership-05.webp",
 ] as const;
 
-// Name-to-portrait mapping confirmed by KTK, 22 August 2026.
-// Worth recording because it is not derivable from the supplied archive: the
-// files in `Director's Photos.zip` that carry director names are QR codes, and
-// the portraits themselves are unnamed (1.jpg, 2.jpg, 3.jpg …). Do not "correct"
-// this order against filenames — they do not correspond.
+// Name-to-portrait mapping as confirmed by KTK. It is not derivable from the
+// supplied archive: the files in `Director's Photos.zip` that carry director
+// names are QR codes, and the portraits themselves are unnamed (1.jpg, 2.jpg,
+// 3.jpg …). Do not "correct" this order against filenames — they do not
+// correspond.
+//
+// KTK corrected two entries in revision sheet 2, item 4: portraits 04 and 05
+// were labelled the wrong way round, so Zar Ni Lin and Soe Myat Thu are now
+// swapped relative to the 22 August 2026 mapping.
 export const LEADERSHIP_PROFILES = [
   { name: "San Nyein", image: LEADERSHIP_PORTRAITS[0] },
   { name: "Khin Maung Myat", image: LEADERSHIP_PORTRAITS[1] },
   { name: "Swe Zar Lwin", image: LEADERSHIP_PORTRAITS[2] },
-  { name: "Soe Myat Thu", image: LEADERSHIP_PORTRAITS[3] },
-  { name: "Zar Ni Lin", image: LEADERSHIP_PORTRAITS[4] },
+  { name: "Zar Ni Lin", image: LEADERSHIP_PORTRAITS[3] },
+  { name: "Soe Myat Thu", image: LEADERSHIP_PORTRAITS[4] },
 ] as const;
 
 export const TEAM_PORTRAITS = [
@@ -242,7 +252,6 @@ export const BURMESE_PROFILE = {
   companies: [
     { name: "Kabar Kyaw Trading Co., Ltd.", focus: "စက်မှုသုံးစက်ပစ္စည်းများ၊ စက်မှုသုံးအစိတ်အပိုင်းများနှင့် ကုန်ကြမ်းများကို တင်သွင်း၊ ဖြန့်ဖြူးရောင်းချခြင်း။" },
     { name: "San Kaung Industry Limited", focus: "စက်မှုသုံးထုတ်ကုန်များနှင့် ထုပ်ပိုးမှုဆိုင်ရာထုတ်ကုန်များ ထုတ်လုပ်ခြင်း။" },
-    { name: "San Kaung Bag Manufacturing Co., Ltd.", focus: "PP Woven Bags၊ Laminated Bags၊ BOPP Bags၊ ဘိလပ်မြေအိတ်များနှင့် အခြားစက်မှုသုံးထုပ်ပိုးမှုအိတ်များ ထုတ်လုပ်ခြင်း။" },
     { name: "Asia General Electric Holding Co., Ltd.", focus: "လျှပ်စစ်ပစ္စည်းများ၊ ပါဝါစနစ်များ၊ Transformer များနှင့် Switchgear Panel များကို ဒီဇိုင်းရေးဆွဲ၊ ထုတ်လုပ်နှင့် ဖြန့်ဖြူးခြင်း။" },
     { name: "Peace Myanmar Electric Holding Co., Ltd.", focus: "လျှပ်စစ်ပစ္စည်းများ၊ စွမ်းအင်ဆိုင်ရာဖြေရှင်းချက်များနှင့် Mitsubishi Electric ထုတ်ကုန်များကို ဖြန့်ဖြူးရောင်းချခြင်း။" },
     { name: "D United Electric Co., Ltd.", focus: "မြန်မာနိုင်ငံရှိ ဖောက်သည်များအတွက် လျှပ်စစ်ပစ္စည်းနှင့် စက်မှုပါဝါဖြေရှင်းချက်များ ပံ့ပိုးခြင်း။" },
@@ -282,8 +291,9 @@ export const MILESTONES: { year: string; title: string; text: string }[] = [
   },
   {
     year: "2012",
-    title: "Bag manufacturing",
-    text: "PP woven bag & cement bag",
+    // Title and body set exactly as KTK specified in revision sheet 2, item 5.
+    title: "PP woven bag & Cement bag",
+    text: "In-house cement sack and PP woven bag production begins on European STARLINGER technology.",
   },
   {
     year: "2013",

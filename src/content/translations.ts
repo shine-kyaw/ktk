@@ -24,6 +24,11 @@ export const MYANMAR_TRANSLATIONS: Record<string, string> = {
   "Bearings": "Bearing များ",
   "About Kaung Thu Kha Group": "ကောင်းသုခလုပ်ငန်းစုအကြောင်း",
   "One group.": "လုပ်ငန်းစုတစ်ခု။",
+  // The About headline counts the group companies in words, and that count has
+  // already changed twice. Keep both spellings so the Burmese copy survives the
+  // next change to the list rather than falling back to English.
+  "Seven specialist companies.": "အထူးပြုကုမ္ပဏီခုနစ်ခု။",
+  "One group. Seven specialist companies.": "လုပ်ငန်းစုတစ်ခု။ အထူးပြုကုမ္ပဏီခုနစ်ခု။",
   "Eight specialist companies.": "အထူးပြုကုမ္ပဏီရှစ်ခု။",
   "One group. Eight specialist companies.": "လုပ်ငန်းစုတစ်ခု။ အထူးပြုကုမ္ပဏီရှစ်ခု။",
   "Manufacturing, trading & industrial supply": "ထုတ်လုပ်ရေး၊ ကုန်သွယ်ရေးနှင့် စက်မှုထောက်ပံ့ရေး",

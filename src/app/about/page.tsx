@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import {
   COMPANY_PROFILE,
+  GROUP_COMPANY_COUNT_WORD,
   LEADERSHIP_PROFILES,
   TEAM_PORTRAITS,
 } from "@/content/company";
@@ -32,15 +33,16 @@ export default async function AboutPage() {
     getStats(), getMilestones(), getPartners(), getCompany(), getManagement(), getCertificates(), getIndustries(),
   ]);
   const displayedStats = stats.filter((stat) => stat.value !== 1991 && stat.label.toLowerCase() !== "manufacturing since");
-  const displayedMilestones = milestones
-    .filter((milestone) => milestone.year !== "1991")
-    .map((milestone) => milestone.year === "2012" ? { ...milestone, title: "Bag manufacturing", text: "PP woven bag & cement bag" } : milestone);
+  // The 2012 wording now lives in the milestone data itself (revision sheet 2,
+  // item 5), so only the 1991 entry still needs filtering out here for CMS rows
+  // that predate its removal.
+  const displayedMilestones = milestones.filter((milestone) => milestone.year !== "1991");
 
   return (
     <div className="container-x pb-28 pt-40">
       <Reveal>
         <p className="eyebrow">About Kaung Thu Kha Group</p>
-        <h1 className="display mt-5 max-w-5xl text-5xl text-bone sm:text-7xl">One group. <span className="text-red">Eight specialist companies.</span></h1>
+        <h1 className="display mt-5 max-w-5xl text-5xl text-bone sm:text-7xl">One group. <span className="text-red">{GROUP_COMPANY_COUNT_WORD} specialist companies.</span></h1>
         <div className="mt-8 max-w-4xl space-y-5 text-lg leading-relaxed text-bone-dim">
           {COMPANY_PROFILE.executiveSummary.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
@@ -49,7 +51,11 @@ export default async function AboutPage() {
       <Reveal delay={0.08} className="mt-14">
         <div className="grid gap-4 lg:grid-cols-[1.45fr_0.55fr]">
           <div className="relative min-h-[360px] overflow-hidden border border-seam bg-[#f2f1eb] sm:min-h-[500px]">
-            <Image src="/assets/company/factory/factory-2.webp" alt="KTK manufacturing production line" fill priority sizes="(min-width: 1024px) 70vw, 100vw" className="object-cover" />
+            {/* KTK's mock-up for revision sheet 2, item 1: the head-office and
+                plant exterior leads this block, with the loom hall as the lower
+                thumbnail. The Starlinger conversion-line photo that used to sit
+                there was rejected in revision sheet 1, item 6. */}
+            <Image src="/assets/company/factory/factory-exterior.webp" alt="Kaung Thu Kha Group head office and plant entrance" fill priority sizes="(min-width: 1024px) 70vw, 100vw" className="object-cover" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 to-transparent p-8 pt-28">
               <p className="eyebrow text-white">Manufacturing, trading & industrial supply</p>
               <p className="display mt-3 max-w-2xl text-3xl text-white">Built around the industries that move Myanmar.</p>
@@ -57,7 +63,7 @@ export default async function AboutPage() {
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
             <div className="relative min-h-[170px] overflow-hidden border border-seam bg-[#f2f1eb]"><Image src="/assets/company/factory/factory-1.webp" alt="Circular weaving equipment at the KTK manufacturing operation" fill sizes="(min-width: 1024px) 30vw, 50vw" className="object-cover" /></div>
-            <div className="relative min-h-[170px] overflow-hidden border border-seam bg-[#f2f1eb]"><Image src="/assets/company/factory/factory-5.webp" alt="Packaging production equipment at the KTK manufacturing operation" fill sizes="(min-width: 1024px) 30vw, 50vw" className="object-cover" /></div>
+            <div className="relative min-h-[170px] overflow-hidden border border-seam bg-[#f2f1eb]"><Image src="/assets/company/factory/factory-2.webp" alt="Starlinger circular loom hall and yarn creels at the KTK manufacturing operation" fill sizes="(min-width: 1024px) 30vw, 50vw" className="object-cover" /></div>
           </div>
         </div>
       </Reveal>

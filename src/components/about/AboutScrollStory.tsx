@@ -27,7 +27,7 @@ const STEPS = [
     kicker: "04 · Service support",
     title: "Support beyond supply",
     body: "The wider group connects packaging experience with machinery, installation, maintenance and after-sales support.",
-    image: "/assets/company/factory/factory-5.webp",
+    image: "/assets/company/factory/factory-2.webp",
   },
 ];
 
