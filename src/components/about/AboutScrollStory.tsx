@@ -4,30 +4,33 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+// All four images are the set KTK supplied for revision sheet 2, item 2. The
+// aerial leads, because the supplied file is named "I want this at the top image
+// position of the slideshow". The other three follow the order of that folder.
 const STEPS = [
   {
     kicker: "01 · Industrial trading",
     title: "A dependable supply network",
     body: "Industrial machinery, components and raw materials are sourced through established brand relationships and supplied across Myanmar.",
-    image: "/assets/company/factory/factory-exterior.webp",
+    image: "/assets/company/factory/site-aerial-full.jpg",
   },
   {
     kicker: "02 · Manufacturing",
     title: "Production built for industry",
     body: "We support woven packaging production with experienced teams, production equipment and specification-led quality control.",
-    image: "/assets/company/factory/factory-3.webp",
+    image: "/assets/company/factory/adstarkon-conversion-line.webp",
   },
   {
     kicker: "03 · Packaging solutions",
     title: "One bag, engineered around the product",
     body: "Cement, rice, fertilizer, animal-feed, flour and sugar bags can be configured by material, size, print, lamination and application.",
-    image: "/assets/company/factory/factory-4.webp",
+    image: "/assets/company/factory/flexo-print-line.webp",
   },
   {
     kicker: "04 · Service support",
     title: "Support beyond supply",
     body: "The wider group connects packaging experience with machinery, installation, maintenance and after-sales support.",
-    image: "/assets/company/factory/factory-2.webp",
+    image: "/assets/company/factory/factory-3.webp",
   },
 ];
 

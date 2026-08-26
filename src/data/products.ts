@@ -242,10 +242,9 @@ export const PRODUCTS: Product[] = [
     ],
     image: "/assets/cement/ad-star-cement-bag.jpg",
     // The AD*STAR range leads. The Rhino / Double Rhinos / Crown / Apache
-    // artwork that used to sit here unlabelled is customer cement branding KTK
-    // produces, NOT the AD*STAR valve sack range — presenting it as the latter
-    // was the inaccuracy. It stays published, captioned for what it actually
-    // is, and keeps KTK's requested Double-Rhinos-before-Rhino ordering.
+    // artwork that follows is customer cement branding KTK produces, NOT the
+    // AD*STAR valve sack range — presenting it as the latter was the
+    // inaccuracy. It stays published, captioned for what it actually is.
     // ("cement-sacks" is a category slug, not a product, so there is no other
     // page for these to live on.)
     gallery: [
@@ -255,15 +254,20 @@ export const PRODUCTS: Product[] = [
         "AD*STAR woven valve sack range",
       ),
       media("/assets/banners/cement.jpg", "AD*STAR Strong cement bag production at KTK", "AD*STAR Strong · production"),
-      // The Double-Rhinos-first variant was removed at KTK's request (revision
-      // sheet 2, item 10). KTK also asked for the remaining brand-range photo to
-      // be replaced, and for a separate photograph of each individual cement
-      // bag; neither set has been supplied yet, so this photo stands for now.
+      // Revision sheet 2, item 10: the Double-Rhinos-first variant was dropped,
+      // the brand-range photo replaced with KTK's corrected artwork, and each
+      // customer bag is now shown on its own from the supplied `cement` folder.
       media(
         "/assets/cement/cement-bag.jpg",
-        "Customer cement brand range produced by KTK including Rhino, Double Rhinos, Crown, Shan Yoma, Max and Apache",
+        "Customer cement brand range produced by KTK including Double Rhinos, Rhino, Crown, Shan Yoma, Max and Apache",
         "Customer cement brand range",
       ),
+      media("/assets/cement/bags/double-rhinos.webp", "Double Rhinos Portland Cement 50 kg bag produced by KTK", "Double Rhinos Cement"),
+      media("/assets/cement/bags/rhino.webp", "Rhino Portland Cement 50 kg bag produced by KTK", "Rhino Portland Cement"),
+      media("/assets/cement/bags/crown.webp", "Crown Cement 52.5 premium Portland cement 50 kg bag produced by KTK", "Crown Cement"),
+      media("/assets/cement/bags/shan-yoma.webp", "Shan Yoma Cement 42.5 MPa Portland cement 50 kg bag produced by KTK", "Shan Yoma Cement"),
+      media("/assets/cement/bags/max.webp", "Max Cement Portland cement 50 kg bag produced by KTK", "Max Cement"),
+      media("/assets/cement/bags/apache.webp", "Apache Portland Cement ASTM C150 Type I 50 kg bag produced by KTK", "Apache Portland Cement"),
     ],
     featured: true,
   },
