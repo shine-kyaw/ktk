@@ -114,6 +114,10 @@ const COUNT_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seve
 export const GROUP_COMPANY_COUNT_WORD =
   COUNT_WORDS[COMPANY_PROFILE.groupCompanies.length] ?? String(COMPANY_PROFILE.groupCompanies.length);
 
+// leadership-01 and -02 are KTK's proper studio portraits of U San Nyein and
+// U Khin Maung Myat, supplied on Drive with revision sheet 1, item 9. They
+// replace the low-resolution white cut-outs that were standing in for them, and
+// are shot on the same backdrop as the other three, so the row is consistent.
 export const LEADERSHIP_PORTRAITS = [
   "/assets/company/leadership/leadership-01.webp",
   "/assets/company/leadership/leadership-02.webp",
