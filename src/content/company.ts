@@ -25,7 +25,9 @@ export const COMPANY = {
   mapsUrl: "https://maps.app.goo.gl/X7xHEKg5PM1ER9zf9",
   officeHours: "Monday - Saturday, 8:00 AM - 4:00 PM; closed Sundays and public holidays",
   phones: ["(+95 9) 264 817 108", "(+95 9) 457 497 347", "(+95 9) 264 817 101-109"],
-  viber: "+95 89 277 3203",
+  // KTK corrected this in the THREAD revision sheet (item 5): a leading 9 was
+  // missing, so the digits were grouped wrongly as "89 277 3203".
+  viber: "+95 9 892 773 203",
   emails: ["sales@ktk.com.mm"],
   facebook: "https://www.facebook.com/share/1DNLN1Hor6/",
   responseTimes: {

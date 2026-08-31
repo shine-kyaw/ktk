@@ -144,26 +144,49 @@ const media = (src: string, alt: string, caption?: string): ProductMedia => ({ s
 const ppGallery = (folder: "bopp" | "general" | "lamination", files: string[], label: string) =>
   files.map((file) => media(`/assets/products/pp-woven/${folder}/${file}.webp`, `${label} product photograph`));
 
-// KTK confirmed (August 2026) that the unbranded cone photographs previously
-// shown here are NEWLONG thread, not KTK thread — a KTK cone carries the KTK
-// logo. They have been removed from this gallery and remain on the NEWLONG
-// product below, where they belong. KTK is supplying replacement photographs of
-// its own logo-printed cones; add them to this array when they arrive.
+// KTK confirmed (August 2026) that the unbranded cone photographs once shown
+// here are NEWLONG thread, not KTK thread — a KTK cone carries the KTK logo.
+// Those moved to the NEWLONG product below, and KTK then supplied these
+// photographs of its own logo-printed cones (THREAD revision sheet, item 4).
+const ktkThreadCones = [
+  ["white", "White"],
+  ["red", "Red"],
+  ["yellow", "Yellow"],
+  ["green", "Green"],
+  ["blue", "Blue"],
+  ["orange", "Orange"],
+] as const;
+
 const threadGallery = [
   media(
     "/assets/products/thread/ktk-multicolor.webp",
     "KTK Bag Closing Sewing Thread campaign showing bag-closing machinery and multiple KTK thread spools",
     "KTK Strong Thread, Stronger Performance campaign",
   ),
+  ...ktkThreadCones.map(([file, label]) =>
+    media(
+      `/assets/products/thread/ktk/${file}.webp`,
+      `KTK High Quality Thread cone in ${label.toLowerCase()}, showing the KTK label with weight, thread type and strength`,
+      `${label} cone`,
+    ),
+  ),
 ];
 
-const newlongThreadGallery = ["1", "2", "3", "4", "5", "6"].map((file, index) =>
+const newlongThreadGallery = [
+  // NEWLONG campaign artwork supplied with the THREAD revision sheet (item 3).
   media(
-    `/assets/products/thread/newlong/${file}.webp`,
-    `NEWLONG polyester bag-closing thread color ${index + 1}`,
-    ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index],
+    "/assets/products/thread/newlong-campaign.webp",
+    "NEWLONG Strong Thread, Stronger Performance campaign showing NEWLONG bag-closing thread cones and a bag-closing machine",
+    "NEWLONG Strong Thread, Stronger Performance campaign",
   ),
-);
+  ...["1", "2", "3", "4", "5", "6"].map((file, index) =>
+    media(
+      `/assets/products/thread/newlong/${file}.webp`,
+      `NEWLONG polyester bag-closing thread color ${index + 1}`,
+      ["Orange", "Yellow", "Red", "Green", "Pink", "Blue"][index],
+    ),
+  ),
+];
 
 const ktkThreadColors = [
   { name: "White", hex: "#F4F2EA" },
@@ -508,7 +531,8 @@ export const PRODUCTS: Product[] = [
       { title: "High Quality & Food Grade", detail: "The two requested product attributes are presented clearly for buyer review." },
       { title: "Seven color options", detail: "Available colors are shown as white, red, yellow, green, blue, orange, and pink." },
     ],
-    image: "/assets/products/thread/newlong/1.webp",
+    // Item 3: the campaign artwork leads, in place of a bare cone photograph.
+    image: "/assets/products/thread/newlong-campaign.webp",
     gallery: newlongThreadGallery,
     qualityAttributes: ["High Quality Thread", "Food Grade", "Japan"],
     variants: [
