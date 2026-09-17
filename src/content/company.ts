@@ -137,12 +137,14 @@ export const LEADERSHIP_PORTRAITS = [
 // KTK corrected two entries in revision sheet 2, item 4: portraits 04 and 05
 // were labelled the wrong way round, so Zar Ni Lin and Soe Myat Thu are now
 // swapped relative to the 22 August 2026 mapping.
+// Roles confirmed by KTK, September 2026: San Nyein is Chairman and Khin Maung
+// Myat is Managing Director. The remaining three are Directors.
 export const LEADERSHIP_PROFILES = [
-  { name: "San Nyein", image: LEADERSHIP_PORTRAITS[0] },
-  { name: "Khin Maung Myat", image: LEADERSHIP_PORTRAITS[1] },
-  { name: "Swe Zar Lwin", image: LEADERSHIP_PORTRAITS[2] },
-  { name: "Zar Ni Lin", image: LEADERSHIP_PORTRAITS[3] },
-  { name: "Soe Myat Thu", image: LEADERSHIP_PORTRAITS[4] },
+  { name: "San Nyein", title: "Chairman", image: LEADERSHIP_PORTRAITS[0] },
+  { name: "Khin Maung Myat", title: "Managing Director", image: LEADERSHIP_PORTRAITS[1] },
+  { name: "Swe Zar Lwin", title: "Director", image: LEADERSHIP_PORTRAITS[2] },
+  { name: "Zar Ni Lin", title: "Director", image: LEADERSHIP_PORTRAITS[3] },
+  { name: "Soe Myat Thu", title: "Director", image: LEADERSHIP_PORTRAITS[4] },
 ] as const;
 
 export const TEAM_PORTRAITS = [

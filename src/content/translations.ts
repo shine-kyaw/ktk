@@ -165,6 +165,8 @@ export const MYANMAR_TRANSLATIONS: Record<string, string> = {
   "Click anywhere to open Google Maps ↗": "Google Maps ဖွင့်ရန် နေရာမရွေးနှိပ်ပါ ↗",
   "Why KTK": "KTK ကို ရွေးချယ်ရသည့်အကြောင်း",
   "Director": "ဒါရိုက်တာ",
+  "Chairman": "ဥက္ကဋ္ဌ",
+  "Managing Director": "မန်နေးဂျင်းဒါရိုက်တာ",
   "Issued:": "ထုတ်ပေးသည့်ရက်:",
   "Expiry stated:": "သက်တမ်းကုန်ဆုံးရက်:",
   "Official product image pending": "တရားဝင်ထုတ်ကုန်ပုံ ထည့်သွင်းရန်ကျန်ရှိသည်",
@@ -224,7 +226,6 @@ export const MYANMAR_TRANSLATIONS: Record<string, string> = {
   "Diverse business portfolio across multiple industries": "လုပ်ငန်းကဏ္ဍမျိုးစုံတွင် ကျယ်ပြန့်သောလုပ်ငန်းအစုအဖွဲ့",
 
   // Leadership / people
-  "The supplied staff archive does not include names or job titles, so the portraits are presented without invented labels.": "ပေးအပ်ထားသော ဝန်ထမ်းဓာတ်ပုံမှတ်တမ်းတွင် အမည်နှင့် ရာထူးများ ပါဝင်မလာသဖြင့် ဓာတ်ပုံများကို မှန်းဆအမည်တပ်ခြင်းမပြုဘဲ ဖော်ပြထားပါသည်။",
 
   // Company history
   "Kaung Thu Kha Group of Companies was established in Myanmar, building a diversified industrial trading and manufacturing business.": "ကောင်းသုခလုပ်ငန်းစုကို မြန်မာနိုင်ငံတွင် တည်ထောင်ခဲ့ပြီး စက်မှုကုန်သွယ်ရေးနှင့် ထုတ်လုပ်ရေးလုပ်ငန်းများကို ကျယ်ပြန့်စွာ တည်ဆောက်ခဲ့ပါသည်။",
