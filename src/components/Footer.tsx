@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { SiteVisibility } from "@/content/site";
-import type { COMPANY } from "@/content/company";
+import type { CompanyInfo } from "@/lib/cms";
 
 const LINKS: [string, string][] = [
   ["/about", "Company"],
@@ -10,7 +10,7 @@ const LINKS: [string, string][] = [
   ["/contact", "Contact"],
 ];
 
-export function Footer({ visibility, company }: { visibility: SiteVisibility; company: typeof COMPANY }) {
+export function Footer({ visibility, company }: { visibility: SiteVisibility; company: CompanyInfo }) {
   const contact = LINKS[LINKS.length - 1]!;
   const links: [string, string][] = [
     ...LINKS.slice(0, -1),

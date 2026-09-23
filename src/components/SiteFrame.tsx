@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import type { SiteVisibility } from "@/content/site";
-import type { COMPANY } from "@/content/company";
+import type { CompanyInfo } from "@/lib/cms";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
@@ -13,7 +13,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
  * marketing Header and Footer are hidden there. `children` is passed through
  * untouched, so pages keep rendering on the server.
  */
-export function SiteFrame({ children, visibility, company }: { children: React.ReactNode; visibility: SiteVisibility; company: typeof COMPANY }) {
+export function SiteFrame({ children, visibility, company }: { children: React.ReactNode; visibility: SiteVisibility; company: CompanyInfo }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
 

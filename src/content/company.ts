@@ -109,12 +109,14 @@ export const COMPANY_PROFILE = {
 
 // The About headline names the number of group companies in words. KTK has
 // revised this list twice in a month (three added, then one removed), and each
-// time the hard-coded headline had to be chased separately. Derive it instead so
+// time the hard-coded headline had to be chased separately. Derive it from the
+// list actually shown — which is the CMS list once the CMS is connected — so
 // the two can never disagree.
 const COUNT_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"] as const;
 
-export const GROUP_COMPANY_COUNT_WORD =
-  COUNT_WORDS[COMPANY_PROFILE.groupCompanies.length] ?? String(COMPANY_PROFILE.groupCompanies.length);
+export function countWord(count: number): string {
+  return COUNT_WORDS[count] ?? String(count);
+}
 
 // leadership-01 and -02 are KTK's proper studio portraits of U San Nyein and
 // U Khin Maung Myat, supplied on Drive with revision sheet 1, item 9. They
@@ -314,6 +316,9 @@ export const MILESTONES: { year: string; title: string; text: string }[] = [
     text: "Bearing sales reach 1.8M units/year (6× since 2008); ~55% of the national woven-bag market.",
   },
 ];
+
+// The seven values shown under "Core values" on the About page.
+export const CORE_VALUES = ["Quality", "Integrity", "Innovation", "Customer Focus", "Teamwork", "Excellence", "Sustainability"];
 
 export const VALUES: { title: string; body: string }[] = [
   { title: "Quality", body: "Delivering products and services that meet dependable quality standards." },

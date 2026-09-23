@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Clear the fixed header when jumping to in-page anchors */
+    scroll-padding-top: 5.5rem;
+  }
+  body {
+    @apply bg-coal font-sans text-bone antialiased;
+  }
+  /* Only elements that actually hold a translated Burmese string switch font.
+     Untouched English copy (most long-form text isn't in the dictionary yet)
+     stays in the site's Archivo/Plex Mono system instead of flipping the
+     whole page to Noto Sans Myanmar. */
+  html[data-locale="my"] [data-mm-text] {
+    font-family: "Noto Sans Myanmar", var(--font-archivo), sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.75;
+    text-wrap: initial;
+  }
+  /* Burmese glyphs carry stacked diacritics and no uppercase form, so the Latin
+     display treatment reads oversized and eats the viewport. The bulk comes from
+     `tracking-mega` + uppercase, both already neutralised above — so only the
+     leading needs adjusting here.
+     Do NOT set font-size with em/% on these: those resolve against the PARENT,
+     not the element's own Tailwind step, which collapses every responsive
+     heading (text-4xl … text-7xl) to one tiny inherited size. */
+  html[data-locale="my"] .display[data-mm-text] {
+    line-height: 1.55;
+  }
+  /* The tiny tracked-out uppercase label treatment (down to ~9px) is illegible
+     in Burmese once the tracking and capitals are dropped — give those labels a
+     readable floor instead. */
+  html[data-locale="my"] .eyebrow[data-mm-text],
+  html[data-locale="my"] .mono[data-mm-text],
+  html[data-locale="my"] .data-chip[data-mm-text] {
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+  ::selection {
+    @apply bg-red text-white;
+  }
+}
+
+@layer components {
+  /* Shared page gutter */
+  .container-x {
+    @apply mx-auto w-full max-w-site px-5 sm:px-10;
+  }
+
+  /* Spec/label voice */
+  .mono {
+    @apply font-mono;
+  }
+
+  .eyebrow {
+    @apply mono text-[0.76rem] uppercase tracking-[0.16em] text-red;
+  }
+
+  .data-chip {
+    @apply mono inline-flex border border-seam bg-coal px-3 py-2 text-[0.65rem] uppercase tracking-[0.1em] text-bone-dim;
+  }
+
+  /* Display headline treatment — wide, engineered, industrial mega-type */
+  .display {
+    @apply font-display font-semibold leading-[1.04] tracking-[-0.01em];
+    text-wrap: balance;
+  }
+
+  /* Shared editorial rhythm for homepage section introductions. */
+  .section-title {
+    @apply display mt-5 max-w-3xl text-[2.35rem] sm:text-5xl;
+  }
+
+  .section-copy {
+    @apply max-w-lg leading-relaxed;
+    text-wrap: pretty;
+  }
+
+  .press {
+    @apply transition-transform duration-150 active:scale-[0.97];
+  }
+
+  /* Warm paper grain for light premium bands.
+     NOTE: background-color must stay in sync with the `coal` token, and the
+     grain/shadow tints with `bone`, if the palette changes. */
+  .paper {
+    background-color: #f5f3ef;
+    background-image: radial-gradient(rgb(22 19 14 / 0.022) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  /* Realistic, warm-tinted product drop-shadow */
+  .realshadow {
+    filter: drop-shadow(0 30px 45px rgb(22 19 14 / 0.16))
+      drop-shadow(0 8px 14px rgb(22 19 14 / 0.1));
+  }
+
+  /* Film grain, laid over cinematic imagery so photos feel graded, not stock */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Woven-tape texture, abstract nod to PP woven fabric, replaces
+     photography until the client's cinematic photo set arrives */
+  .weave {
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgb(22 19 14 / 0.04) 0 2px,
+        transparent 2px 14px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(22 19 14 / 0.04) 0 2px,
+        transparent 2px 14px
+      );
+  }
+
+  /* Faint engineering grid */
+  .blueprint {
+    background-image:
+      linear-gradient(rgb(22 19 14 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(22 19 14 / 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Light-line variants for use on dark (ink) sections */
+  .weave-light {
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgb(255 255 255 / 0.05) 0 2px,
+        transparent 2px 14px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(255 255 255 / 0.05) 0 2px,
+        transparent 2px 14px
+      );
+  }
+
+  .blueprint-light {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* News articles written in the CMS rich-text editor. The site has no
+   typography plugin, so this maps the editor's output onto the site's own
+   type system: display face for headings, the body palette for text. */
+.rich-text > * + * {
+  margin-top: 1.5rem;
+}
+.rich-text p,
+.rich-text li {
+  line-height: 1.75;
+  color: theme("colors.bone.dim");
+}
+.rich-text h2,
+.rich-text h3,
+.rich-text h4 {
+  font-family: theme("fontFamily.display");
+  color: theme("colors.bone.DEFAULT");
+  line-height: 1.15;
+  margin-top: 2.5rem;
+}
+.rich-text h2 { font-size: 1.75rem; }
+.rich-text h3 { font-size: 1.35rem; }
+.rich-text h4 { font-size: 1.1rem; }
+.rich-text ul,
+.rich-text ol {
+  padding-left: 1.25rem;
+}
+.rich-text ul { list-style: disc; }
+.rich-text ol { list-style: decimal; }
+.rich-text li + li { margin-top: 0.4rem; }
+.rich-text a {
+  color: theme("colors.red.DEFAULT");
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rich-text blockquote {
+  border-left: 3px solid theme("colors.red.DEFAULT");
+  padding-left: 1.25rem;
+  color: theme("colors.bone.DEFAULT");
+  font-size: 1.15rem;
+}
+.rich-text strong { color: theme("colors.bone.DEFAULT"); font-weight: 600; }
