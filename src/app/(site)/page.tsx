@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { AssembledBagHero } from "@/components/home/AssembledBagHero";
+import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/Reveal";
 import {
   getProofPoints,
@@ -46,12 +46,11 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1, Hero, the assembled cement bag */}
-      <AssembledBagHero />
+      {/* 1, Hero, KTK's looms behind the headline */}
+      <Hero />
 
       {/* 2, Compact company trust bridge */}
       <section className="relative bg-coal">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 -translate-y-full bg-gradient-to-b from-transparent to-coal" />
         <div className="container-x grid gap-x-10 gap-y-14 py-20 lg:grid-cols-12 lg:py-24">
           <Reveal className="lg:col-span-7">
             <p className="eyebrow">The company</p>

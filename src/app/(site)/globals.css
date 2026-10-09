@@ -211,3 +211,30 @@
   font-size: 1.15rem;
 }
 .rich-text strong { color: theme("colors.bone.DEFAULT"); font-weight: 600; }
+
+/* Home hero (src/components/home/Hero.tsx). The copy rises in once; under
+   reduced motion the global rule above makes it appear in place. */
+.ktk-hero-scrim {
+  background:
+    linear-gradient(180deg, rgb(5 6 9 / 0.5) 0%, rgb(5 6 9 / 0) 16%),
+    linear-gradient(0deg, rgb(5 6 9 / 0.95) 0%, rgb(5 6 9 / 0.74) 34%, rgb(5 6 9 / 0.12) 64%, rgb(5 6 9 / 0) 78%);
+}
+@media (min-width: 1024px) {
+  .ktk-hero-scrim {
+    background:
+      linear-gradient(180deg, rgb(5 6 9 / 0.6) 0%, rgb(5 6 9 / 0) 20%),
+      linear-gradient(90deg, rgb(5 6 9 / 0.9) 0%, rgb(5 6 9 / 0.66) 38%, rgb(5 6 9 / 0.12) 70%, rgb(5 6 9 / 0.08) 100%),
+      linear-gradient(0deg, rgb(5 6 9 / 0.45) 0%, rgb(5 6 9 / 0) 30%);
+  }
+}
+@keyframes ktk-hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.ktk-hero-rise {
+  animation: ktk-hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Short landscape phones: keep the headline from crowding the buttons out. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ktk-hero h1 { font-size: clamp(2.25rem, 9vh, 3.25rem); }
+}

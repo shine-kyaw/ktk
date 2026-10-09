@@ -26,8 +26,8 @@ export function Footer({ visibility, company }: { visibility: SiteVisibility; co
             <Image
               src="/brand/ktk-logo.png"
               alt="Kaung Thu Kha Group Co., Ltd."
-              width={1600}
-              height={357}
+              width={126}
+              height={28}
               className="h-7 w-auto max-w-[15rem]"
             />
           </span>

@@ -65,6 +65,11 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false); // mobile drawer
   const [openSection, setOpenSection] = useState<string | null>(null); // mobile accordion
+  // At the top of the home page the header sits on the dark loom film, so its
+  // type turns white until the solid bar comes in on scroll.
+  const overHero = pathname === "/" && !scrolled && !open;
+  const linkTone = (active: boolean) =>
+    overHero ? (active ? "text-white" : "text-white/80") : active ? "text-bone" : "text-ash";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -104,8 +109,8 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
             <Image
               src="/brand/ktk-logo.png"
               alt="Kaung Thu Kha Group Co., Ltd."
-              width={1600}
-              height={357}
+              width={144}
+              height={32}
               priority
               className="h-8 w-auto max-w-[15rem]"
             />
@@ -121,9 +126,7 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`mono px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:text-red ${
-                    active ? "text-bone" : "text-ash"
-                  }`}
+                  className={`mono px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:text-red ${linkTone(active)}`}
                 >
                   {item.label}
                 </Link>
@@ -133,9 +136,7 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
               <div key={item.href} className="group relative">
                 <Link
                   href={item.href}
-                  className={`mono flex items-center gap-1.5 px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors group-hover:text-red ${
-                    active ? "text-bone" : "text-ash"
-                  }`}
+                  className={`mono flex items-center gap-1.5 px-3 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors group-hover:text-red ${linkTone(active)}`}
                 >
                   {item.label}
                   <Chevron />
@@ -159,13 +160,15 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
           })}
           <Link
             href="/contact?type=product"
-            className="press mono ml-2 border border-red px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red hover:text-bone"
+            className={`press mono ml-2 border px-3.5 py-2 text-[0.66rem] uppercase tracking-[0.14em] transition-colors hover:border-red hover:bg-red hover:text-white ${
+              overHero ? "border-white/45 text-white" : "border-red text-red"
+            }`}
           >
             Product inquiry
           </Link>
-          <div className="ml-2 flex items-center border border-seam bg-coal/60 p-0.5" data-no-translate>
-            <button onClick={() => setLocale("en")} aria-pressed={locale === "en"} className={`mono px-2 py-1.5 text-[0.58rem] uppercase tracking-[0.12em] transition-colors ${locale === "en" ? "bg-red text-white" : "text-ash hover:text-bone"}`}>EN</button>
-            <button onClick={() => setLocale("my")} aria-pressed={locale === "my"} className={`px-2 py-1.5 text-[0.68rem] transition-colors ${locale === "my" ? "bg-red text-white" : "text-ash hover:text-bone"}`}>မြန်မာ</button>
+          <div className={`ml-2 flex items-center border p-0.5 ${overHero ? "border-white/25 bg-black/25" : "border-seam bg-coal/60"}`} data-no-translate>
+            <button onClick={() => setLocale("en")} aria-pressed={locale === "en"} className={`mono px-2 py-1.5 text-[0.58rem] uppercase tracking-[0.12em] transition-colors ${locale === "en" ? "bg-red text-white" : overHero ? "text-white/75 hover:text-white" : "text-ash hover:text-bone"}`}>EN</button>
+            <button onClick={() => setLocale("my")} aria-pressed={locale === "my"} className={`px-2 py-1.5 text-[0.68rem] transition-colors ${locale === "my" ? "bg-red text-white" : overHero ? "text-white/75 hover:text-white" : "text-ash hover:text-bone"}`}>မြန်မာ</button>
           </div>
         </nav>
 
@@ -177,8 +180,8 @@ export function Header({ visibility }: { visibility: SiteVisibility }) {
           onClick={() => setOpen((o) => !o)}
           className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
         >
-          <span className={`h-px w-6 bg-bone transition-transform ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
-          <span className={`h-px w-6 bg-bone transition-transform ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
+          <span className={`h-px w-6 transition-transform ${overHero ? "bg-white" : "bg-bone"} ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 transition-transform ${overHero ? "bg-white" : "bg-bone"} ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
         </button>
       </div>
 
