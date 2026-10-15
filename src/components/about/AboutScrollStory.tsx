@@ -56,7 +56,10 @@ export function AboutScrollStory() {
         <div className="lg:sticky lg:top-28 lg:h-[calc(100vh-9rem)] lg:min-h-[620px]">
           <p className="eyebrow">Explore our capabilities</p>
           <h2 className="display mt-5 max-w-xl text-4xl text-bone sm:text-6xl">Scroll through selected areas of the group.</h2>
-          <div className="relative mt-9 aspect-[4/3] overflow-hidden border border-seam bg-iron lg:absolute lg:inset-x-0 lg:bottom-0 lg:aspect-auto lg:h-[48%]">
+          {/* Desktop: one pinned frame that crossfades as the steps scroll past.
+              Phones get each step's photo inline instead (below), because a
+              frame above the steps has already scrolled away by step two. */}
+          <div className="relative mt-9 hidden overflow-hidden border border-seam bg-iron lg:absolute lg:inset-x-0 lg:bottom-0 lg:block lg:h-[48%]">
             {STEPS.map((step, index) => (
               <motion.div
                 key={step.image}
@@ -79,21 +82,24 @@ export function AboutScrollStory() {
 
         <div>
           {STEPS.map((step, index) => (
-            <motion.article
+            <article
               key={step.title}
               ref={(node) => { refs.current[index] = node; }}
               data-step={index}
-              animate={{ opacity: active === index ? 1 : 0.42, x: active === index ? 0 : 8 }}
-              transition={{ duration: reduceMotion ? 0 : 0.35 }}
-              className="flex min-h-[52vh] flex-col justify-center border-b border-seam py-14 first:pt-0 last:border-0 lg:min-h-[70vh]"
+              className={`flex flex-col justify-center border-b border-seam py-10 transition duration-300 first:pt-0 last:border-0 lg:min-h-[70vh] lg:py-14 ${
+                active === index ? "" : "lg:translate-x-2 lg:opacity-[0.42]"
+              }`}
             >
+              <div className="relative mb-7 aspect-[4/3] overflow-hidden border border-seam bg-iron lg:hidden">
+                <Image src={step.image} alt={step.title} fill sizes="100vw" className="object-cover" />
+              </div>
               <p className="mono text-[0.66rem] uppercase tracking-[0.2em] text-red">{step.kicker}</p>
               <h3 className="display mt-5 text-3xl text-bone sm:text-5xl">{step.title}</h3>
               <p className="mt-6 max-w-lg text-base leading-relaxed text-bone-dim">{step.body}</p>
-              <button onClick={() => refs.current[(index + 1) % STEPS.length]?.scrollIntoView({ behavior: "smooth", block: "center" })} className="mono mt-8 w-fit text-[0.62rem] uppercase tracking-[0.16em] text-red hover:text-bone">
+              <button onClick={() => refs.current[(index + 1) % STEPS.length]?.scrollIntoView({ behavior: "smooth", block: "center" })} className="mono mt-8 hidden w-fit text-[0.62rem] uppercase tracking-[0.16em] text-red hover:text-bone lg:block">
                 {index === STEPS.length - 1 ? "Back to first capability ↑" : "Continue exploring ↓"}
               </button>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>

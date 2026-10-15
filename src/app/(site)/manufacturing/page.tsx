@@ -24,14 +24,14 @@ export default function ManufacturingPage() {
               Inside KTK&apos;s <span className="text-red">manufacturing operation.</span>
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-bone-dim">
-              The supplied factory archive shows KTK&apos;s circular weaving, bag conversion,
-              handling, and packing facilities in Yangon. Product construction, printing,
-              finishing, and line compatibility are confirmed for each customer requirement.
+              KTK&apos;s plant in Yangon brings circular weaving, bag conversion, handling,
+              and packing together. Construction, printing, finishing, and line
+              compatibility are confirmed for every customer requirement.
             </p>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              {/* The aerial leads: it is the only supplied image that shows the
-                  scale of the operation in one frame. */}
+              {/* The aerial leads: it is the only image that shows the scale of
+                  the operation in one frame. */}
               <div className="relative col-span-2 min-h-[300px] overflow-hidden border border-seam bg-[#f2f1eb]">
                 <Image src="/assets/company/factory/site-aerial-front.jpg" alt="Aerial view of the Kaung Thu Kha Group plant in Yangon" fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
               </div>
@@ -53,7 +53,7 @@ export default function ManufacturingPage() {
             <div className="mt-8 grid gap-px bg-seam lg:grid-cols-3">
               {[
                 ["Industrial packaging", "Cement sacks and PP woven formats built around the product, artwork, and filling environment."],
-                ["Production equipment", "The supplied archive documents circular weaving and bag-conversion equipment in KTK's established operation."],
+                ["Production equipment", "Circular weaving looms and bag-conversion lines, run by an established production team."],
                 ["Specification support", "The KTK team confirms material, size, print, finish, order, and compatibility details before production."],
               ].map(([title, detail], index) => (
                 <div key={title} className="group relative bg-iron p-8 transition duration-300 hover:-translate-y-1 hover:bg-coal hover:shadow-lift">
@@ -68,10 +68,10 @@ export default function ManufacturingPage() {
 
           <Reveal className="mt-20">
             <p className="eyebrow">Factory gallery</p>
-            <h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Supplied production archive</h2>
-            <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ash">These images are presented with descriptive captions only. KTK asked that unverified process sequencing and technical factory claims remain unpublished.</p>
+            <h2 className="display mt-4 text-4xl text-bone sm:text-5xl">Inside the plant</h2>
+            <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ash">Weaving, conversion, and warehouse floors at KTK&apos;s Yangon site.</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Captions describe only what is visible in each supplied photograph.
+              {/* Captions describe only what is visible in each photograph.
                   Equipment is named where the machine itself carries the marking
                   (Starlinger RX 6.1 looms, twinTAPE winders). No production
                   sequence or capacity is inferred — KTK marked unverified factory

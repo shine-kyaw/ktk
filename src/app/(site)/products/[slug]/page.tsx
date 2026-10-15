@@ -83,7 +83,6 @@ export default async function ProductDetailPage({
                 {product.brand && <span className="data-chip">{product.brand}</span>}
                 {product.model && <span className="data-chip">{product.model}</span>}
                 {product.qualityAttributes?.map((attribute) => <span key={attribute} className="data-chip">{attribute}</span>)}
-                <span className="data-chip">{product.image ? "Official product imagery" : "Official image pending"}</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
@@ -118,7 +117,7 @@ export default async function ProductDetailPage({
         <Reveal delay={0.06}>
           <div className="grid gap-4 lg:grid-cols-[1.55fr_0.85fr]">
             <ProductMedia image={product.image ?? null} alt={`${product.name}, official KTK product photograph`} />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="grid content-start gap-4 sm:grid-cols-2 lg:grid-cols-1">
               {[
                 product.bestFor ? ["Best for", product.bestFor] : null,
                 product.printing ? ["Printing / finish", product.printing] : null,
@@ -255,7 +254,7 @@ export default async function ProductDetailPage({
             </div>
           </div>
           <p className="mono mt-6 max-w-2xl text-[0.62rem] leading-relaxed text-ash">
-            Product imagery is from the supplied KTK Drive asset set. Final dimensions, grades, capacities, and line compatibility are confirmed against the buyer’s requirements.
+            Final dimensions, grades, capacities, and line compatibility are confirmed against your requirements before production.
           </p>
         </Reveal>
       </div>
@@ -286,7 +285,7 @@ export default async function ProductDetailPage({
       {gallery.length > 0 && (
         <div className="container-x mt-24">
           <Reveal>
-            <p className="eyebrow">Supplied product gallery</p>
+            <p className="eyebrow">Product gallery</p>
             <h2 className="display mt-4 max-w-2xl text-3xl text-bone sm:text-4xl">The actual range, clearly shown.</h2>
           </Reveal>
           <ProductGallery items={gallery} />

@@ -184,7 +184,7 @@ export const CERTIFICATES = [
     title: "YAO HAN Sole Distributor Certificate",
     issuer: "Yao Han Industries Co., Ltd.",
     reference_number: null,
-    scope: "Sole-distributor appointment for bag-closing machine series and S8 series in Myanmar. The supplied certificate covers 1 September 2024 through 31 October 2025 and is displayed as an authorization record.",
+    scope: "Sole-distributor appointment for YAO HAN bag-closing machine series and S8 series in Myanmar, valid 1 September 2024 to 31 October 2025.",
     issued_on: "2024-09-12",
     expires_on: "2025-10-31",
     image: "/assets/company/certificates/yaohan-authorization.webp",
@@ -196,7 +196,7 @@ export const CERTIFICATES = [
     title: "HCH Sole Distributor Certificate",
     issuer: "Huanchi Bearing Group Co., Ltd.",
     reference_number: null,
-    scope: "Sole-distributor authorization for HCH brand bearings in Myanmar, including marketing, promotion, sales, and technical service. The supplied certificate covers 1 March 2025 through 28 February 2026.",
+    scope: "Sole-distributor authorization for HCH brand bearings in Myanmar, including marketing, promotion, sales, and technical service, valid 1 March 2025 to 28 February 2026.",
     issued_on: "2025-03-01",
     expires_on: "2026-02-28",
     image: "/assets/company/certificates/hch-authorization.webp",
@@ -208,7 +208,7 @@ export const CERTIFICATES = [
     title: "TR Official Distributor Authorization",
     issuer: "DongGuan TR Bearing Co., Ltd.",
     reference_number: null,
-    scope: "Official distributor appointment for the registered TR brand in Myanmar. The supplied certificate states a two-year validity beginning 18 October 2026.",
+    scope: "Official distributor appointment for the registered TR brand in Myanmar, valid for two years from 18 October 2026.",
     issued_on: "2026-10-01",
     expires_on: "2028-10-17",
     image: "/assets/company/certificates/tr-authorization.webp",
@@ -297,7 +297,7 @@ export const MILESTONES: { year: string; title: string; text: string }[] = [
   {
     year: "2009",
     title: "NEWLONG machinery",
-    text: "The supplied NEWLONG authorization records KTK as a Myanmar zone agent from 20 February 2009.",
+    text: "KTK is appointed NEWLONG’s zone agent for Myanmar from 20 February 2009.",
   },
   {
     year: "2012",
@@ -308,7 +308,7 @@ export const MILESTONES: { year: string; title: string; text: string }[] = [
   {
     year: "2013",
     title: "YAO HAN partnership",
-    text: "KTK developed its YAO HAN machinery offering; the supplied authorization archive includes a later appointment covering September 2024 through October 2025.",
+    text: "KTK adds YAO HAN bag-closing machinery to its range, later serving as YAO HAN’s sole distributor in Myanmar from September 2024 to October 2025.",
   },
   {
     year: "2020",
@@ -444,9 +444,9 @@ export const WHY_POINTS: { title: string; desc: string }[] = [
 // Brand / technology partners (with the credentials the site cites)
 export const PARTNERS: { name: string; origin: string; note: string }[] = [
   { name: "STARLINGER", origin: "Austria / Europe", note: "Bag manufacturing technology" },
-  { name: "SABIC", origin: "Saudi Arabia", note: "Resin source stated in the supplied PP product records" },
-  { name: "HCH Bearing", origin: "China", note: "Bearing supply · authorization record displayed with its stated dates" },
+  { name: "SABIC", origin: "Saudi Arabia", note: "PP resin for KTK’s woven bags" },
+  { name: "HCH Bearing", origin: "China", note: "Bearings · distributed by KTK in Myanmar since 2008" },
   { name: "TR Bearing", origin: "China", note: "Spherical roller and mounted unit bearing ranges" },
-  { name: "NEWLONG", origin: "Japan", note: "Bag-closing machinery and thread · Myanmar zone-agent record since 2009" },
-  { name: "YAO HAN", origin: "Taiwan", note: "Bag-closing machinery · authorization record displayed with its stated dates" },
+  { name: "NEWLONG", origin: "Japan", note: "Bag-closing machinery and thread · Myanmar zone agent since 2009" },
+  { name: "YAO HAN", origin: "Taiwan", note: "Bag-closing machinery · in KTK’s range since 2013" },
 ];

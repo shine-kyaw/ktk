@@ -28,7 +28,6 @@ function ProductVisual({ product }: { product: { name: string; image?: string | 
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-coal text-sm text-ash">{product.category}</div>
       )}
-      <span className="absolute bottom-3 left-3 bg-ink/75 px-2.5 py-1 mono text-[0.54rem] uppercase tracking-[0.15em] text-white">Official image</span>
     </div>
   );
 }
@@ -152,7 +151,7 @@ export default async function HomePage() {
             {/* browse-all card always fills the remaining columns, for any featured count */}
             <Reveal
               delay={0.16}
-              className={`bg-iron ${featured.length % 2 === 0 ? "sm:col-span-2" : "sm:col-span-1"} ${
+              className={`bg-ink ${featured.length % 2 === 0 ? "sm:col-span-2" : "sm:col-span-1"} ${
                 featured.length % 3 === 0
                   ? "lg:col-span-3"
                   : featured.length % 3 === 1
@@ -160,27 +159,42 @@ export default async function HomePage() {
                     : "lg:col-span-1"
               }`}
             >
-              <Link
-                href="/products"
-                className="group flex h-full flex-col justify-between p-7 transition-colors hover:bg-coal"
-              >
+              <div className="flex h-full flex-col justify-between gap-8 p-7 text-white sm:p-9 lg:flex-row lg:items-end">
                 <div>
                   <span className="mono text-[0.6rem] uppercase tracking-[0.2em] text-red">
                     The full range
                   </span>
-                  <h3 className="display mt-2 text-xl text-bone transition-colors group-hover:text-red">
-                    Browse all products
-                  </h3>
-                  <p className="mt-3 max-w-md text-sm leading-relaxed text-ash">
+                  <h3 className="display mt-3 text-2xl text-white sm:text-3xl">Browse all products</h3>
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">
                     Cement sacks, PP woven bags, fillers and thread, machinery, and bearings, with
                     specs and applications on every product.
                   </p>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {[
+                      ["Cement Sacks", "/products#cement-sacks"],
+                      ["PP Woven Bags", "/products#pp-woven-bags"],
+                      ["Fillers", "/products#fillers"],
+                      ["Thread", "/products#thread"],
+                      ["Machinery", "/products#machinery"],
+                      ["Bearings", "/products#bearings"],
+                    ].map(([label, href]) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="mono border border-white/20 px-3 py-2 text-[0.6rem] uppercase tracking-[0.14em] text-white/80 transition-colors hover:border-red hover:text-white"
+                      >
+                        {label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-                <span className="mono mt-10 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.18em] text-red">
-                  Open catalog
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </span>
-              </Link>
+                <Link
+                  href="/products"
+                  className="press mono inline-flex shrink-0 items-center gap-2 self-start bg-red px-6 py-3.5 text-[0.66rem] font-semibold uppercase tracking-[0.17em] text-white transition-colors hover:bg-white hover:text-ink lg:self-end"
+                >
+                  Open catalog <span aria-hidden>→</span>
+                </Link>
+              </div>
             </Reveal>
           </div>
 

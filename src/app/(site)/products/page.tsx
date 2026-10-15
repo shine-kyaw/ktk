@@ -107,7 +107,9 @@ function PpComparison({ products, banner }: { products: Product[]; banner?: stri
                 <div className="mt-6 space-y-3 border-t border-seam pt-5 text-sm text-bone-dim">
                   <div><span className="mono text-[0.55rem] uppercase tracking-[0.14em] text-ash">Best for</span><p className="mt-1 text-bone">{product.bestFor}</p></div>
                   <div><span className="mono text-[0.55rem] uppercase tracking-[0.14em] text-ash">Printing</span><p className="mt-1 text-bone">{product.printing}</p></div>
-                  <div><span className="mono text-[0.55rem] uppercase tracking-[0.14em] text-ash">Capacity</span><p className="mt-1 text-bone">{product.specs.find((spec) => spec.label === "Capacity")?.value}</p></div>
+                  {product.specs.find((spec) => spec.label === "Capacity")?.value ? (
+                    <div><span className="mono text-[0.55rem] uppercase tracking-[0.14em] text-ash">Capacity</span><p className="mt-1 text-bone">{product.specs.find((spec) => spec.label === "Capacity")?.value}</p></div>
+                  ) : null}
                 </div>
                 <span className="mono mt-6 text-[0.62rem] uppercase tracking-[0.16em] text-red">Compare this format →</span>
               </div>
@@ -130,7 +132,7 @@ export default async function ProductsPage() {
           <p className="eyebrow">Catalog / KTK Group</p>
           <h1 className="display mt-5 max-w-5xl text-5xl text-bone sm:text-7xl">Products that hold the line together.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-bone-dim">
-            From the package itself to the thread, machines, filler, and bearings around it, explore the supplied KTK range through real product imagery and buyer-focused detail pages.
+            From the package itself to the thread, machines, filler, and bearings around it, every product comes with real imagery, specifications, and applications.
           </p>
         </Reveal>
 
@@ -150,11 +152,11 @@ export default async function ProductsPage() {
               bag stays visible. */}
           <Reveal className="flex min-h-[360px] flex-col overflow-hidden border border-seam bg-[#f2f1eb]">
             <div className="relative flex-1 min-h-[240px]">
-              <Image src="/assets/cement/cement-bag.jpg" alt="Cement bag portfolio artwork from KTK asset set" fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-contain p-4" />
+              <Image src="/assets/cement/cement-bag.jpg" alt="A row of printed cement sacks for different Myanmar cement brands" fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-contain p-4" />
             </div>
             <div className="border-t border-seam bg-ink/90 p-7">
-              <p className="eyebrow text-white">Supplied artwork / cement</p>
-              <h2 className="display mt-3 max-w-xl text-3xl text-white sm:text-4xl">Real packaging references, ready for a better specification conversation.</h2>
+              <p className="eyebrow text-white">Cement sacks</p>
+              <h2 className="display mt-3 max-w-xl text-3xl text-white sm:text-4xl">Printed to your brand, built for your filling line.</h2>
             </div>
           </Reveal>
           <Reveal delay={0.08} className="flex flex-col justify-between border border-seam bg-iron p-7">

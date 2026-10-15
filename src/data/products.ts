@@ -242,9 +242,9 @@ export const PRODUCTS: Product[] = [
     name: "AD*STAR Woven Valve Sacks",
     category: "Cement Sacks",
     eyebrow: "Cement packaging",
-    summary: "Block-bottom woven valve sacks for cement and powdered products, presented in the supplied AD*STAR artwork set.",
+    summary: "Block-bottom woven valve sacks for cement and powdered products, built for automated filling and clean stacking.",
     longDescription:
-      "The supplied AD*STAR artwork shows a structured woven valve sack format designed for automated filling and clean stacking. KTK can support artwork-led packaging discussions around dimensions, print, capacity, and filling-line requirements.",
+      "A structured, block-bottom woven valve sack designed for automated filling and clean, stable stacking. KTK works through dimensions, print, capacity, and filling-line requirements with you before production.",
     applications: ["Cement", "Powdered materials", "Automated filling lines"],
     specs: [
       { label: "Construction", value: "Single or double layer PP woven cement bag" },
@@ -256,11 +256,11 @@ export const PRODUCTS: Product[] = [
       { label: "Printing", value: "Flexo or BOPP · 1–6 colors" },
       { label: "Filling lines", value: "Automatic and semi-automatic" },
       { label: "MOQ / lead time", value: "20,000 bags · approximately 30 days" },
-      { label: "Tests stated", value: "Drop · tensile · air-perforation" },
+      { label: "Tests", value: "Drop · tensile · air-perforation" },
     ],
     benefits: [
       { title: "Automation-ready direction", detail: "A block-bottom valve format suited to high-throughput filling conversations." },
-      { title: "Clear brand surface", detail: "The supplied artwork demonstrates how a finished cement sack can carry strong front and side branding." },
+      { title: "Clear brand surface", detail: "Flat, square faces give a finished cement sack strong front and side branding." },
       { title: "Specification-led", detail: "Confirm size, construction, and line compatibility with KTK before production." },
     ],
     image: "/assets/cement/ad-star-cement-bag.jpg",
@@ -304,7 +304,7 @@ export const PRODUCTS: Product[] = [
     printing: "Flexo printing up to 6 colors",
     summary: "The standard breathable option for agricultural and food-related bulk packaging, available plain or printed.",
     longDescription:
-      "Standard PP woven bags are built for dependable bulk handling where breathable woven fabric is the right fit. The supplied general product set shows rice, food, and agricultural packaging examples; final size, construction, and print artwork are confirmed per order.",
+      "Standard PP woven bags are built for dependable bulk handling where breathable woven fabric is the right fit, from rice and food to agricultural products. Size, construction, and print artwork are confirmed for every order.",
     applications: ["Export rice", "Local rice", "Livestock feed", "Fertilizer", "Export beans", "Flour"],
     specs: [
       { label: "GSM", value: "Customizable" },
@@ -316,7 +316,7 @@ export const PRODUCTS: Product[] = [
       { label: "Options", value: "Side gusset · PE liner" },
       { label: "MOQ / lead time", value: "10,000 bags · 14–21 working days" },
       { label: "Packing", value: "500 or 1,000 pieces per compressed bale, depending on size" },
-      { label: "Quality records", value: "SABIC food-grade certificate · internal tensile report" },
+      { label: "Quality documents", value: "SABIC food-grade certificate · internal tensile report" },
     ],
     benefits: [
       { title: "Breathable construction", detail: "Woven fabric supports airflow for dry goods and agricultural contents." },
@@ -344,7 +344,7 @@ export const PRODUCTS: Product[] = [
     printing: "Flexo printing with enhanced moisture barrier",
     summary: "A protective woven format for fertilizer, feed, chemicals, and fine powders that need an added film layer.",
     longDescription:
-      "Laminated PP woven bags feature an extrusion-coated protective layer over the woven substrate to seal the weave and form an effective moisture barrier. The supplied lamination set shows feed, pet food, and fine-product packaging examples; barrier performance and final structure are customized to suit your product and filling environment.",
+      "Laminated PP woven bags feature an extrusion-coated protective layer over the woven substrate to seal the weave and form an effective moisture barrier. They suit feed, pet food, and fine powders; barrier performance and final structure are tailored to your product and filling environment.",
     applications: ["Livestock feed", "Sugar", "Milled rice", "Fine chemicals", "Flour", "Cement"],
     specs: [
       { label: "GSM", value: "Customizable" },
@@ -383,7 +383,7 @@ export const PRODUCTS: Product[] = [
     printing: "HD gravure photo-realistic printing · Glossy or Matt finish",
     summary: "The premium retail-facing option for rice, pet food, aquafeed, and consumer products where the pack is part of the brand experience.",
     longDescription:
-      "BOPP laminated bags combine a high-strength PP woven base with an outer reverse-printed film layer, delivering premium photo-quality graphics alongside superior moisture and puncture resistance. The supplied BOPP set shows colorful retail and food packaging examples; finish, artwork, and dimensions are custom-tailored around your intended shelf presentation.",
+      "BOPP laminated bags combine a high-strength PP woven base with an outer reverse-printed film layer, delivering premium photo-quality graphics alongside superior moisture and puncture resistance. Made for colorful retail and food packaging; finish, artwork, and dimensions are tailored to how your product sits on the shelf.",
     applications: ["Premium retail rice", "Pet food", "Specialty fertilizer", "Livestock feed", "Seed"],
     specs: [
       { label: "Layer structure", value: "Customizable" },
@@ -391,7 +391,7 @@ export const PRODUCTS: Product[] = [
       { label: "Printing", value: "Reverse rotogravure · up to 13 colors on both sides" },
       { label: "Sizing", value: "Custom size; confirm final width and length with KTK" },
       { label: "Options", value: "Handle punch · side-gusset printing · ultrasonic or sewn hemming · EZ-open seam" },
-      { label: "Protection stated", value: "Waterproof and puncture-resistant construction" },
+      { label: "Protection", value: "Waterproof and puncture-resistant construction" },
       { label: "MOQ / lead time", value: "15,000 bags · 30–45 working days" },
       { label: "Packing", value: "500–1,000 pieces per compressed bale" },
     ],
@@ -418,7 +418,7 @@ export const PRODUCTS: Product[] = [
     eyebrow: "Material input",
     summary: "PE, PP, transparent, and thermoforming calcium-carbonate filler masterbatch grades for film, raffia, molding, and sheet applications.",
     longDescription:
-      "The supplied technical sheet covers PE filler for film and bottles, PP filler for woven bags, raffia, molding and nonwoven, transparent filler for clarity-sensitive packaging, and thermoforming filler for PS or PP sheet. Select the grade and dosage against the polymer, process temperature, and target finish.",
+      "The range covers PE filler for film and bottles, PP filler for woven bags, raffia, molding and nonwoven, transparent filler for clarity-sensitive packaging, and thermoforming filler for PS or PP sheet. Grade and dosage are selected against the polymer, process temperature, and target finish.",
     applications: ["Blown and agricultural film", "PP woven bags and raffia tape", "Injection molding", "HDPE bottles", "Nonwoven", "Thermoforming sheet"],
     specs: [
       { label: "PE grade", value: "LDPE / LLDPE / HDPE carrier · 75–82% CaCO₃" },
@@ -435,7 +435,7 @@ export const PRODUCTS: Product[] = [
     ],
     benefits: [
       { title: "Process-aware supply", detail: "Discuss the grade around your production process and target finish." },
-      { title: "Color flexibility", detail: "The supplied image set includes color material examples for a visual starting point." },
+      { title: "Color flexibility", detail: "Color material examples give a visual starting point for your shade." },
       { title: "Inquiry-led specifications", detail: "Contact KTK for grade, loading, and application-specific information." },
     ],
     image: "/assets/products/filler/filler-bag.webp",
@@ -467,7 +467,7 @@ export const PRODUCTS: Product[] = [
       { label: "Twist", value: "260 TPM · Z/S direction" },
       { label: "Strength", value: "77.9 N" },
       { label: "Roll formats", value: "200 g = 175 g thread + 25 g cone · 890 m / 1 kg = 950 g thread + 50 g cone · 4,700 m" },
-      { label: "Quality records", value: "Certificate of Analysis inspected against ISO 9001:2015" },
+      { label: "Quality documents", value: "Certificate of Analysis inspected against ISO 9001:2015" },
     ],
     benefits: [
       { title: "Two practical sizes", detail: "Select the compact 200 g format or the larger 1 kg format for your bag-closing workflow." },
@@ -486,12 +486,12 @@ export const PRODUCTS: Product[] = [
       {
         label: "KTK Thread 200 g — Certificate of Analysis details",
         url: "/about#10000000-0000-4000-8000-000000000005",
-        detail: "Supplied 10S/3 polyester thread analysis for the 200 g format, inspected 5 May 2026 against ISO 9001:2015.",
+        detail: "10S/3 polyester thread analysis for the 200 g format, inspected 5 May 2026 against ISO 9001:2015.",
       },
       {
         label: "KTK Thread 1 kg — Certificate of Analysis details",
         url: "/about#10000000-0000-4000-8000-000000000006",
-        detail: "Supplied 10S/3 polyester thread analysis for the 1 kg format, inspected 5 May 2026 against ISO 9001:2015.",
+        detail: "10S/3 polyester thread analysis for the 1 kg format, inspected 5 May 2026 against ISO 9001:2015.",
       },
       // The "Sewing Thread Specification" sheet and the NEWLONG authorization
       // record were both moved off this product in August 2026: the spec sheet's
@@ -545,13 +545,13 @@ export const PRODUCTS: Product[] = [
         label: "Sewing Thread Specification",
         url: "/assets/products/thread/certificates/sewing-thread-specification.pdf",
         preview: "/assets/products/thread/certificates/sewing-thread-specification.webp",
-        detail: "The supplied thread document covering 100% polyester construction and all stated performance values.",
+        detail: "Thread specification covering the 100% polyester construction and its performance values.",
       },
       {
-        label: "NEWLONG Authorization Record",
+        label: "NEWLONG Authorization Certificate",
         url: "/assets/company/certificates/newlong-authorization.webp",
         preview: "/assets/company/certificates/newlong-authorization.webp",
-        detail: "The supplied NEWLONG authorization record naming KTK Co., Ltd.",
+        detail: "NEWLONG's authorization naming KTK Co., Ltd. as its Myanmar zone agent.",
       },
     ],
     colorOptions: [...ktkThreadColors, { name: "Pink", hex: "#D94C8A" }],
@@ -565,7 +565,7 @@ export const PRODUCTS: Product[] = [
     brand: "NEWLONG",
     summary: "Japanese bag-closing equipment ranging from portable sewing heads to conveyor systems, with parts, maintenance, repair, and service support.",
     longDescription:
-      "The supplied NEWLONG set includes portable and standalone sewing heads as well as the KS16 conveyor system. KTK can help match the machine format to the bag, line speed, filling environment, and service requirements.",
+      "The NEWLONG range includes portable and standalone sewing heads as well as the KS16 conveyor system. KTK helps match the machine format to your bag, line speed, filling environment, and service needs.",
     applications: ["Cement filling lines", "PP woven bag closing", "Packing stations", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Japan" },
@@ -580,7 +580,7 @@ export const PRODUCTS: Product[] = [
     ],
     benefits: [
       { title: "Portable and conveyor formats", detail: "The gallery includes NP, DS, and KS16 references for different operating setups." },
-      { title: "Service-backed supply", detail: "KTK supports parts, maintenance, and repair around the supplied equipment range." },
+      { title: "Service-backed supply", detail: "KTK supports parts, maintenance, and repair across the NEWLONG range." },
       { title: "Specification matching", detail: "Confirm the correct model against bag format, thread, and production line requirements." },
     ],
     image: "/assets/products/machinery/newlong/ks16.webp",
@@ -602,7 +602,7 @@ export const PRODUCTS: Product[] = [
     brand: "YAO HAN",
     summary: "Taiwanese portable, automatic, and conveyor bag-closing equipment, supplied with spare parts and after-sales service support.",
     longDescription:
-      "The supplied YAO HAN set includes conveyor, automatic, and portable machine references. KTK presents the actual models and leaves capacity, configuration, and line suitability to a proper inquiry rather than inventing specifications from the photographs.",
+      "The YAO HAN range includes conveyor, automatic, and portable bag-closing machines. Capacity, configuration, and line suitability depend on your bag and filling line, so KTK confirms them with you before you order.",
     applications: ["Bag closing", "Cement and woven sacks", "Conveyor packing lines", "Industrial sewing"],
     specs: [
       { label: "Origin", value: "Taiwan" },
@@ -617,7 +617,7 @@ export const PRODUCTS: Product[] = [
       { label: "Support", value: "Spare parts · maintenance · repair" },
     ],
     benefits: [
-      { title: "A broad supplied set", detail: "The gallery covers FACC-N980AC, FN600A, N-series, and U700C references." },
+      { title: "A broad range", detail: "The gallery covers FACC-N980AC, FN600A, N-series, and U700C references." },
       { title: "One-stop support", detail: "KTK can support machinery, thread, spare parts, and service conversations together." },
       { title: "Model-led inquiry", detail: "Ask KTK to confirm the correct model for your bag, line, and closure method." },
     ],
@@ -641,7 +641,7 @@ export const PRODUCTS: Product[] = [
     brand: "HCH",
     summary: "Deep-groove ball and tapered roller bearings from HCH, supplied through KTK’s authorized Myanmar distribution relationship.",
     longDescription:
-      "The supplied bearing document identifies deep-groove ball bearings and tapered roller bearings, and describes HCH’s quality systems and manufacturing capability. KTK has distributed HCH bearing products in Myanmar since 2008; confirm the exact series and dimensions for your application.",
+      "HCH’s range covers deep-groove ball bearings and tapered roller bearings, backed by the manufacturer’s quality systems and production capability. KTK has distributed HCH bearing products in Myanmar since 2008; confirm the exact series and dimensions for your application.",
     applications: ["Industrial equipment", "High-speed applications", "Radial and axial loads", "Maintenance stock"],
     specs: [
       { label: "Brand", value: "HCH" },
@@ -649,10 +649,10 @@ export const PRODUCTS: Product[] = [
       { label: "Seal options", value: "Open · 2RS · ZZ" },
       { label: "Deep-groove series", value: "16 · 60 · 62 · 63 · 68 · 69 · inch · 88" },
       { label: "Tapered-roller series", value: "302 · 303 · 320 · 322 · JL · L · LM" },
-      { label: "Authorization record", value: "Supplied sole-distributor certificate: 1 Mar 2025–28 Feb 2026" },
+      { label: "Authorization", value: "Sole-distributor certificate, 1 Mar 2025 – 28 Feb 2026" },
     ],
     benefits: [
-      { title: "Two core formats", detail: "The supplied gallery separates deep-groove and tapered roller bearing references." },
+      { title: "Two core formats", detail: "Deep-groove ball and tapered roller formats, shown side by side." },
       { title: "Industrial fit", detail: "Deep-groove formats support radial and axial load conversations across common equipment." },
       { title: "Local distribution", detail: "KTK provides a Myanmar route for HCH sourcing and inquiry." },
     ],
@@ -673,7 +673,7 @@ export const PRODUCTS: Product[] = [
     brand: "TR",
     summary: "TR spherical roller and unit bearing products for ventilation, agriculture, logistics, construction, engineering, and minerals.",
     longDescription:
-      "The supplied TR archive includes spherical roller and unit bearing references, plus a product photography set. The companion document describes TR’s bearing-unit and spherical-roller range; confirm dimensions, seals, load requirements, and availability with KTK.",
+      "TR’s range covers spherical roller bearings and mounted bearing units for equipment applications. Confirm dimensions, seals, load requirements, and availability with KTK.",
     applications: ["Ventilation", "Agriculture", "Logistics", "Construction", "Engineering", "Minerals"],
     specs: [
       { label: "Brand", value: "TR" },
@@ -681,11 +681,11 @@ export const PRODUCTS: Product[] = [
       { label: "Spherical-roller series", value: "222 · 223" },
       { label: "Mounted-unit families", value: "UCF · UCFL · UCT · UCFC · UCP · UKP · UKFC · UKT · UKF" },
       { label: "Insert-bearing series", value: "UC / UK 2 and 3 series" },
-      { label: "Authorization record", value: "Supplied appointment states validity begins 18 Oct 2026" },
+      { label: "Authorization", value: "Official distributor appointment, valid from 18 Oct 2026" },
     ],
     benefits: [
       { title: "Spherical roller reference", detail: "Supports rotation with low friction and accommodates angular misalignment in the described format." },
-      { title: "Unit bearing reference", detail: "The supplied image set includes sealed unit-bearing formats for equipment applications." },
+      { title: "Unit bearing reference", detail: "Sealed unit-bearing formats for equipment applications." },
       { title: "Application-led selection", detail: "Use the inquiry path to confirm the correct bearing unit for your shaft and environment." },
     ],
     image: "/assets/products/bearings/tr/omega-unit-bearing.webp",

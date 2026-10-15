@@ -85,7 +85,7 @@ export const Activities: CollectionConfig = {
               name: "sourceUrl",
               type: "text",
               label: "Source link",
-              admin: { description: "Optional. Adds an “Open supplied source” link, e.g. to the full photo album." },
+              admin: { description: "Optional. Adds a “View full album” link, e.g. to the full photo album." },
             },
           ],
         },

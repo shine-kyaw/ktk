@@ -47,7 +47,7 @@ export default async function ActivitiesPage() {
                     <p className="mt-2 text-sm leading-relaxed text-ash">{a.detail}</p>
                     {a.gallery?.length ? <div className="mt-5 grid gap-3 sm:grid-cols-2">{a.gallery.map((item) => <div key={item.src} className="relative aspect-[4/3] overflow-hidden border border-seam bg-iron"><Image src={item.src} alt={item.alt} fill sizes="(min-width: 640px) 25vw, 100vw" className="object-cover" /></div>)}</div> : null}
                     {a.videoUrl ? <video className="mt-5 w-full border border-seam bg-black" controls preload="metadata" poster={a.videoPoster ?? undefined}><source src={a.videoUrl} type="video/mp4" />Your browser does not support embedded video.</video> : null}
-                    {a.sourceUrl ? <a href={a.sourceUrl} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">Open supplied source ↗</a> : null}
+                    {a.sourceUrl ? <a href={a.sourceUrl} target="_blank" rel="noreferrer" className="mono mt-5 inline-flex text-[0.62rem] uppercase tracking-[0.14em] text-red hover:text-bone">View full album ↗</a> : null}
                   </article>
                 </Reveal>
               ))}

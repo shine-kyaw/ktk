@@ -8,8 +8,10 @@ import { useEffect, useRef, useState } from "react";
  * Built to work on every device rather than to be skipped on most of them:
  * - The poster is plain HTML (<picture>), so the hero is complete before any
  *   JavaScript runs, and stays complete if the film never plays.
- * - The film is a short, silent H.264 loop, the one video format every
- *   browser plays. Phones in portrait get a lighter portrait cut.
+ * - The film is a short, silent loop at the footage's full 1080p, in the
+ *   most efficient format each browser can play: AV1 (Chrome, Edge, Firefox,
+ *   newer Apple devices), then HEVC (other Apple devices), then H.264, which
+ *   everything plays. Phones held upright get a native portrait crop.
  * - Nothing downloads until we know the film is wanted: reduced-motion and
  *   data-saver visitors keep the still frame and can start the film themselves.
  * - Autoplay can still be refused (iOS Low Power Mode, some in-app browsers);
@@ -18,10 +20,17 @@ import { useEffect, useRef, useState } from "react";
  */
 
 const PORTRAIT = "(max-width: 767px) and (orientation: portrait)";
-const SOURCES = {
-  portrait: "/assets/hero/looms-540x960.mp4",
-  landscape: "/assets/hero/looms-1280.mp4",
-};
+const CODECS = [
+  { ext: "av1", type: 'video/mp4; codecs="av01.0.08M.08"' },
+  { ext: "hevc", type: 'video/mp4; codecs="hvc1.1.6.L120.90"' },
+  { ext: "h264", type: 'video/mp4; codecs="avc1.640029"' },
+] as const;
+
+function filmSource(video: HTMLVideoElement) {
+  const cut = window.matchMedia(PORTRAIT).matches ? "portrait" : "1080p";
+  const codec = CODECS.find((c) => video.canPlayType(c.type) === "probably") ?? CODECS[2];
+  return `/assets/hero/looms-${cut}.${codec.ext}.mp4`;
+}
 
 type FilmState = "idle" | "playing" | "paused";
 
@@ -37,7 +46,7 @@ export function HeroFilm() {
   const load = () => {
     const video = videoRef.current;
     if (!video || video.getAttribute("src")) return video;
-    video.src = window.matchMedia(PORTRAIT).matches ? SOURCES.portrait : SOURCES.landscape;
+    video.src = filmSource(video);
     return video;
   };
 
@@ -99,10 +108,12 @@ export function HeroFilm() {
     <>
       <div className="absolute inset-0" aria-hidden>
         <picture>
-          <source media={PORTRAIT} srcSet="/assets/hero/looms-poster-540x960.jpg" />
+          <source media={PORTRAIT} type="image/avif" srcSet="/assets/hero/looms-poster-portrait.avif" />
+          <source media={PORTRAIT} srcSet="/assets/hero/looms-poster-portrait.jpg" />
+          <source type="image/avif" srcSet="/assets/hero/looms-poster-1080p.avif" />
           {/* Plain <img>: next/image cannot switch crops by orientation. */}
           <img
-            src="/assets/hero/looms-poster-1280.jpg"
+            src="/assets/hero/looms-poster-1080p.jpg"
             alt=""
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"

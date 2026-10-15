@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     description:
       "Cement sacks, PP woven bags, filler, thread, bag-closing machinery, and bearings from Kaung Thu Kha Group.",
     url: "/",
-    images: [{ url: "/brand/ktk-logo.png", alt: "Kaung Thu Kha Group" }],
+    images: [{ url: "/brand/og-ktk.jpg", width: 1200, height: 630, alt: "KTK circular weaving looms — Strength, woven in." }],
   },
   twitter: {
     card: "summary_large_image",
     title: "KTK | Industrial Packaging Manufacturer, Myanmar",
     description:
       "Cement sacks, PP woven bags, filler, thread, bag-closing machinery, and bearings from Kaung Thu Kha Group.",
-    images: ["/brand/ktk-logo.png"],
+    images: ["/brand/og-ktk.jpg"],
   },
   robots: { index: true, follow: true },
 };
@@ -55,8 +55,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [visibility, company] = await Promise.all([getSiteVisibility(), getCompany()]);
   return (
-    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
+        {/* Marks the page as scripted before first paint, so scroll reveals
+            (components/Reveal.tsx) only hide content when they can show it. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('ktk-js')" }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
